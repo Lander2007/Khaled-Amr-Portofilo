@@ -1,0 +1,10 @@
+{
+  "description": "Showcases a freelance designer's portfolio with a sleek space-themed design, highlighting skills, projects, process, and client testimonials to attract clients.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
