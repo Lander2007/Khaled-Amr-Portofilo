@@ -33,7 +33,7 @@ const PROJECTS: Project[] = [
       "A production genuine leather e-commerce platform featuring Arabic bilingual support, dynamic product filtering, real-time inventory management, and a high-converting mobile checkout flow. Built with modern web technologies to deliver a seamless shopping experience.",
     tools: ["React", "Next.js", "Tailwind CSS", "REST API"],
     metrics: "Live Production Platform",
-    year: "2025",
+    year: "2026",
     image: "/projects/el3almialeather.png",
     githubUrl: "#",
     liveUrl: "https://el3almialeather.com/ar",
@@ -48,7 +48,7 @@ const PROJECTS: Project[] = [
       "An interactive 3D space education web platform featuring real-time orbital visualizations and astronomical data modules built with a futuristic glassmorphic aesthetic. Transforms astrophysics and planetary models into interactive 3D experiences with high-performance graphics and fluid user controls.",
     tools: ["React", "Three.js", "Tailwind CSS", "Vite"],
     metrics: "Interactive 3D Experience",
-    year: "2025",
+    year: "2026",
     image: "/projects/spaceedu.png",
     githubUrl: "https://github.com/Lander2007/SpaceEdu",
     liveUrl: "https://space-edu-drab.vercel.app/",
@@ -63,7 +63,7 @@ const PROJECTS: Project[] = [
       "A sleek, high-performance AI SaaS interface complete with real-time analytics dashboards, dark-mode visualizers, and responsive component architecture. Engineered for optimal user experience with modern design patterns and seamless data visualization.",
     tools: ["Next.js", "TypeScript", "Tailwind CSS", "Lucide Icons"],
     metrics: "Real-Time Analytics Dashboard",
-    year: "2025",
+    year: "2026",
     image: "/projects/aura.png",
     githubUrl: "https://github.com/Lander2007/AURA",
     liveUrl: "https://aura-brown-mu.vercel.app/",
@@ -78,7 +78,7 @@ const PROJECTS: Project[] = [
       "A modern mobile accessories store interface featuring dynamic search indexing, category filters, and custom promotional banner layouts. High-fidelity dark-mode design with glassmorphic UI components, bilingual search interface, responsive product filters, and intuitive control panels.",
     tools: ["React", "TypeScript", "Tailwind CSS", "Figma"],
     metrics: "Dynamic Search & Filtering",
-    year: "2024",
+    year: "2026",
     image: "/projects/el-king1.png",
     githubUrl: "https://github.com/Lander2007/el-king1",
     liveUrl: "https://el-king1.vercel.app/",
@@ -93,7 +93,7 @@ const PROJECTS: Project[] = [
       "An elegant home decor showcase highlighting editorial layouts, smooth scroll reveals, and high-end aesthetic typography for modern interiors. Features sophisticated animations, immersive visual storytelling, and a refined user experience tailored for luxury brands.",
     tools: ["React", "Tailwind CSS", "Framer Motion", "Vite"],
     metrics: "Editorial Layout Experience",
-    year: "2024",
+    year: "2026",
     image: "/projects/maison.png",
     githubUrl: "https://github.com/Lander2007/Maison",
     liveUrl: "https://maison-nine-wheat.vercel.app/",
@@ -108,7 +108,7 @@ const PROJECTS: Project[] = [
       "An interactive web experience exploring ancient Egyptian landmarks and historical monuments through rich media galleries and immersive visual storytelling. Combines cultural heritage with modern web design to create an engaging educational journey through ancient Egypt.",
     tools: ["React", "Tailwind CSS", "JavaScript", "Vite"],
     metrics: "Interactive Cultural Experience",
-    year: "2024",
+    year: "2025",
     image: "/projects/pharoh-view.png",
     githubUrl: "https://github.com/Lander2007/Pharoh-view",
     liveUrl: "https://pharoh-view.vercel.app/",
@@ -123,7 +123,7 @@ const PROJECTS: Project[] = [
       "A digital healthcare portal facilitating patient appointment booking, doctor directory searches, and wellness tracking tools. Built with a focus on accessibility, patient privacy, and seamless integration with healthcare workflows to improve patient-provider communication.",
     tools: ["React", "Tailwind CSS", "TypeScript", "Chart.js"],
     metrics: "Healthcare Portal System",
-    year: "2024",
+    year: "2025",
     image: "/projects/02health.png",
     githubUrl: "https://github.com/Lander2007/02Health",
     liveUrl: "https://02-health.vercel.app/",
@@ -138,7 +138,7 @@ const PROJECTS: Project[] = [
       "A fast-response emergency support web application engineered with accessible, high-contrast UI for rapid navigation during urgent situations. Prioritizes speed, clarity, and ease of use to deliver critical assistance when every second counts.",
     tools: ["React", "Tailwind CSS", "JavaScript", "REST API"],
     metrics: "Emergency Response System",
-    year: "2023",
+    year: "2026",
     image: "/projects/savior.png",
     githubUrl: "https://github.com/Lander2007/Savior",
     liveUrl: "https://savior-rosy.vercel.app/",
@@ -153,7 +153,7 @@ const PROJECTS: Project[] = [
       "A lightweight, responsive furniture catalog featuring interactive cart states, user ratings, and effortless grid filtering across all viewport sizes. Delivers a smooth shopping experience with optimized performance and intuitive product discovery features.",
     tools: ["HTML5", "CSS3", "JavaScript", "Tailwind CSS"],
     metrics: "Responsive Catalog System",
-    year: "2023",
+    year: "2026",
     image: "/projects/furni.png",
     githubUrl: "https://github.com/Lander2007/Furni",
     liveUrl: "https://lander2007.github.io/Furni/",
@@ -1765,7 +1765,7 @@ function ProjectsSection() {
           <div className="text-center md:text-left">
             <SectionLabel>03 / Featured Work</SectionLabel>
             <h2
-              className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold"
               style={{
                 fontFamily: "Syne",
                 color: "#f0e8ff",
@@ -1774,16 +1774,13 @@ function ProjectsSection() {
             >
               Featured Projects
             </h2>
-            <p className="text-sm text-purple-300/70 font-mono">
-              <span className="text-purple-400 font-semibold">{String(activeIndex + 1).padStart(2, "0")}</span> / {String(PROJECTS.length).padStart(2, "0")} · Swipe to explore
-            </p>
           </div>
         </Reveal>
 
         <Reveal delay={0.1}>
           <div className="relative">
             {/* Mobile: Swipeable Card */}
-            <div className="block lg:hidden">
+            <div className="block lg:hidden md:hidden">
               <div
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
@@ -1868,40 +1865,21 @@ function ProjectsSection() {
                   </div>
                 </div>
 
-                {/* Navigation Dots */}
-                <div className="flex justify-center gap-2 mt-6">
-                  {PROJECTS.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setActiveIndex(i)}
-                      className={`h-2 rounded-full transition-all ${
-                        i === activeIndex 
-                          ? 'w-8 bg-purple-500' 
-                          : 'w-2 bg-purple-500/30'
-                      }`}
-                      aria-label={`Go to project ${i + 1}`}
-                    />
-                  ))}
-                </div>
-
                 {/* Arrow Navigation */}
-                <div className="flex justify-between items-center mt-6 px-4">
+                <div className="flex justify-center gap-8 mt-6">
                   <button
                     onClick={() => goTo(activeIndex - 1)}
-                    className="w-12 h-12 rounded-full bg-purple-900/30 border border-purple-500/30
-                             text-purple-300 flex items-center justify-center text-xl
+                    className="w-14 h-14 rounded-full bg-purple-900/30 border border-purple-500/30
+                             text-purple-300 flex items-center justify-center text-2xl
                              active:scale-95 transition-transform"
                     aria-label="Previous project"
                   >
                     ←
                   </button>
-                  <span className="text-sm font-mono text-purple-300">
-                    Swipe or tap arrows
-                  </span>
                   <button
                     onClick={() => goTo(activeIndex + 1)}
-                    className="w-12 h-12 rounded-full bg-purple-900/30 border border-purple-500/30
-                             text-purple-300 flex items-center justify-center text-xl
+                    className="w-14 h-14 rounded-full bg-purple-900/30 border border-purple-500/30
+                             text-purple-300 flex items-center justify-center text-2xl
                              active:scale-95 transition-transform"
                     aria-label="Next project"
                   >
@@ -1912,7 +1890,7 @@ function ProjectsSection() {
             </div>
 
             {/* Desktop: Original Orbit Layout */}
-            <div className="hidden lg:block projects-orbit">
+            <div className="hidden md:block projects-orbit">
               {/* Constellation navigation rail */}
               <nav
                 className="projects-orbit-nav"
