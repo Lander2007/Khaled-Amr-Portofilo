@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, ReactNode, CSSProperties, memo, useCallback } from "react"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import ContactSection from "./components/ContactSection"
 import TopNav from "./components/TopNav"
 import LogoIcon from "./components/LogoIcon"
@@ -1827,12 +1827,32 @@ function About() {
 
 function ProjectsSection() {
   const [activeIndex, setActiveIndex] = useState(0)
-  const [touchStart, setTouchStart] = useState(0)
-  const [touchEnd, setTouchEnd] = useState(0)
+  const [direction, setDirection]     = useState(1)   // +1 = forward, -1 = backward
+  const [touchStart, setTouchStart]   = useState(0)
+  const [touchEnd,   setTouchEnd]     = useState(0)
   const activeProject = PROJECTS[activeIndex]
 
-  const goTo = (index: number) => {
-    setActiveIndex((index + PROJECTS.length) % PROJECTS.length)
+  const goTo = useCallback((index: number) => {
+    const next = (index + PROJECTS.length) % PROJECTS.length
+    setDirection(
+      next === (activeIndex + 1) % PROJECTS.length ? 1 :
+      next === (activeIndex - 1 + PROJECTS.length) % PROJECTS.length ? -1 :
+      next > activeIndex ? 1 : -1
+    )
+    setActiveIndex(next)
+  }, [activeIndex])
+
+  // Framer Motion variants for image slide
+  const imgVariants = {
+    enter:  (d: number) => ({ x: d > 0 ? 55 : -55, opacity: 0, filter: "blur(6px)" }),
+    center: { x: 0, opacity: 1, filter: "blur(0px)" },
+    exit:   (d: number) => ({ x: d > 0 ? -35 : 35, opacity: 0, filter: "blur(4px)" }),
+  }
+  // Variants for details panel content
+  const detailVariants = {
+    enter:  { opacity: 0, y: 22, filter: "blur(5px)" },
+    center: { opacity: 1, y: 0,  filter: "blur(0px)" },
+    exit:   { opacity: 0, y: -10, filter: "blur(4px)" },
   }
 
   // Touch swipe handlers for mobile
