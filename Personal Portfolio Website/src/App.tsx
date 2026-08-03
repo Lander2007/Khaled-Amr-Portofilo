@@ -686,8 +686,8 @@ function DynamicNebulaCanvas() {
     }
     window.addEventListener("resize", handleResize)
 
-    // Generate 180 stars across 3 layers
-    const numStars = 180
+    // Generate 240 stars across 3 layers
+    const numStars = 240
     const stars = Array.from({ length: numStars }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
@@ -716,6 +716,26 @@ function DynamicNebulaCanvas() {
 
     let animationFrameId: number
     let time = 0
+
+    // ── Shooting stars ──────────────────────────────────────────────────────
+    type ShootingStar = { x: number; y: number; vx: number; vy: number; len: number; life: number; maxLife: number; color: string }
+    const ssPool: ShootingStar[] = []
+    let ssTick = 0
+
+    const spawnShootingStar = () => {
+      const speed = 4.5 + Math.random() * 3
+      const angle = (Math.PI / 6) + Math.random() * (Math.PI / 8) // shallow downward-right
+      ssPool.push({
+        x: Math.random() * width * 0.75,
+        y: Math.random() * height * 0.45,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        len: 90 + Math.random() * 110,
+        life: 0,
+        maxLife: 38 + Math.random() * 22,
+        color: Math.random() > 0.5 ? "#c9a7ff" : "#ffffff",
+      })
+    }
 
     const render = () => {
       time += 0.01
@@ -819,6 +839,50 @@ function DynamicNebulaCanvas() {
           ctx.shadowBlur = 0
         }
       })
+      ctx.shadowBlur = 0
+
+      // ── Shooting stars ────────────────────────────────────────────────────
+      ssTick++
+      if (ssTick > 200 + Math.random() * 160) {
+        ssTick = 0
+        spawnShootingStar()
+      }
+
+      for (let si = ssPool.length - 1; si >= 0; si--) {
+        const ss = ssPool[si]
+        const t = ss.life / ss.maxLife
+        const alpha = Math.sin(t * Math.PI) * 0.85
+        const mag = Math.hypot(ss.vx, ss.vy)
+        const tailX = ss.x - (ss.vx / mag) * ss.len
+        const tailY = ss.y - (ss.vy / mag) * ss.len
+
+        const ssGrad = ctx.createLinearGradient(ss.x, ss.y, tailX, tailY)
+        ssGrad.addColorStop(0, ss.color)
+        ssGrad.addColorStop(0.6, ss.color === "#c9a7ff" ? "rgba(201,167,255,0.3)" : "rgba(255,255,255,0.25)")
+        ssGrad.addColorStop(1, "transparent")
+
+        ctx.globalAlpha = alpha
+        ctx.strokeStyle = ssGrad
+        ctx.lineWidth = 1.5
+        ctx.lineCap = "round"
+        ctx.beginPath()
+        ctx.moveTo(ss.x, ss.y)
+        ctx.lineTo(tailX, tailY)
+        ctx.stroke()
+
+        // Tiny glow head
+        ctx.globalAlpha = alpha * 0.6
+        ctx.fillStyle = ss.color
+        ctx.beginPath()
+        ctx.arc(ss.x, ss.y, 1.8, 0, Math.PI * 2)
+        ctx.fill()
+
+        ss.x += ss.vx
+        ss.y += ss.vy
+        ss.life++
+        if (ss.life >= ss.maxLife) ssPool.splice(si, 1)
+      }
+
       ctx.globalAlpha = 1.0
 
       animationFrameId = requestAnimationFrame(render)
@@ -1329,7 +1393,32 @@ function Hero() {
     >
       {/* Interactive Cosmic "K" Background */}
       <BackgroundK />
-      
+
+      {/* Floating ambient orbs — depth layers behind hero content */}
+      <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 1 }}>
+        <div style={{
+          position: "absolute", top: "12%", left: "6%",
+          width: "340px", height: "340px", borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(108,43,217,0.25) 0%, transparent 70%)",
+          filter: "blur(55px)",
+          animation: "float-orb-a 13s ease-in-out infinite",
+        }} />
+        <div style={{
+          position: "absolute", top: "38%", right: "4%",
+          width: "280px", height: "280px", borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(6,182,212,0.18) 0%, transparent 70%)",
+          filter: "blur(48px)",
+          animation: "float-orb-b 16s ease-in-out infinite 2.5s",
+        }} />
+        <div style={{
+          position: "absolute", bottom: "18%", left: "22%",
+          width: "220px", height: "220px", borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(217,70,239,0.14) 0%, transparent 70%)",
+          filter: "blur(38px)",
+          animation: "float-orb-c 11s ease-in-out infinite 1.2s",
+        }} />
+      </div>
+
       <div
         style={{
           position: "sticky",
@@ -1480,14 +1569,117 @@ function Hero() {
             </MemoizedMagneticBtn>
           </div>
 
-
         </div>
+
+        {/* Scroll-down indicator */}
+        <div
+          className="hero-scroll-indicator"
+          style={{
+            position: "absolute",
+            bottom: "2.5rem",
+            left: "50%",
+            transform: "translateX(-50%)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "0.5rem",
+            opacity: pinState.opacity * 0.7,
+            pointerEvents: "none",
+            zIndex: 3,
+          }}
+        >
+          <span style={{
+            fontFamily: "Syne",
+            fontSize: "0.6rem",
+            letterSpacing: "0.22em",
+            textTransform: "uppercase",
+            color: "rgba(201,167,255,0.45)",
+          }}>
+            Scroll
+          </span>
+          <div style={{
+            width: "1px",
+            height: "36px",
+            background: "linear-gradient(to bottom, rgba(139,79,232,0.8), transparent)",
+          }} />
+        </div>
+
       </div>
     </section>
   )
 }
 
 // â”€â”€â”€ Skill Chip Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+// ─── Animated Stat Counter ────────────────────────────────────────────────────
+
+function AnimatedStat({ value, label }: { value: string; label: string }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [count, setCount] = useState(0)
+  const [inView, setInView] = useState(false)
+
+  // Parse numeric part and suffix ("5+" → 5, "+")
+  const match = value.match(/^(\d+)(.*)$/)
+  const num    = match ? parseInt(match[1]) : 0
+  const suffix = match ? match[2] : value
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setInView(true) },
+      { threshold: 0.5 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (!inView || num === 0) return
+    const duration = 1100
+    const start = Date.now()
+    const timer = setInterval(() => {
+      const p = Math.min(1, (Date.now() - start) / duration)
+      const eased = 1 - Math.pow(1 - p, 3)
+      setCount(Math.round(eased * num))
+      if (p >= 1) clearInterval(timer)
+    }, 16)
+    return () => clearInterval(timer)
+  }, [inView, num])
+
+  return (
+    <div ref={ref}>
+      <div
+        className="stat-number-in"
+        style={{
+          fontFamily: "Syne",
+          fontWeight: 700,
+          fontSize: "2.25rem",
+          lineHeight: 1,
+          letterSpacing: "-0.03em",
+          marginBottom: "0.375rem",
+          background: "linear-gradient(135deg, #f0e8ff 0%, #c9a7ff 60%, #a855f7 100%)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          backgroundClip: "text",
+          filter: "drop-shadow(0 0 16px rgba(201,167,255,0.45))",
+        }}
+      >
+        {inView ? count : 0}{suffix}
+      </div>
+      <div style={{
+        fontFamily: "Plus Jakarta Sans",
+        fontSize: "0.825rem",
+        color: "rgba(201,167,255,0.52)",
+        letterSpacing: "0.02em",
+      }}>
+        {label}
+      </div>
+    </div>
+  )
+}
+
+// ─── Skill Chip ───────────────────────────────────────────────────────────────
 
 function SkillChip({ label }: { label: string }) {
   const [hovered, setHovered] = useState(false)
@@ -1588,32 +1780,7 @@ function About() {
               ["100%", "Custom delivery"],
             ].map(([num, label], idx) => (
               <Reveal key={label} delay={idx * 0.12} direction="up">
-                <div>
-                  <div
-                    style={{
-                      fontFamily: "Syne",
-                      fontWeight: 700,
-                      fontSize: "2.25rem",
-                      color: "#f0e8ff",
-                      letterSpacing: "-0.03em",
-                      lineHeight: 1,
-                      marginBottom: "0.375rem",
-                      textShadow: "0 0 24px rgba(201,167,255,0.5)",
-                    }}
-                  >
-                    {num}
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: "Plus Jakarta Sans",
-                      fontSize: "0.825rem",
-                      color: "rgba(201,167,255,0.52)",
-                      letterSpacing: "0.02em",
-                    }}
-                  >
-                    {label}
-                  </div>
-                </div>
+                <AnimatedStat value={num} label={label} />
               </Reveal>
             ))}
           </div>
