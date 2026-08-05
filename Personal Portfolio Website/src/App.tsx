@@ -13,6 +13,7 @@ import TopNav from "./components/TopNav"
 import LogoIcon from "./components/LogoIcon"
 import BackgroundK from "./components/BackgroundK"
 import Certificates from "./components/Certificates"
+import Interactive3DModel from "./components/Interactive3DModel"
 
 // â”€â”€â”€ Project Data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
@@ -1475,148 +1476,170 @@ function Hero() {
           top: 0,
           height: "100vh",
           display: "flex",
-          alignItems: "flex-start",
+          alignItems: "center",
           justifyContent: "center",
           overflow: "hidden",
-          paddingTop: "clamp(5rem, 12vh, 8rem)",
+          paddingTop: "clamp(3rem, 10vh, 6rem)",
         }}
       >
         <div
           style={{
-            textAlign: "center",
-            position: "relative",
-            zIndex: 2,
-            padding: "1rem 2rem",
-            maxWidth: "880px",
+            display: "grid",
+            alignItems: "center",
+            width: "100%",
+            maxWidth: "1240px",
+            padding: "0 2rem",
             opacity: pinState.opacity,
             transform: `translateY(${pinState.translateY}px) scale(${pinState.scale})`,
             transition: "transform 0.1s ease-out, opacity 0.1s ease-out",
             willChange: "transform, opacity",
           }}
+          className="grid-cols-1 md:grid-cols-12 lg:grid-cols-12 gap-8 md:gap-12"
         >
-          {/* Logo Emblem */}
-          <div
-            style={{
-              marginBottom: "1rem",
-              display: "inline-block",
-              opacity: heroReady ? 1 : 0,
-              transform: heroReady ? "scale(1)" : "scale(0.8)",
-              transition:
-                "opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s cubic-bezier(0.16, 1, 0.3, 1)",
-            }}
-          >
-            <LogoIcon size={72} />
-          </div>
-
-          {/* Status badge - fades in smoothly after typewriter starts */}
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              fontFamily: "Syne",
-              fontSize: "0.72rem",
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-              color: "rgba(201,167,255,0.85)",
-              marginBottom: "1.5rem",
-              border: "1px solid rgba(108,43,217,0.42)",
-              padding: "0.45rem 1.25rem 0.45rem 0.95rem",
-              borderRadius: "9999px",
-              background: "rgba(108,43,217,0.12)",
-              backdropFilter: "blur(12px)",
-              opacity: heroReady ? 1 : 0,
-              transform: heroReady ? "translateY(0)" : "translateY(16px)",
-              transition:
-                "opacity 1.1s 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
-            }}
-          >
-            <span
+          {/* Left Column (Content) */}
+          <div className="md:col-span-7 lg:col-span-7 text-center md:text-left lg:text-left relative z-2 flex flex-col justify-center items-center md:items-start lg:items-start">
+            {/* Logo Emblem */}
+            <div
               style={{
-                width: "6px",
-                height: "6px",
-                borderRadius: "50%",
-                background: "#8b4fe8",
+                marginBottom: "1rem",
                 display: "inline-block",
-                animation: "glow-pulse-dot 2.2s ease-in-out infinite",
+                opacity: heroReady ? 1 : 0,
+                transform: heroReady ? "scale(1)" : "scale(0.8)",
+                transition:
+                  "opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s cubic-bezier(0.16, 1, 0.3, 1)",
               }}
-            />
-            Web Developer @ WaveDev · Available for Custom Frontend Projects
+            >
+              <LogoIcon size={72} />
+            </div>
+
+            {/* Status badge - fades in smoothly after typewriter starts */}
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                fontFamily: "Syne",
+                fontSize: "0.72rem",
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: "rgba(201,167,255,0.85)",
+                marginBottom: "1.5rem",
+                border: "1px solid rgba(108,43,217,0.42)",
+                padding: "0.45rem 1.25rem 0.45rem 0.95rem",
+                borderRadius: "9999px",
+                background: "rgba(108,43,217,0.12)",
+                backdropFilter: "blur(12px)",
+                opacity: heroReady ? 1 : 0,
+                transform: heroReady ? "translateY(0)" : "translateY(16px)",
+                transition:
+                  "opacity 1.1s 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
+              }}
+            >
+              <span
+                style={{
+                  width: "6px",
+                  height: "6px",
+                  borderRadius: "50%",
+                  background: "#8b4fe8",
+                  display: "inline-block",
+                  animation: "glow-pulse-dot 2.2s ease-in-out infinite",
+                }}
+              />
+              Web Developer @ WaveDev · Available for Custom Frontend Projects
+            </div>
+
+            {/* Main Title */}
+            <h1
+              className="text-glow-bright"
+              style={{
+                fontFamily: "Syne",
+                fontWeight: 700,
+                fontSize: "clamp(3.2rem, 6.5vw, 6.5rem)",
+                color: "#f0e8ff",
+                lineHeight: 0.98,
+                letterSpacing: "-0.035em",
+                marginBottom: "1rem",
+              }}
+            >
+              Khaled Amr
+            </h1>
+
+            {/* Typewriter Rotating Subtitle Line */}
+            <div
+              style={{
+                fontSize: "clamp(1.15rem, 2.5vw, 1.85rem)",
+                marginBottom: "1.75rem",
+                minHeight: "3rem",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <TypewriterText
+                phrases={phrases}
+                onFirstTypeComplete={() => setHeroReady(true)}
+              />
+            </div>
+
+            {/* Tagline Paragraph - Fades in smoothly after typewriter reveals first phrase */}
+            <p
+              style={{
+                fontFamily: "Plus Jakarta Sans",
+                fontSize: "clamp(0.95rem, 1.8vw, 1.15rem)",
+                color: "rgba(201,167,255,0.78)",
+                lineHeight: 1.65,
+                maxWidth: "580px",
+                margin: "0 auto 2.5rem md:margin-left-0 lg:margin-left-0",
+                fontWeight: 300,
+                letterSpacing: "0.005em",
+                opacity: heroReady ? 1 : 0,
+                transform: heroReady ? "translateY(0)" : "translateY(24px)",
+                transition:
+                  "opacity 1.1s 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+              }}
+              className="md:text-left lg:text-left"
+            >
+              I build high-performance, interactive web interfaces, custom 3D
+              web experiences, and pixel-perfect dark mode applications.
+            </p>
+
+            {/* Magnetic CTA Buttons - Fades in smoothly */}
+            <div
+              style={{
+                display: "flex",
+                gap: "1.25rem",
+                justifyContent: "center",
+                flexWrap: "wrap",
+                opacity: heroReady ? 1 : 0,
+                transform: heroReady ? "translateY(0)" : "translateY(28px)",
+                transition:
+                  "opacity 1.1s 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+              }}
+            >
+              <MemoizedMagneticBtn href="#projects" variant="primary">
+                Explore Featured Work
+              </MemoizedMagneticBtn>
+              <MemoizedMagneticBtn href="#contact" variant="secondary">
+                Get In Touch
+              </MemoizedMagneticBtn>
+            </div>
           </div>
 
-          {/* Main Title */}
-          <h1
-            className="text-glow-bright"
-            style={{
-              fontFamily: "Syne",
-              fontWeight: 700,
-              fontSize: "clamp(3.5rem, 8.5vw, 7.5rem)",
-              color: "#f0e8ff",
-              lineHeight: 0.98,
-              letterSpacing: "-0.035em",
-              marginBottom: "1rem",
-            }}
-          >
-            Khaled Amr
-          </h1>
-
-          {/* Typewriter Rotating Subtitle Line */}
+          {/* Right Column (Holographic Interactive 3D Model Panel) */}
           <div
+            className="md:col-span-5 lg:col-span-5 w-full max-w-[400px] md:max-w-none lg:max-w-none mx-auto relative z-2 flex items-center justify-center"
             style={{
-              fontSize: "clamp(1.25rem, 3.2vw, 2.15rem)",
-              marginBottom: "1.75rem",
-              minHeight: "3rem",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <TypewriterText
-              phrases={phrases}
-              onFirstTypeComplete={() => setHeroReady(true)}
-            />
-          </div>
-
-          {/* Tagline Paragraph - Fades in smoothly after typewriter reveals first phrase */}
-          <p
-            style={{
-              fontFamily: "Plus Jakarta Sans",
-              fontSize: "clamp(1.0625rem, 2.2vw, 1.25rem)",
-              color: "rgba(201,167,255,0.78)",
-              lineHeight: 1.65,
-              maxWidth: "640px",
-              margin: "0 auto 2.5rem",
-              fontWeight: 300,
-              letterSpacing: "0.005em",
               opacity: heroReady ? 1 : 0,
-              transform: heroReady ? "translateY(0)" : "translateY(24px)",
+              transform: heroReady
+                ? "scale(1) rotate(0deg)"
+                : "scale(0.9) rotate(-3deg)",
               transition:
-                "opacity 1.1s 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                "opacity 1.2s 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s 0.65s cubic-bezier(0.16, 1, 0.3, 1)",
             }}
           >
-            I build high-performance, interactive web interfaces, custom 3D web
-            experiences, and pixel-perfect dark mode applications.
-          </p>
-
-          {/* Magnetic CTA Buttons - Fades in smoothly */}
-          <div
-            style={{
-              display: "flex",
-              gap: "1.25rem",
-              justifyContent: "center",
-              flexWrap: "wrap",
-              opacity: heroReady ? 1 : 0,
-              transform: heroReady ? "translateY(0)" : "translateY(28px)",
-              transition:
-                "opacity 1.1s 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
-            }}
-          >
-            <MemoizedMagneticBtn href="#projects" variant="primary">
-              Explore Featured Work
-            </MemoizedMagneticBtn>
-            <MemoizedMagneticBtn href="#contact" variant="secondary">
-              Get In Touch
-            </MemoizedMagneticBtn>
+            <div className="w-full aspect-square">
+              <Interactive3DModel />
+            </div>
           </div>
         </div>
 
@@ -1666,7 +1689,7 @@ function Hero() {
 
 // ─── Animated Stat Counter ────────────────────────────────────────────────────
 
-function AnimatedStat({ value, label }: { value: string label: string }) {
+function AnimatedStat({ value, label }: { value: string; label: string }) {
   const ref = useRef<HTMLDivElement>(null)
   const [count, setCount] = useState(0)
   const [inView, setInView] = useState(false)
@@ -1894,9 +1917,87 @@ function TiltContainer({
   style?: CSSProperties
 }) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
   const [transformStr, setTransformStr] = useState(
     "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)",
   )
+  const [offsets, setOffsets] = useState({ x: 0, y: 0 })
+  const [isHovered, setIsHovered] = useState(false)
+  const particlesRef = useRef<{
+    x: number
+    y: number
+    vx: number
+    vy: number
+    alpha: number
+    size: number
+    color: string
+  }[]>([])
+
+  // Setup particle loop
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return
+
+    let width = (canvas.width = canvas.parentElement?.clientWidth || 400)
+    let height = (canvas.height = canvas.parentElement?.clientHeight || 250)
+
+    const handleResize = () => {
+      width = canvas.width = canvas.parentElement?.clientWidth || 400
+      height = canvas.height = canvas.parentElement?.clientHeight || 250
+    }
+    window.addEventListener("resize", handleResize)
+
+    let animationId: number
+    const pList = particlesRef.current
+
+    const tick = () => {
+      ctx.clearRect(0, 0, width, height)
+
+      // Spontaneous micro particle streams on hover
+      if (isHovered && Math.random() < 0.25) {
+        pList.push({
+          x: Math.random() * width,
+          y: height + 5,
+          vx: (Math.random() - 0.5) * 1.5,
+          vy: -Math.random() * 2.5 - 1.2,
+          alpha: 1,
+          size: Math.random() * 2 + 1,
+          color: Math.random() > 0.5 ? "#06b6d4" : "#d946ef",
+        })
+      }
+
+      // Update & draw particles
+      for (let i = pList.length - 1; i >= 0; i--) {
+        const p = pList[i]
+        p.x += p.vx
+        p.y += p.vy
+        p.alpha -= 0.016
+
+        if (p.alpha <= 0 || p.x < 0 || p.x > width || p.y < 0) {
+          pList.splice(i, 1)
+          continue
+        }
+
+        ctx.fillStyle = p.color
+        ctx.globalAlpha = p.alpha
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+        ctx.fill()
+      }
+
+      ctx.globalAlpha = 1.0
+      animationId = requestAnimationFrame(tick)
+    }
+
+    tick()
+
+    return () => {
+      window.removeEventListener("resize", handleResize)
+      cancelAnimationFrame(animationId)
+    }
+  }, [isHovered])
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const el = containerRef.current
@@ -1905,21 +2006,72 @@ function TiltContainer({
     const x = e.clientX - rect.left // x position within the element
     const y = e.clientY - rect.top // y position within the element
 
-    // Calculate rotation angles based on mouse position relative to center
     const centerX = rect.width / 2
     const centerY = rect.height / 2
 
-    // Max rotation is 8 degrees
-    const rotateY = ((x - centerX) / centerX) * 8
-    const rotateX = -((y - centerY) / centerY) * 8
+    // Max rotation is 10 degrees
+    const rotateY = ((x - centerX) / centerX) * 10
+    const rotateX = -((y - centerY) / centerY) * 10
 
     setTransformStr(
-      `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`,
+      `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`,
     )
+
+    // Set normalized parallax offset percentage (from -100 to 100)
+    setOffsets({
+      x: ((x - centerX) / centerX) * 100,
+      y: ((y - centerY) / centerY) * 100,
+    })
+
+    // Spurt trailing particles as mouse moves
+    if (Math.random() < 0.45) {
+      particlesRef.current.push({
+        x,
+        y,
+        vx: (Math.random() - 0.5) * 2,
+        vy: (Math.random() - 0.5) * 2 - 0.5,
+        alpha: 1,
+        size: Math.random() * 2.5 + 1.2,
+        color: Math.random() > 0.5 ? "#06b6d4" : "#a855f7",
+      })
+    }
   }
 
   const handleMouseLeave = () => {
     setTransformStr("perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)")
+    setOffsets({ x: 0, y: 0 })
+    setIsHovered(false)
+  }
+
+  const handleMouseEnter = () => {
+    setIsHovered(true)
+  }
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+
+    // Kinetic Particle Burst Emitter!
+    const burstCount = 35
+    for (let i = 0; i < burstCount; i++) {
+      const angle = Math.random() * Math.PI * 2
+      const speed = Math.random() * 4.5 + 1.5
+      particlesRef.current.push({
+        x,
+        y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 0.5,
+        alpha: 1,
+        size: Math.random() * 3 + 1,
+        color:
+          Math.random() > 0.65
+            ? "#06b6d4"
+            : Math.random() > 0.35
+              ? "#d946ef"
+              : "#ffffff",
+      })
+    }
   }
 
   return (
@@ -1927,7 +2079,9 @@ function TiltContainer({
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className={className}
+      onMouseEnter={handleMouseEnter}
+      onClick={handleClick}
+      className={`${className} relative overflow-hidden`}
       style={{
         ...style,
         transform: transformStr,
@@ -1936,7 +2090,60 @@ function TiltContainer({
         willChange: "transform",
       }}
     >
-      {children}
+      {/* 3D-angled grid with laser scanner overlay */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage:
+            "linear-gradient(rgba(6,182,212,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(6,182,212,0.12) 1px, transparent 1px)",
+          backgroundSize: "24px 24px",
+          backgroundPosition: "center",
+          opacity: isHovered ? 0.45 : 0,
+          pointerEvents: "none",
+          zIndex: 4,
+          transition: "opacity 0.4s ease",
+          transform: `translate(${offsets.x * -0.06}px, ${offsets.y * -0.06}px)`,
+        }}
+      />
+
+      {/* Laser scan line sweeper */}
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          height: "2px",
+          background:
+            "linear-gradient(90deg, transparent, #06b6d4 50%, transparent)",
+          boxShadow: "0 0 12px #06b6d4, 0 0 24px rgba(6,182,212,0.8)",
+          opacity: isHovered ? 0.8 : 0,
+          pointerEvents: "none",
+          zIndex: 5,
+          top: "0%",
+          animation: isHovered ? "laser-sweep 2.5s linear infinite" : "none",
+        }}
+      />
+
+      {/* Kinetic Particle Canvas Emitter */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full pointer-events-none z-10"
+      />
+
+      {/* Custom Mouse Parallax Layer Wrappers inside Children */}
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          height: "100%",
+          transform: `translate(${offsets.x * 0.04}px, ${offsets.y * 0.04}px)`,
+          transition: "transform 0.15s ease-out",
+          zIndex: 2,
+        }}
+      >
+        {children}
+      </div>
     </div>
   )
 }
@@ -2041,7 +2248,7 @@ function ProjectsSection() {
       scale: 1,
       filter: "blur(0px)",
       transition: {
-        x: { type: "spring", stiffness: 300, damping: 30 },
+        x: { type: "spring" as const, stiffness: 300, damping: 30 },
         opacity: { duration: 0.2 },
         scale: { duration: 0.3 },
       },
@@ -2052,7 +2259,7 @@ function ProjectsSection() {
       scale: 0.92,
       filter: "blur(4px)",
       transition: {
-        x: { type: "spring", stiffness: 300, damping: 30 },
+        x: { type: "spring" as const, stiffness: 300, damping: 30 },
         opacity: { duration: 0.2 },
         scale: { duration: 0.3 },
       },
