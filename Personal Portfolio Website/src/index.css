@@ -686,7 +686,7 @@ a { cursor: pointer; }
   text-shadow: 0 0 30px rgba(201, 167, 255, 0.7), 0 0 60px rgba(108, 43, 217, 0.4);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 767px) {
   .projects-orbit {
     display: none !important;
   }
@@ -725,7 +725,7 @@ a { cursor: pointer; }
   .grid-process { grid-template-columns: repeat(2, 1fr); }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 767px) {
   .grid-process { grid-template-columns: repeat(2, 1fr); }
   .process-connector { display: none; }
   .grid-about { grid-template-columns: 1fr; gap: 3.5rem; }

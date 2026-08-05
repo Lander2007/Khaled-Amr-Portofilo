@@ -1,6 +1,6 @@
-import { motion } from "framer-motion";
-import { certificatesData } from "@/data/certificatesData";
-import { useState } from "react";
+import { motion } from "framer-motion"
+import { certificatesData } from "@/data/certificatesData"
+import { useState } from "react"
 
 export default function Certificates() {
   return (
@@ -39,14 +39,19 @@ export default function Certificates() {
             <CertificateCard key={cert.id} cert={cert} index={index} />
           ))}
         </div>
-
       </div>
     </section>
-  );
+  )
 }
 
-function CertificateCard({ cert, index }: { cert: typeof certificatesData[0]; index: number }) {
-  const [imageError, setImageError] = useState(false);
+function CertificateCard({
+  cert,
+  index,
+}: {
+  cert: typeof certificatesData[0]
+  index: number
+}) {
+  const [imageError, setImageError] = useState(false)
 
   return (
     <motion.div
@@ -58,7 +63,6 @@ function CertificateCard({ cert, index }: { cert: typeof certificatesData[0]; in
       <div className="group relative h-full">
         {/* Certificate Card */}
         <div className="relative h-full bg-gradient-to-br from-purple-950/40 via-purple-900/30 to-cyan-950/30 backdrop-blur-sm rounded-2xl border border-purple-500/20 hover:border-purple-500/40 overflow-hidden transition-all duration-300">
-          
           <div className="relative p-6 flex flex-col justify-between h-full">
             {/* Certificate Image Preview Container */}
             <div className="relative mb-6 aspect-[4/3] border border-purple-500/20 bg-purple-950/30 rounded-2xl overflow-hidden">
@@ -72,20 +76,22 @@ function CertificateCard({ cert, index }: { cert: typeof certificatesData[0]; in
               ) : (
                 // Fallback placeholder with credential icon
                 <div className="w-full h-full flex flex-col items-center justify-center bg-[#080415] rounded-2xl">
-                  <svg 
-                    className="w-16 h-16 text-purple-400/40 mb-3" 
-                    fill="none" 
-                    stroke="currentColor" 
+                  <svg
+                    className="w-16 h-16 text-purple-400/40 mb-3"
+                    fill="none"
+                    stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round" 
-                      strokeWidth={1.5} 
-                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" 
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                     />
                   </svg>
-                  <span className="text-sm text-purple-400/60 font-mono">Certificate Preview</span>
+                  <span className="text-sm text-purple-400/60 font-mono">
+                    Certificate Preview
+                  </span>
                 </div>
               )}
             </div>
@@ -106,7 +112,9 @@ function CertificateCard({ cert, index }: { cert: typeof certificatesData[0]; in
                   transition={{ delay: index * 0.2 + 0.3, type: "spring" }}
                 >
                   <span className="text-green-400 text-xs">✓</span>
-                  <span className="text-[10px] font-mono text-green-300">Verified</span>
+                  <span className="text-[10px] font-mono text-green-300">
+                    Verified
+                  </span>
                 </motion.div>
               </div>
 
@@ -144,5 +152,5 @@ function CertificateCard({ cert, index }: { cert: typeof certificatesData[0]; in
         </div>
       </div>
     </motion.div>
-  );
+  )
 }

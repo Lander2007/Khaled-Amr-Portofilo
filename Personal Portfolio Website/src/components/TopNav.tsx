@@ -9,12 +9,23 @@ export default function TopNav() {
 
   // Scroll progress for the thin progress bar
   const { scrollYProgress } = useScroll()
-  const progressScaleX = useSpring(scrollYProgress, { stiffness: 300, damping: 40, mass: 0.5 })
+  const progressScaleX = useSpring(scrollYProgress, {
+    stiffness: 300,
+    damping: 40,
+    mass: 0.5,
+  })
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50)
-      const navSections = ["hero", "about", "projects", "certificates", "process", "contact"]
+      const navSections = [
+        "hero",
+        "about",
+        "projects",
+        "certificates",
+        "process",
+        "contact",
+      ]
       const scrollPos = window.scrollY + window.innerHeight * 0.35
       for (let i = navSections.length - 1; i >= 0; i--) {
         const sec = document.getElementById(navSections[i])
@@ -30,18 +41,18 @@ export default function TopNav() {
   }, [])
 
   const links = [
-    { id: "about",        label: "About",    num: "01" },
-    { id: "projects",     label: "Projects", num: "02" },
-    { id: "certificates", label: "Certs",    num: "03" },
-    { id: "process",      label: "Process",  num: "04" },
-    { id: "contact",      label: "Contact",  num: "05" },
+    { id: "about", label: "About", num: "01" },
+    { id: "projects", label: "Projects", num: "02" },
+    { id: "certificates", label: "Certs", num: "03" },
+    { id: "process", label: "Process", num: "04" },
+    { id: "contact", label: "Contact", num: "05" },
   ]
 
   return (
     <>
       <motion.nav
         initial={{ opacity: 0, y: -28, x: "-50%" }}
-        animate={{ opacity: 1, y: 0,   x: "-50%" }}
+        animate={{ opacity: 1, y: 0, x: "-50%" }}
         transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         style={{
           position: "fixed",
@@ -77,7 +88,8 @@ export default function TopNav() {
             height: "2px",
             scaleX: progressScaleX,
             transformOrigin: "left",
-            background: "linear-gradient(90deg, #6c2bd9 0%, #a855f7 50%, #06b6d4 100%)",
+            background:
+              "linear-gradient(90deg, #6c2bd9 0%, #a855f7 50%, #06b6d4 100%)",
             boxShadow: "0 0 10px rgba(168,85,247,0.85)",
             borderRadius: "0 0 9999px 9999px",
           }}
@@ -109,16 +121,26 @@ export default function TopNav() {
           {/* Orbital dashed ring */}
           <span
             className="absolute inset-0 rounded-full border border-dashed border-purple-400/20 group-hover:border-purple-400/40"
-            style={{ transition: "transform 1.3s ease-in-out, border-color 0.3s", transform: "rotate(0deg)" }}
-            onMouseEnter={(e) => (e.currentTarget.style.transform = "rotate(180deg)")}
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "rotate(0deg)")}
+            style={{
+              transition: "transform 1.3s ease-in-out, border-color 0.3s",
+              transform: "rotate(0deg)",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.transform = "rotate(180deg)")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.transform = "rotate(0deg)")
+            }
           />
         </a>
 
         {/* ── Divider ───────────────────────────────────────────────────── */}
         <div
           className="w-px h-5 shrink-0 z-10"
-          style={{ background: "linear-gradient(to bottom, transparent, rgba(108,43,217,0.45), transparent)" }}
+          style={{
+            background:
+              "linear-gradient(to bottom, transparent, rgba(108,43,217,0.45), transparent)",
+          }}
         />
 
         {/* ── Desktop nav links ─────────────────────────────────────────── */}
@@ -130,12 +152,17 @@ export default function TopNav() {
                 key={l.id}
                 href={`#${l.id}`}
                 className="relative px-3 py-1.5 rounded-full text-xs font-medium tracking-wide transition-colors duration-250"
-                style={{ color: isActive ? "#f0e8ff" : "rgba(201,167,255,0.5)" }}
+                style={{
+                  color: isActive ? "#f0e8ff" : "rgba(201,167,255,0.5)",
+                }}
                 onMouseEnter={(e) => {
-                  if (!isActive) (e.currentTarget as HTMLElement).style.color = "#c9a7ff"
+                  if (!isActive)
+                    (e.currentTarget as HTMLElement).style.color = "#c9a7ff"
                 }}
                 onMouseLeave={(e) => {
-                  if (!isActive) (e.currentTarget as HTMLElement).style.color = "rgba(201,167,255,0.5)"
+                  if (!isActive)
+                    (e.currentTarget as HTMLElement).style.color =
+                      "rgba(201,167,255,0.5)"
                 }}
               >
                 {/* Active pill */}
@@ -146,7 +173,8 @@ export default function TopNav() {
                     style={{
                       background: "rgba(108,43,217,0.24)",
                       border: "1px solid rgba(139,79,232,0.52)",
-                      boxShadow: "0 0 22px rgba(108,43,217,0.45), inset 0 1px 0 rgba(255,255,255,0.07)",
+                      boxShadow:
+                        "0 0 22px rgba(108,43,217,0.45), inset 0 1px 0 rgba(255,255,255,0.07)",
                     }}
                     transition={{ type: "spring", stiffness: 400, damping: 34 }}
                   />
@@ -158,7 +186,9 @@ export default function TopNav() {
                       fontFamily: "'Plus Jakarta Sans', monospace",
                       fontSize: "0.58rem",
                       fontWeight: 500,
-                      color: isActive ? "rgba(168,85,247,0.9)" : "rgba(108,43,217,0.48)",
+                      color: isActive
+                        ? "rgba(168,85,247,0.9)"
+                        : "rgba(108,43,217,0.48)",
                       letterSpacing: "0.04em",
                       transition: "color 0.3s",
                     }}
@@ -179,24 +209,40 @@ export default function TopNav() {
             href="#contact"
             className="hidden sm:inline-flex items-center gap-1.5 shrink-0 relative overflow-hidden rounded-full px-5 py-2 text-white font-semibold text-xs tracking-wide"
             style={{
-              background: "linear-gradient(135deg, #5b21b6 0%, #7c3aed 45%, #a855f7 100%)",
-              boxShadow: "0 0 22px rgba(124,58,237,0.55), inset 0 1px 0 rgba(255,255,255,0.18)",
+              background:
+                "linear-gradient(135deg, #5b21b6 0%, #7c3aed 45%, #a855f7 100%)",
+              boxShadow:
+                "0 0 22px rgba(124,58,237,0.55), inset 0 1px 0 rgba(255,255,255,0.18)",
               transition: "box-shadow 0.3s, transform 0.2s",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.boxShadow = "0 0 38px rgba(139,79,232,0.8), inset 0 1px 0 rgba(255,255,255,0.22)"
+              e.currentTarget.style.boxShadow =
+                "0 0 38px rgba(139,79,232,0.8), inset 0 1px 0 rgba(255,255,255,0.22)"
               e.currentTarget.style.transform = "translateY(-1px) scale(1.04)"
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.boxShadow = "0 0 22px rgba(124,58,237,0.55), inset 0 1px 0 rgba(255,255,255,0.18)"
+              e.currentTarget.style.boxShadow =
+                "0 0 22px rgba(124,58,237,0.55), inset 0 1px 0 rgba(255,255,255,0.18)"
               e.currentTarget.style.transform = "translateY(0) scale(1)"
             }}
           >
             {/* Shimmer sweep */}
             <span className="hire-me-shimmer" />
             <span className="relative z-10">Hire Me</span>
-            <svg className="relative z-10" width="9" height="9" viewBox="0 0 12 12" fill="none">
-              <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            <svg
+              className="relative z-10"
+              width="9"
+              height="9"
+              viewBox="0 0 12 12"
+              fill="none"
+            >
+              <path
+                d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </a>
 
@@ -206,15 +252,24 @@ export default function TopNav() {
             aria-label="Toggle Navigation"
             className="flex md:hidden p-2 rounded-full cursor-pointer shrink-0"
             style={{
-              background: mobileOpen ? "rgba(139,79,232,0.28)" : "rgba(108,43,217,0.1)",
-              border: `1px solid ${mobileOpen ? "rgba(139,79,232,0.55)" : "rgba(108,43,217,0.3)"}`,
+              background: mobileOpen
+                ? "rgba(139,79,232,0.28)"
+                : "rgba(108,43,217,0.1)",
+              border: `1px solid ${
+                mobileOpen ? "rgba(139,79,232,0.55)" : "rgba(108,43,217,0.3)"
+              }`,
               color: mobileOpen ? "#f0e8ff" : "#c9a7ff",
               transition: "all 0.25s cubic-bezier(0.16,1,0.3,1)",
             }}
           >
             <motion.svg
-              width="16" height="16" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
               animate={{ rotate: mobileOpen ? 90 : 0 }}
               transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
             >
@@ -241,13 +296,17 @@ export default function TopNav() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.28 }}
             className="fixed inset-0 z-40 flex flex-col justify-center items-center"
-            style={{ background: "rgba(4, 1, 13, 0.97)", backdropFilter: "blur(28px)" }}
+            style={{
+              background: "rgba(4, 1, 13, 0.97)",
+              backdropFilter: "blur(28px)",
+            }}
           >
             {/* Background glow */}
             <div
               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full pointer-events-none"
               style={{
-                background: "radial-gradient(circle, rgba(108,43,217,0.18) 0%, rgba(139,79,232,0.06) 50%, transparent 70%)",
+                background:
+                  "radial-gradient(circle, rgba(108,43,217,0.18) 0%, rgba(139,79,232,0.06) 50%, transparent 70%)",
                 filter: "blur(50px)",
               }}
             />
@@ -256,7 +315,11 @@ export default function TopNav() {
             <motion.div
               initial={{ scale: 0.75, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.04, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+              transition={{
+                delay: 0.04,
+                duration: 0.55,
+                ease: [0.16, 1, 0.3, 1],
+              }}
               className="mb-10 relative z-10"
             >
               <LogoIcon size={54} />
@@ -273,29 +336,47 @@ export default function TopNav() {
                     onClick={() => setMobileOpen(false)}
                     initial={{ opacity: 0, y: 18, filter: "blur(6px)" }}
                     animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                    transition={{ delay: 0.07 + idx * 0.055, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{
+                      delay: 0.07 + idx * 0.055,
+                      duration: 0.5,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
                     className="flex items-center justify-between px-5 py-3.5 rounded-2xl"
                     style={{
-                      background: isActive ? "rgba(108,43,217,0.24)" : "rgba(108,43,217,0.07)",
-                      border: `1px solid ${isActive ? "rgba(139,79,232,0.5)" : "rgba(108,43,217,0.2)"}`,
-                      boxShadow: isActive ? "0 0 28px rgba(108,43,217,0.28)" : "none",
+                      background: isActive
+                        ? "rgba(108,43,217,0.24)"
+                        : "rgba(108,43,217,0.07)",
+                      border: `1px solid ${
+                        isActive
+                          ? "rgba(139,79,232,0.5)"
+                          : "rgba(108,43,217,0.2)"
+                      }`,
+                      boxShadow: isActive
+                        ? "0 0 28px rgba(108,43,217,0.28)"
+                        : "none",
                       transition: "all 0.25s cubic-bezier(0.16,1,0.3,1)",
                     }}
                   >
-                    <span style={{
-                      fontFamily: "Syne",
-                      fontWeight: 600,
-                      fontSize: "1.05rem",
-                      color: isActive ? "#f0e8ff" : "rgba(201,167,255,0.6)",
-                    }}>
+                    <span
+                      style={{
+                        fontFamily: "Syne",
+                        fontWeight: 600,
+                        fontSize: "1.05rem",
+                        color: isActive ? "#f0e8ff" : "rgba(201,167,255,0.6)",
+                      }}
+                    >
                       {l.label}
                     </span>
-                    <span style={{
-                      fontFamily: "monospace",
-                      fontSize: "0.62rem",
-                      color: isActive ? "rgba(168,85,247,0.85)" : "rgba(108,43,217,0.45)",
-                      letterSpacing: "0.1em",
-                    }}>
+                    <span
+                      style={{
+                        fontFamily: "monospace",
+                        fontSize: "0.62rem",
+                        color: isActive
+                          ? "rgba(168,85,247,0.85)"
+                          : "rgba(108,43,217,0.45)",
+                        letterSpacing: "0.1em",
+                      }}
+                    >
                       {l.num}
                     </span>
                   </motion.a>
@@ -309,17 +390,34 @@ export default function TopNav() {
               onClick={() => setMobileOpen(false)}
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.07 + links.length * 0.055, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              transition={{
+                delay: 0.07 + links.length * 0.055,
+                duration: 0.5,
+                ease: [0.16, 1, 0.3, 1],
+              }}
               className="mt-8 relative overflow-hidden px-10 py-3.5 rounded-full text-white font-semibold text-sm tracking-wide z-10 flex items-center gap-2"
               style={{
-                background: "linear-gradient(135deg, #5b21b6 0%, #7c3aed 45%, #a855f7 100%)",
+                background:
+                  "linear-gradient(135deg, #5b21b6 0%, #7c3aed 45%, #a855f7 100%)",
                 boxShadow: "0 0 36px rgba(108,43,217,0.6)",
               }}
             >
               <span className="hire-me-shimmer" />
               <span className="relative z-10">Hire Me</span>
-              <svg className="relative z-10" width="10" height="10" viewBox="0 0 12 12" fill="none">
-                <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              <svg
+                className="relative z-10"
+                width="10"
+                height="10"
+                viewBox="0 0 12 12"
+                fill="none"
+              >
+                <path
+                  d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </motion.a>
           </motion.div>

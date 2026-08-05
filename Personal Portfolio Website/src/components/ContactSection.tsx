@@ -108,7 +108,12 @@ function Reveal({
   const initialScale = direction === "scale" ? 0.86 : 0.96
   return (
     <motion.div
-      initial={{ opacity: 0, y: initialY, scale: initialScale, filter: "blur(6px)" }}
+      initial={{
+        opacity: 0,
+        y: initialY,
+        scale: initialScale,
+        filter: "blur(6px)",
+      }}
       whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
       viewport={{ once: true, amount: 0.2, margin: "0px 0px -100px 0px" }}
       transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
@@ -188,12 +193,7 @@ function CheckIcon() {
 
 function WarningIcon() {
   return (
-    <svg
-      width="15"
-      height="15"
-      viewBox="0 0 20 20"
-      fill="#fb7185"
-    >
+    <svg width="15" height="15" viewBox="0 0 20 20" fill="#fb7185">
       <path
         fillRule="evenodd"
         d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
@@ -207,7 +207,11 @@ function WarningIcon() {
 
 type FieldStatus = "idle" | "valid" | "error"
 
-function getFieldStatus(touched: boolean, error: string, value: string): FieldStatus {
+function getFieldStatus(
+  touched: boolean,
+  error: string,
+  value: string,
+): FieldStatus {
   if (!touched) return "idle"
   if (error) return "error"
   if (value.trim().length > 0) return "valid"
@@ -223,9 +227,13 @@ function getBorderColor(status: FieldStatus, focused: boolean): string {
 
 function getBoxShadow(status: FieldStatus, focused: boolean): string {
   if (status === "valid")
-    return focused ? "0 0 0 3px rgba(52,211,153,0.12), 0 2px 20px rgba(52,211,153,0.15)" : "none"
+    return focused
+      ? "0 0 0 3px rgba(52,211,153,0.12), 0 2px 20px rgba(52,211,153,0.15)"
+      : "none"
   if (status === "error")
-    return focused ? "0 0 0 3px rgba(251,113,133,0.12), 0 2px 20px rgba(251,113,133,0.15)" : "none"
+    return focused
+      ? "0 0 0 3px rgba(251,113,133,0.12), 0 2px 20px rgba(251,113,133,0.15)"
+      : "none"
   if (focused) return "0 2px 20px rgba(201, 167, 255, 0.25)"
   return "none"
 }
@@ -281,7 +289,10 @@ export default function ContactSection() {
 
   // ── Validation helpers ─────────────────────────────────────────────────────
 
-  const runValidation = (field: "name" | "email" | "message", value: string) => {
+  const runValidation = (
+    field: "name" | "email" | "message",
+    value: string,
+  ) => {
     let err = ""
     if (field === "name") err = validateName(value)
     if (field === "email") err = validateEmail(value)
@@ -291,12 +302,12 @@ export default function ContactSection() {
   }
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
     // Validate live only once the field has been touched
-    if (touched[name as keyof typeof touched]) {
+    if (touched[(name as keyof typeof touched)]) {
       runValidation(name as "name" | "email" | "message", value)
     }
   }
@@ -314,18 +325,19 @@ export default function ContactSection() {
 
   // After first blur, also validate on every subsequent change in real-time
   const handleChangeWithTouch = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
-    if (touched[name as keyof typeof touched]) {
+    if (touched[(name as keyof typeof touched)]) {
       runValidation(name as "name" | "email" | "message", value)
     }
   }
 
   // ── Derived state ──────────────────────────────────────────────────────────
 
-  const hasAnyError = errors.name !== "" || errors.email !== "" || errors.message !== ""
+  const hasAnyError =
+    errors.name !== "" || errors.email !== "" || errors.message !== ""
   const requiredEmpty =
     formData.name.trim() === "" ||
     formData.email.trim() === "" ||
@@ -333,8 +345,16 @@ export default function ContactSection() {
   const isDisabled = isSubmitting || submitted || hasAnyError || requiredEmpty
 
   const nameStatus = getFieldStatus(touched.name, errors.name, formData.name)
-  const emailStatus = getFieldStatus(touched.email, errors.email, formData.email)
-  const messageStatus = getFieldStatus(touched.message, errors.message, formData.message)
+  const emailStatus = getFieldStatus(
+    touched.email,
+    errors.email,
+    formData.email,
+  )
+  const messageStatus = getFieldStatus(
+    touched.message,
+    errors.message,
+    formData.message,
+  )
 
   const msgLen = formData.message.trim().length
   const msgMetMin = msgLen >= MESSAGE_MIN
@@ -363,7 +383,7 @@ export default function ContactSection() {
           reason: formData.reason,
           message: formData.message,
         },
-        "nc-ws_AZd65JDBg4a"
+        "nc-ws_AZd65JDBg4a",
       )
 
       setIsSubmitting(false)
@@ -457,8 +477,14 @@ export default function ContactSection() {
       className="section-transition-bleed"
       style={{ padding: "10rem 2rem 5rem", position: "relative", zIndex: 2 }}
     >
-      <div style={{ maxWidth: "820px", margin: "0 auto", position: "relative", zIndex: 1 }}>
-
+      <div
+        style={{
+          maxWidth: "820px",
+          margin: "0 auto",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
         <Reveal direction="down" delay={0.05}>
           <SectionLabel>06 / Contact &amp; Inquiries</SectionLabel>
         </Reveal>
@@ -493,16 +519,15 @@ export default function ContactSection() {
               textAlign: "center",
             }}
           >
-            Whether you have a question, want to collaborate, or just want to say
-            hello — I&apos;d love to hear from you. Drop me a message and I&apos;ll
-            get back to you soon.
+            Whether you have a question, want to collaborate, or just want to
+            say hello — I&apos;d love to hear from you. Drop me a message and
+            I&apos;ll get back to you soon.
           </p>
         </Reveal>
 
         {/* ── Form card ──────────────────────────────────────────────────── */}
         <Reveal direction="scale" delay={0.35}>
           <div style={{ position: "relative" }}>
-
             {/* Success overlay banner */}
             <AnimatePresence>
               {submitted && (
@@ -523,14 +548,20 @@ export default function ContactSection() {
                     background: "rgba(13, 2, 33, 0.92)",
                     backdropFilter: "blur(16px)",
                     border: "1px solid rgba(52,211,153,0.45)",
-                    boxShadow: "0 0 80px rgba(52,211,153,0.25), inset 0 1px 0 rgba(52,211,153,0.1)",
+                    boxShadow:
+                      "0 0 80px rgba(52,211,153,0.25), inset 0 1px 0 rgba(52,211,153,0.1)",
                     gap: "1rem",
                   }}
                 >
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    transition={{ delay: 0.1, type: "spring", stiffness: 260, damping: 18 }}
+                    transition={{
+                      delay: 0.1,
+                      type: "spring",
+                      stiffness: 260,
+                      damping: 18,
+                    }}
                     style={{
                       width: "64px",
                       height: "64px",
@@ -546,21 +577,25 @@ export default function ContactSection() {
                   >
                     ✓
                   </motion.div>
-                  <p style={{
-                    fontFamily: "Syne",
-                    fontWeight: 700,
-                    fontSize: "1.35rem",
-                    color: "#34d399",
-                    letterSpacing: "-0.01em",
-                  }}>
+                  <p
+                    style={{
+                      fontFamily: "Syne",
+                      fontWeight: 700,
+                      fontSize: "1.35rem",
+                      color: "#34d399",
+                      letterSpacing: "-0.01em",
+                    }}
+                  >
                     Message sent successfully!
                   </p>
-                  <p style={{
-                    fontFamily: "Plus Jakarta Sans",
-                    fontSize: "0.9rem",
-                    color: "rgba(201,167,255,0.6)",
-                    fontWeight: 300,
-                  }}>
+                  <p
+                    style={{
+                      fontFamily: "Plus Jakarta Sans",
+                      fontSize: "0.9rem",
+                      color: "rgba(201,167,255,0.6)",
+                      fontWeight: 300,
+                    }}
+                  >
                     I&apos;ll get back to you soon.
                   </p>
                 </motion.div>
@@ -600,7 +635,6 @@ export default function ContactSection() {
               />
 
               <div style={{ position: "relative", zIndex: 1 }}>
-
                 {/* ── Name ──────────────────────────────────────────────── */}
                 <div style={{ marginBottom: "1.75rem" }}>
                   <label
@@ -637,7 +671,8 @@ export default function ContactSection() {
                       placeholder="e.g. Jane Smith"
                       style={{
                         ...baseInputStyle,
-                        caretColor: nameStatus === "error" ? "#fb7185" : "#c9a7ff",
+                        caretColor:
+                          nameStatus === "error" ? "#fb7185" : "#c9a7ff",
                       }}
                     />
                     <FieldIcon status={nameStatus} />
@@ -681,7 +716,8 @@ export default function ContactSection() {
                       placeholder="name@domain.com"
                       style={{
                         ...baseInputStyle,
-                        caretColor: emailStatus === "error" ? "#fb7185" : "#c9a7ff",
+                        caretColor:
+                          emailStatus === "error" ? "#fb7185" : "#c9a7ff",
                       }}
                     />
                     <FieldIcon status={emailStatus} />
@@ -705,12 +741,20 @@ export default function ContactSection() {
                   >
                     What&apos;s this about?
                   </label>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "0.65rem" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: "0.65rem",
+                    }}
+                  >
                     {CONTACT_REASONS.map((type) => (
                       <button
                         key={type}
                         type="button"
-                        onClick={() => setFormData((prev) => ({ ...prev, reason: type }))}
+                        onClick={() =>
+                          setFormData((prev) => ({ ...prev, reason: type }))
+                        }
                         style={{
                           padding: "0.6rem 1.2rem",
                           borderRadius: "9999px",
@@ -740,14 +784,18 @@ export default function ContactSection() {
                         }}
                         onMouseEnter={(e) => {
                           if (formData.reason !== type) {
-                            e.currentTarget.style.borderColor = "rgba(108,43,217,0.55)"
-                            e.currentTarget.style.background = "rgba(108,43,217,0.15)"
+                            e.currentTarget.style.borderColor =
+                              "rgba(108,43,217,0.55)"
+                            e.currentTarget.style.background =
+                              "rgba(108,43,217,0.15)"
                           }
                         }}
                         onMouseLeave={(e) => {
                           if (formData.reason !== type) {
-                            e.currentTarget.style.borderColor = "rgba(108,43,217,0.35)"
-                            e.currentTarget.style.background = "rgba(108,43,217,0.08)"
+                            e.currentTarget.style.borderColor =
+                              "rgba(108,43,217,0.35)"
+                            e.currentTarget.style.background =
+                              "rgba(108,43,217,0.08)"
                           }
                         }}
                       >
@@ -777,7 +825,10 @@ export default function ContactSection() {
                   <div
                     style={{
                       ...inputWrapStyle,
-                      borderColor: getBorderColor(messageStatus, focused.message),
+                      borderColor: getBorderColor(
+                        messageStatus,
+                        focused.message,
+                      ),
                       boxShadow: getBoxShadow(messageStatus, focused.message),
                     }}
                   >
@@ -795,7 +846,8 @@ export default function ContactSection() {
                         padding: "14px 44px 14px 16px",
                         resize: "vertical",
                         minHeight: "130px",
-                        caretColor: messageStatus === "error" ? "#fb7185" : "#c9a7ff",
+                        caretColor:
+                          messageStatus === "error" ? "#fb7185" : "#c9a7ff",
                       }}
                     />
                     {/* Icon anchored to top-right of textarea */}
@@ -856,8 +908,8 @@ export default function ContactSection() {
                         color: msgMetMin
                           ? "rgba(52,211,153,0.85)"
                           : formData.message.length > 0
-                          ? "rgba(251,113,133,0.8)"
-                          : "rgba(201,167,255,0.35)",
+                            ? "rgba(251,113,133,0.8)"
+                            : "rgba(201,167,255,0.35)",
                         transition: "color 0.2s",
                       }}
                     >
@@ -882,7 +934,8 @@ export default function ContactSection() {
                       padding: "1rem 3rem",
                       borderRadius: "9999px",
                       border: "none",
-                      background: "linear-gradient(135deg, #6c2bd9 0%, #8b4fe8 100%)",
+                      background:
+                        "linear-gradient(135deg, #6c2bd9 0%, #8b4fe8 100%)",
                       color: "#ffffff",
                       fontFamily: "Syne",
                       fontSize: "1rem",
@@ -912,7 +965,13 @@ export default function ContactSection() {
                     }}
                   >
                     {isSubmitting ? (
-                      <span style={{ display: "inline-flex", alignItems: "center", gap: "0.75rem" }}>
+                      <span
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "0.75rem",
+                        }}
+                      >
                         <span
                           style={{
                             display: "inline-block",
@@ -942,7 +1001,6 @@ export default function ContactSection() {
                     )}
                   </button>
                 </div>
-
               </div>
             </form>
 
@@ -974,7 +1032,6 @@ export default function ContactSection() {
                 ))}
               </div>
             )}
-
           </div>
         </Reveal>
 
@@ -1041,7 +1098,8 @@ export default function ContactSection() {
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = "rgba(139,79,232,0.85)"
                   e.currentTarget.style.color = "#f0e8ff"
-                  e.currentTarget.style.boxShadow = "0 0 25px rgba(108,43,217,0.7)"
+                  e.currentTarget.style.boxShadow =
+                    "0 0 25px rgba(108,43,217,0.7)"
                   e.currentTarget.style.background = "rgba(108,43,217,0.25)"
                 }}
                 onMouseLeave={(e) => {
@@ -1099,12 +1157,14 @@ export default function ContactSection() {
                 gap: "0.875rem",
               }}
             >
-              <span>© 2026 Khaled Amr · Web Developer @ WaveDev. All rights reserved.</span>
+              <span>
+                © 2026 Khaled Amr · Web Developer @ WaveDev. All rights
+                reserved.
+              </span>
               <span>Crafted with precision &amp; intention</span>
             </div>
           </div>
         </Reveal>
-
       </div>
     </section>
   )
