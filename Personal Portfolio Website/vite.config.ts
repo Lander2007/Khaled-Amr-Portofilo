@@ -20,12 +20,12 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         output: {
           manualChunks: (id: string) => {
-            if (id.includes('node_modules')) {
-              if (id.includes('react') || id.includes('react-dom')) {
-                return 'vendor-react'
+            if (id.includes("node_modules")) {
+              if (id.includes("react") || id.includes("react-dom")) {
+                return "vendor-react"
               }
-              if (id.includes('framer-motion')) {
-                return 'vendor-motion'
+              if (id.includes("framer-motion")) {
+                return "vendor-motion"
               }
             }
           },
@@ -49,7 +49,7 @@ export default defineConfig(({ mode }) => {
       host: "0.0.0.0",
       port: parseInt(process.env.PORT || "8443"),
       strictPort: true,
-      allowedHosts: true,
+      allowedHosts: [".replit.dev", ".com"],
       watch: { ignored: ["**/.figma/**"] },
     },
     preview: {
@@ -131,7 +131,7 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
         res.end(robotsTxt)
       })
     },
-    generateBundle(this: any) {
+    generateBundle() {
       if (!robotsTxt) return
 
       this.emitFile({

@@ -1,5 +1,12 @@
 import { useRef, useEffect, useState, memo } from "react"
-import { motion, useScroll, useTransform, useSpring, useReducedMotion, useMotionValue } from "framer-motion"
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring,
+  useReducedMotion,
+  useMotionValue,
+} from "framer-motion"
 
 function BackgroundKComponent() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -38,8 +45,8 @@ function BackgroundKComponent() {
           setCursorPos({ x, y })
 
           // Normalize to -1 to 1 for tilt
-          const normalizedX = ((e.clientX / window.innerWidth) - 0.5) * 2
-          const normalizedY = ((e.clientY / window.innerHeight) - 0.5) * 2
+          const normalizedX = (e.clientX / window.innerWidth - 0.5) * 2
+          const normalizedY = (e.clientY / window.innerHeight - 0.5) * 2
 
           mouseX.set(normalizedX * 40)
           mouseY.set(normalizedY * 40)
@@ -57,10 +64,14 @@ function BackgroundKComponent() {
   // Transform scroll progress into animation values
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1.15, 1.3])
   const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7], [0.9, 0.5, 0])
-  
+
   // 3D tilt based on mouse position
-  const rotateX = shouldReduceMotion ? 0 : useTransform(smoothMouseY, [-40, 40], [8, -8])
-  const rotateY = shouldReduceMotion ? 0 : useTransform(smoothMouseX, [-40, 40], [-8, 8])
+  const rotateX = shouldReduceMotion
+    ? 0
+    : useTransform(smoothMouseY, [-40, 40], [8, -8])
+  const rotateY = shouldReduceMotion
+    ? 0
+    : useTransform(smoothMouseX, [-40, 40], [-8, 8])
 
   return (
     <div
@@ -96,9 +107,13 @@ function BackgroundKComponent() {
             height: "clamp(500px, 55vw, 850px)",
             willChange: "transform",
           }}
-          animate={shouldReduceMotion ? {} : {
-            rotate: [0, 360],
-          }}
+          animate={
+            shouldReduceMotion
+              ? {}
+              : {
+                  rotate: [0, 360],
+                }
+          }
           transition={{
             rotate: {
               duration: 25,
@@ -131,7 +146,13 @@ function BackgroundKComponent() {
             />
           ))}
           <defs>
-            <linearGradient id="hudGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient
+              id="hudGradient1"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
               <stop offset="0%" stopColor="rgba(6, 182, 212, 0.7)" />
               <stop offset="50%" stopColor="rgba(217, 70, 239, 0.6)" />
               <stop offset="100%" stopColor="rgba(6, 182, 212, 0.7)" />
@@ -147,9 +168,13 @@ function BackgroundKComponent() {
             height: "clamp(400px, 45vw, 700px)",
             willChange: "transform",
           }}
-          animate={shouldReduceMotion ? {} : {
-            rotate: [0, -360],
-          }}
+          animate={
+            shouldReduceMotion
+              ? {}
+              : {
+                  rotate: [0, -360],
+                }
+          }
           transition={{
             rotate: {
               duration: 30,
@@ -209,7 +234,14 @@ function BackgroundKComponent() {
         >
           {/* Background Grid Texture */}
           <defs>
-            <pattern id="cyberGrid" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+            <pattern
+              id="cyberGrid"
+              x="0"
+              y="0"
+              width="20"
+              height="20"
+              patternUnits="userSpaceOnUse"
+            >
               <path
                 d="M 20 0 L 0 0 0 20"
                 fill="none"
@@ -277,9 +309,13 @@ function BackgroundKComponent() {
             style={{
               transform: "translate(-2px, -2px)",
             }}
-            animate={shouldReduceMotion ? {} : {
-              opacity: [0.4, 0.6, 0.4],
-            }}
+            animate={
+              shouldReduceMotion
+                ? {}
+                : {
+                    opacity: [0.4, 0.6, 0.4],
+                  }
+            }
             transition={{
               duration: 2.5,
               repeat: Infinity,
@@ -296,9 +332,13 @@ function BackgroundKComponent() {
             style={{
               transform: "translate(2px, 2px)",
             }}
-            animate={shouldReduceMotion ? {} : {
-              opacity: [0.4, 0.6, 0.4],
-            }}
+            animate={
+              shouldReduceMotion
+                ? {}
+                : {
+                    opacity: [0.4, 0.6, 0.4],
+                  }
+            }
             transition={{
               duration: 2.5,
               repeat: Infinity,
@@ -314,9 +354,13 @@ function BackgroundKComponent() {
             r="120"
             fill="url(#spotlight)"
             opacity="0"
-            animate={shouldReduceMotion ? {} : {
-              opacity: [0, 0.15, 0],
-            }}
+            animate={
+              shouldReduceMotion
+                ? {}
+                : {
+                    opacity: [0, 0.15, 0],
+                  }
+            }
             transition={{
               duration: 1.5,
               repeat: Infinity,
@@ -339,10 +383,14 @@ function BackgroundKComponent() {
             filter: "blur(70px)",
             willChange: "transform, opacity",
           }}
-          animate={shouldReduceMotion ? {} : {
-            scale: [1, 1.2, 1],
-            opacity: [0.4, 0.6, 0.4],
-          }}
+          animate={
+            shouldReduceMotion
+              ? {}
+              : {
+                  scale: [1, 1.2, 1],
+                  opacity: [0.4, 0.6, 0.4],
+                }
+          }
           transition={{
             duration: 5,
             repeat: Infinity,
@@ -362,10 +410,14 @@ function BackgroundKComponent() {
             willChange: "transform, opacity",
             mixBlendMode: "screen",
           }}
-          animate={shouldReduceMotion ? {} : {
-            scale: [1.1, 1.35, 1.1],
-            opacity: [0.3, 0.5, 0.3],
-          }}
+          animate={
+            shouldReduceMotion
+              ? {}
+              : {
+                  scale: [1.1, 1.35, 1.1],
+                  opacity: [0.3, 0.5, 0.3],
+                }
+          }
           transition={{
             duration: 6,
             repeat: Infinity,

@@ -1,4 +1,12 @@
-import { useState, useRef, useEffect, ReactNode, CSSProperties, memo, useCallback } from "react"
+import {
+  useState,
+  useRef,
+  useEffect,
+  ReactNode,
+  CSSProperties,
+  memo,
+  useCallback,
+} from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import ContactSection from "./components/ContactSection"
 import TopNav from "./components/TopNav"
@@ -392,20 +400,20 @@ const CERTIFICATES: Certificate[] = [
 // ─── Framer Motion Animation Variants ─────────────────────────────────────────
 
 const fadeInUpVariants = {
-  hidden: { 
-    opacity: 0, 
+  hidden: {
+    opacity: 0,
     y: 48,
-    filter: "blur(6px)"
+    filter: "blur(6px)",
   },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
     filter: "blur(0px)",
     transition: {
       duration: 0.8,
-      ease: [0.22, 1, 0.36, 1]
-    }
-  }
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
 }
 
 const staggerContainerVariants = {
@@ -414,26 +422,26 @@ const staggerContainerVariants = {
     opacity: 1,
     transition: {
       staggerChildren: 0.1,
-      delayChildren: 0.2
-    }
-  }
+      delayChildren: 0.2,
+    },
+  },
 }
 
 const staggerItemVariants = {
-  hidden: { 
-    opacity: 0, 
+  hidden: {
+    opacity: 0,
     y: 24,
-    filter: "blur(4px)"
+    filter: "blur(4px)",
   },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
     filter: "blur(0px)",
     transition: {
       duration: 0.6,
-      ease: [0.22, 1, 0.36, 1]
-    }
-  }
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
 }
 
 // ─── Custom Hooks ─────────────────────────────────────────────────────────────
@@ -718,13 +726,22 @@ function DynamicNebulaCanvas() {
     let time = 0
 
     // ── Shooting stars ──────────────────────────────────────────────────────
-    type ShootingStar = { x: number; y: number; vx: number; vy: number; len: number; life: number; maxLife: number; color: string }
+    type ShootingStar = {
+      x: number
+      y: number
+      vx: number
+      vy: number
+      len: number
+      life: number
+      maxLife: number
+      color: string
+    }
     const ssPool: ShootingStar[] = []
     let ssTick = 0
 
     const spawnShootingStar = () => {
       const speed = 4.5 + Math.random() * 3
-      const angle = (Math.PI / 6) + Math.random() * (Math.PI / 8) // shallow downward-right
+      const angle = Math.PI / 6 + Math.random() * (Math.PI / 8) // shallow downward-right
       ssPool.push({
         x: Math.random() * width * 0.75,
         y: Math.random() * height * 0.45,
@@ -858,7 +875,12 @@ function DynamicNebulaCanvas() {
 
         const ssGrad = ctx.createLinearGradient(ss.x, ss.y, tailX, tailY)
         ssGrad.addColorStop(0, ss.color)
-        ssGrad.addColorStop(0.6, ss.color === "#c9a7ff" ? "rgba(201,167,255,0.3)" : "rgba(255,255,255,0.25)")
+        ssGrad.addColorStop(
+          0.6,
+          ss.color === "#c9a7ff"
+            ? "rgba(201,167,255,0.3)"
+            : "rgba(255,255,255,0.25)",
+        )
         ssGrad.addColorStop(1, "transparent")
 
         ctx.globalAlpha = alpha
@@ -912,7 +934,6 @@ function DynamicNebulaCanvas() {
     />
   )
 }
-
 
 // â”€â”€â”€ Custom Cursor â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
@@ -1114,10 +1135,10 @@ function Reveal({
         scale: 1,
         filter: "blur(0px)",
       }}
-      viewport={{ 
-        once: true, 
+      viewport={{
+        once: true,
         amount: 0.2,
-        margin: "0px 0px -100px 0px"
+        margin: "0px 0px -100px 0px",
       }}
       transition={{
         duration: 0.8,
@@ -1161,7 +1182,7 @@ function MagneticBtn({
   }, [])
 
   const handleMouseEnter = useCallback(() => setHovered(true), [])
-  
+
   const handleMouseLeave = useCallback(() => {
     setHovered(false)
     setOffset({ x: 0, y: 0 })
@@ -1395,28 +1416,57 @@ function Hero() {
       <BackgroundK />
 
       {/* Floating ambient orbs — depth layers behind hero content */}
-      <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 1 }}>
-        <div style={{
-          position: "absolute", top: "12%", left: "6%",
-          width: "340px", height: "340px", borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(108,43,217,0.25) 0%, transparent 70%)",
-          filter: "blur(55px)",
-          animation: "float-orb-a 13s ease-in-out infinite",
-        }} />
-        <div style={{
-          position: "absolute", top: "38%", right: "4%",
-          width: "280px", height: "280px", borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(6,182,212,0.18) 0%, transparent 70%)",
-          filter: "blur(48px)",
-          animation: "float-orb-b 16s ease-in-out infinite 2.5s",
-        }} />
-        <div style={{
-          position: "absolute", bottom: "18%", left: "22%",
-          width: "220px", height: "220px", borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(217,70,239,0.14) 0%, transparent 70%)",
-          filter: "blur(38px)",
-          animation: "float-orb-c 11s ease-in-out infinite 1.2s",
-        }} />
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          overflow: "hidden",
+          pointerEvents: "none",
+          zIndex: 1,
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            top: "12%",
+            left: "6%",
+            width: "340px",
+            height: "340px",
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle, rgba(108,43,217,0.25) 0%, transparent 70%)",
+            filter: "blur(55px)",
+            animation: "float-orb-a 13s ease-in-out infinite",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            top: "38%",
+            right: "4%",
+            width: "280px",
+            height: "280px",
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle, rgba(6,182,212,0.18) 0%, transparent 70%)",
+            filter: "blur(48px)",
+            animation: "float-orb-b 16s ease-in-out infinite 2.5s",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            bottom: "18%",
+            left: "22%",
+            width: "220px",
+            height: "220px",
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle, rgba(217,70,239,0.14) 0%, transparent 70%)",
+            filter: "blur(38px)",
+            animation: "float-orb-c 11s ease-in-out infinite 1.2s",
+          }}
+        />
       </div>
 
       <div
@@ -1568,7 +1618,6 @@ function Hero() {
               Get In Touch
             </MemoizedMagneticBtn>
           </div>
-
         </div>
 
         {/* Scroll-down indicator */}
@@ -1588,22 +1637,26 @@ function Hero() {
             zIndex: 3,
           }}
         >
-          <span style={{
-            fontFamily: "Syne",
-            fontSize: "0.6rem",
-            letterSpacing: "0.22em",
-            textTransform: "uppercase",
-            color: "rgba(201,167,255,0.45)",
-          }}>
+          <span
+            style={{
+              fontFamily: "Syne",
+              fontSize: "0.6rem",
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              color: "rgba(201,167,255,0.45)",
+            }}
+          >
             Scroll
           </span>
-          <div style={{
-            width: "1px",
-            height: "36px",
-            background: "linear-gradient(to bottom, rgba(139,79,232,0.8), transparent)",
-          }} />
+          <div
+            style={{
+              width: "1px",
+              height: "36px",
+              background:
+                "linear-gradient(to bottom, rgba(139,79,232,0.8), transparent)",
+            }}
+          />
         </div>
-
       </div>
     </section>
   )
@@ -1613,22 +1666,24 @@ function Hero() {
 
 // ─── Animated Stat Counter ────────────────────────────────────────────────────
 
-function AnimatedStat({ value, label }: { value: string; label: string }) {
+function AnimatedStat({ value, label }: { value: string label: string }) {
   const ref = useRef<HTMLDivElement>(null)
   const [count, setCount] = useState(0)
   const [inView, setInView] = useState(false)
 
   // Parse numeric part and suffix ("5+" → 5, "+")
   const match = value.match(/^(\d+)(.*)$/)
-  const num    = match ? parseInt(match[1]) : 0
+  const num = match ? parseInt(match[1]) : 0
   const suffix = match ? match[2] : value
 
   useEffect(() => {
     const el = ref.current
     if (!el) return
     const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setInView(true) },
-      { threshold: 0.5 }
+      ([entry]) => {
+        if (entry.isIntersecting) setInView(true)
+      },
+      { threshold: 0.5 },
     )
     observer.observe(el)
     return () => observer.disconnect()
@@ -1658,21 +1713,25 @@ function AnimatedStat({ value, label }: { value: string; label: string }) {
           lineHeight: 1,
           letterSpacing: "-0.03em",
           marginBottom: "0.375rem",
-          background: "linear-gradient(135deg, #f0e8ff 0%, #c9a7ff 60%, #a855f7 100%)",
+          background:
+            "linear-gradient(135deg, #f0e8ff 0%, #c9a7ff 60%, #a855f7 100%)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           backgroundClip: "text",
           filter: "drop-shadow(0 0 16px rgba(201,167,255,0.45))",
         }}
       >
-        {inView ? count : 0}{suffix}
+        {inView ? count : 0}
+        {suffix}
       </div>
-      <div style={{
-        fontFamily: "Plus Jakarta Sans",
-        fontSize: "0.825rem",
-        color: "rgba(201,167,255,0.52)",
-        letterSpacing: "0.02em",
-      }}>
+      <div
+        style={{
+          fontFamily: "Plus Jakarta Sans",
+          fontSize: "0.825rem",
+          color: "rgba(201,167,255,0.52)",
+          letterSpacing: "0.02em",
+        }}
+      >
         {label}
       </div>
     </div>
@@ -1823,36 +1882,181 @@ function About() {
   )
 }
 
-// â”€â”€â”€ Orbital Projects Explorer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── 3D Hover Tilt Component ──────────────────────────────────────────────────
+
+function TiltContainer({
+  children,
+  className,
+  style,
+}: {
+  children: ReactNode
+  className?: string
+  style?: CSSProperties
+}) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [transformStr, setTransformStr] = useState(
+    "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)",
+  )
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = containerRef.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    const x = e.clientX - rect.left // x position within the element
+    const y = e.clientY - rect.top // y position within the element
+
+    // Calculate rotation angles based on mouse position relative to center
+    const centerX = rect.width / 2
+    const centerY = rect.height / 2
+
+    // Max rotation is 8 degrees
+    const rotateY = ((x - centerX) / centerX) * 8
+    const rotateX = -((y - centerY) / centerY) * 8
+
+    setTransformStr(
+      `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`,
+    )
+  }
+
+  const handleMouseLeave = () => {
+    setTransformStr("perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)")
+  }
+
+  return (
+    <div
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={className}
+      style={{
+        ...style,
+        transform: transformStr,
+        transition:
+          "transform 0.15s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease",
+        willChange: "transform",
+      }}
+    >
+      {children}
+    </div>
+  )
+}
+
+// ─── Orbital Projects Explorer ────────────────────────────────────────────────
 
 function ProjectsSection() {
+  const [selectedCategory, setSelectedCategory] = useState("All")
   const [activeIndex, setActiveIndex] = useState(0)
-  const [direction, setDirection]     = useState(1)   // +1 = forward, -1 = backward
-  const [touchStart, setTouchStart]   = useState(0)
-  const [touchEnd,   setTouchEnd]     = useState(0)
-  const activeProject = PROJECTS[activeIndex]
+  const [direction, setDirection] = useState(1) // +1 = forward, -1 = backward
+  const [touchStart, setTouchStart] = useState(0)
+  const [touchEnd, setTouchEnd] = useState(0)
 
-  const goTo = useCallback((index: number) => {
-    const next = (index + PROJECTS.length) % PROJECTS.length
-    setDirection(
-      next === (activeIndex + 1) % PROJECTS.length ? 1 :
-      next === (activeIndex - 1 + PROJECTS.length) % PROJECTS.length ? -1 :
-      next > activeIndex ? 1 : -1
-    )
-    setActiveIndex(next)
-  }, [activeIndex])
+  const filteredProjects = PROJECTS.filter((project) => {
+    if (selectedCategory === "All") return true
+    if (selectedCategory === "E-Commerce") {
+      return (
+        project.subtitle.toLowerCase().includes("e-commerce") ||
+        project.id === "el-king1" ||
+        project.id === "furni" ||
+        project.id === "el3almialeather"
+      )
+    }
+    if (selectedCategory === "3D & Interactive") {
+      return (
+        project.tools.includes("Three.js") ||
+        project.tools.includes("Framer Motion") ||
+        project.id === "pharoh-view" ||
+        project.id === "maison" ||
+        project.id === "spaceedu"
+      )
+    }
+    if (selectedCategory === "SaaS & Dashboards") {
+      return (
+        project.id === "aura" ||
+        project.id === "appexy" ||
+        project.id === "02health" ||
+        project.id === "savior"
+      )
+    }
+    return true
+  })
+
+  const activeProject = filteredProjects[activeIndex] || filteredProjects[0]
+
+  useEffect(() => {
+    setActiveIndex(0)
+  }, [selectedCategory])
+
+  const goTo = useCallback(
+    (index: number) => {
+      if (filteredProjects.length === 0) return
+      const next = (index + filteredProjects.length) % filteredProjects.length
+      setDirection(
+        next === (activeIndex + 1) % filteredProjects.length
+          ? 1
+          : next ===
+              (activeIndex - 1 + filteredProjects.length) %
+                filteredProjects.length
+            ? -1
+            : next > activeIndex
+              ? 1
+              : -1,
+      )
+      setActiveIndex(next)
+    },
+    [activeIndex, filteredProjects.length],
+  )
 
   // Framer Motion variants for image slide
   const imgVariants = {
-    enter:  (d: number) => ({ x: d > 0 ? 55 : -55, opacity: 0, filter: "blur(6px)" }),
+    enter: (d: number) => ({
+      x: d > 0 ? 55 : -55,
+      opacity: 0,
+      filter: "blur(6px)",
+    }),
     center: { x: 0, opacity: 1, filter: "blur(0px)" },
-    exit:   (d: number) => ({ x: d > 0 ? -35 : 35, opacity: 0, filter: "blur(4px)" }),
+    exit: (d: number) => ({
+      x: d > 0 ? -35 : 35,
+      opacity: 0,
+      filter: "blur(4px)",
+    }),
   }
   // Variants for details panel content
   const detailVariants = {
-    enter:  { opacity: 0, y: 22, filter: "blur(5px)" },
-    center: { opacity: 1, y: 0,  filter: "blur(0px)" },
-    exit:   { opacity: 0, y: -10, filter: "blur(4px)" },
+    enter: { opacity: 0, y: 22, filter: "blur(5px)" },
+    center: { opacity: 1, y: 0, filter: "blur(0px)" },
+    exit: { opacity: 0, y: -10, filter: "blur(4px)" },
+  }
+
+  // Mobile Framer Motion card variants
+  const mobileVariants = {
+    enter: (d: number) => ({
+      x: d > 0 ? "100%" : "-100%",
+      opacity: 0,
+      scale: 0.92,
+      filter: "blur(4px)",
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      scale: 1,
+      filter: "blur(0px)",
+      transition: {
+        x: { type: "spring", stiffness: 300, damping: 30 },
+        opacity: { duration: 0.2 },
+        scale: { duration: 0.3 },
+      },
+    },
+    exit: (d: number) => ({
+      x: d > 0 ? "-100%" : "100%",
+      opacity: 0,
+      scale: 0.92,
+      filter: "blur(4px)",
+      transition: {
+        x: { type: "spring", stiffness: 300, damping: 30 },
+        opacity: { duration: 0.2 },
+        scale: { duration: 0.3 },
+      },
+    }),
   }
 
   // Touch swipe handlers for mobile
@@ -1882,6 +2086,7 @@ function ProjectsSection() {
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
+      if (filteredProjects.length === 0) return
       const section = document.getElementById("projects")
       if (!section) return
       const rect = section.getBoundingClientRect()
@@ -1890,26 +2095,33 @@ function ProjectsSection() {
 
       if (e.key === "ArrowDown" || e.key === "ArrowRight") {
         e.preventDefault()
-        setActiveIndex((prev) => (prev + 1) % PROJECTS.length)
+        setActiveIndex((prev) => (prev + 1) % filteredProjects.length)
       } else if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
         e.preventDefault()
-        setActiveIndex((prev) => (prev - 1 + PROJECTS.length) % PROJECTS.length)
+        setActiveIndex(
+          (prev) =>
+            (prev - 1 + filteredProjects.length) % filteredProjects.length,
+        )
       }
     }
 
     window.addEventListener("keydown", handleKey)
     return () => window.removeEventListener("keydown", handleKey)
-  }, [])
+  }, [filteredProjects.length])
 
   return (
     <section
       id="projects"
       className="section-transition-bleed overflow-hidden"
-      style={{ padding: "6rem 1rem md:9rem 2rem", position: "relative", zIndex: 2 }}
+      style={{
+        padding: "6rem 1rem md:9rem 2rem",
+        position: "relative",
+        zIndex: 2,
+      }}
     >
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         {/* Section Header */}
-        <Reveal style={{ marginBottom: "3rem" }}>
+        <Reveal style={{ marginBottom: "2rem" }}>
           <div className="text-center md:text-left">
             <SectionLabel>03 / Featured Work</SectionLabel>
             <h2
@@ -1925,6 +2137,48 @@ function ProjectsSection() {
           </div>
         </Reveal>
 
+        {/* Dynamic Category Filter Bar */}
+        <Reveal delay={0.05} style={{ marginBottom: "3rem" }}>
+          <div className="flex flex-wrap justify-center md:justify-start gap-3">
+            {["All", "E-Commerce", "3D & Interactive", "SaaS & Dashboards"].map(
+              (cat) => {
+                const isSelected = selectedCategory === cat
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    style={{
+                      fontFamily: "Syne",
+                      fontWeight: 600,
+                      fontSize: "0.85rem",
+                      padding: "0.55rem 1.25rem",
+                      borderRadius: "9999px",
+                      border: `1px solid ${
+                        isSelected
+                          ? "rgba(139, 79, 232, 0.85)"
+                          : "rgba(108, 43, 217, 0.22)"
+                      }`,
+                      background: isSelected
+                        ? "rgba(108, 43, 217, 0.25)"
+                        : "rgba(108, 43, 217, 0.05)",
+                      color: isSelected ? "#f0e8ff" : "#c9a7ff",
+                      cursor: "pointer",
+                      boxShadow: isSelected
+                        ? "0 0 24px rgba(108, 43, 217, 0.45)"
+                        : "none",
+                      backdropFilter: "blur(12px)",
+                      transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+                    }}
+                    className="hover:bg-purple-900/25 active:scale-95"
+                  >
+                    {cat}
+                  </button>
+                )
+              },
+            )}
+          </div>
+        </Reveal>
+
         <Reveal delay={0.1}>
           <div className="relative">
             {/* Mobile: Swipeable Card */}
@@ -1935,82 +2189,142 @@ function ProjectsSection() {
                 onTouchEnd={handleTouchEnd}
                 className="relative"
               >
-                {/* Project Card */}
-                <div 
-                  key={activeProject.id}
-                  className="bg-gradient-to-br from-purple-950/40 via-purple-900/30 to-cyan-950/30 
-                             rounded-3xl border border-purple-500/20 overflow-hidden
-                             shadow-[0_20px_60px_rgba(0,0,0,0.6)]"
-                >
-                  {/* Image */}
-                  <div className="relative aspect-[16/10] overflow-hidden">
-                    <img
-                      src={activeProject.image}
-                      alt={activeProject.title}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0d0221] via-[#0d0221]/40 to-transparent" />
-                    <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-[#0d0221]/90 backdrop-blur-sm border border-purple-500/30">
-                      <span className="text-xs font-mono text-purple-300">{activeProject.year}</span>
-                    </div>
-                  </div>
+                {/* Visual Counter */}
+                <div className="flex justify-between items-center px-2 mb-3">
+                  <span className="text-xs font-mono text-purple-400 font-semibold">
+                    {String(activeIndex + 1).padStart(2, "0")} /{" "}
+                    {String(filteredProjects.length).padStart(2, "0")}
+                  </span>
+                  <span className="text-xs font-mono text-purple-400/60 flex items-center gap-1.5">
+                    Swipe or tap arrows to explore
+                  </span>
+                </div>
 
-                  {/* Content */}
-                  <div className="p-5">
-                    <p className="text-xs font-mono text-purple-400 mb-2 uppercase tracking-wider">
-                      {activeProject.subtitle}
-                    </p>
-                    
-                    <h3 className="text-2xl font-bold text-white mb-3" style={{ fontFamily: "Syne" }}>
-                      {activeProject.title}
-                    </h3>
+                {/* Slide Card Container with AnimatePresence */}
+                <div className="relative min-h-[480px] overflow-hidden rounded-3xl">
+                  <AnimatePresence mode="wait" custom={direction}>
+                    <motion.div
+                      key={activeProject.id}
+                      custom={direction}
+                      variants={mobileVariants}
+                      initial="enter"
+                      animate="center"
+                      exit="exit"
+                      className="bg-gradient-to-br from-purple-950/40 via-purple-900/30 to-cyan-950/30
+                                 rounded-3xl border border-purple-500/20 overflow-hidden
+                                 shadow-[0_20px_60px_rgba(0,0,0,0.6)] w-full"
+                    >
+                      {/* Image */}
+                      <div className="relative aspect-[16/10] overflow-hidden">
+                        <img
+                          src={activeProject.image}
+                          alt={activeProject.title}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0d0221] via-[#0d0221]/40 to-transparent" />
+                        <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-[#0d0221]/90 backdrop-blur-sm border border-purple-500/30">
+                          <span className="text-xs font-mono text-purple-300">
+                            {activeProject.year}
+                          </span>
+                        </div>
+                      </div>
 
-                    <p className="text-sm text-purple-200/80 leading-relaxed mb-4">
-                      {activeProject.description}
-                    </p>
+                      {/* Content */}
+                      <div className="p-5">
+                        <p className="text-xs font-mono text-purple-400 mb-2 uppercase tracking-wider">
+                          {activeProject.subtitle}
+                        </p>
 
-                    {/* Tools */}
-                    <div className="flex flex-wrap gap-2 mb-5">
-                      {activeProject.tools.slice(0, 4).map((tool) => (
-                        <span 
-                          key={tool}
-                          className="text-xs px-3 py-1 rounded-full bg-purple-900/40 border border-purple-500/20 text-purple-200"
+                        <h3
+                          className="text-2xl font-bold text-white mb-3"
+                          style={{ fontFamily: "Syne" }}
                         >
-                          {tool}
-                        </span>
-                      ))}
-                    </div>
+                          {activeProject.title}
+                        </h3>
 
-                    {/* Actions */}
-                    <div className="flex gap-3">
-                      {activeProject.liveUrl && activeProject.liveUrl !== "#" && (
-                        <a
-                          href={activeProject.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 text-center bg-gradient-to-r from-purple-600 to-violet-600 
-                                   text-white font-semibold text-sm px-5 py-3 rounded-full
-                                   shadow-[0_0_30px_rgba(108,43,217,0.4)]
-                                   active:scale-95 transition-transform"
-                        >
-                          Visit Site →
-                        </a>
-                      )}
-                      {activeProject.githubUrl && activeProject.githubUrl !== "#" && (
-                        <a
-                          href={activeProject.githubUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="px-5 py-3 rounded-full border border-purple-500/30 
-                                   text-purple-300 text-sm font-semibold
-                                   active:scale-95 transition-transform"
-                        >
-                          Code
-                        </a>
-                      )}
-                    </div>
-                  </div>
+                        <p className="text-sm text-purple-200/80 leading-relaxed mb-4">
+                          {activeProject.description}
+                        </p>
+
+                        {/* Tools */}
+                        <div className="flex flex-wrap gap-2 mb-5">
+                          {activeProject.tools.slice(0, 4).map((tool) => (
+                            <span
+                              key={tool}
+                              className="text-xs px-3 py-1 rounded-full bg-purple-900/40 border border-purple-500/20 text-purple-200"
+                            >
+                              {tool}
+                            </span>
+                          ))}
+                        </div>
+
+                        {/* Actions */}
+                        <div className="flex gap-3">
+                          {activeProject.liveUrl &&
+                            activeProject.liveUrl !== "#" && (
+                              <a
+                                href={activeProject.liveUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex-1 text-center bg-gradient-to-r from-purple-600 to-violet-600
+                                       text-white font-semibold text-sm px-5 py-3 rounded-full
+                                       shadow-[0_0_30px_rgba(108,43,217,0.4)]
+                                       active:scale-95 transition-transform"
+                              >
+                                Visit Site →
+                              </a>
+                            )}
+                          {activeProject.githubUrl &&
+                            activeProject.githubUrl !== "#" && (
+                              <a
+                                href={activeProject.githubUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-5 py-3 rounded-full border border-purple-500/30
+                                       text-purple-300 text-sm font-semibold
+                                       active:scale-95 transition-transform"
+                              >
+                                Code
+                              </a>
+                            )}
+                        </div>
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+
+                {/* Pagination Dots */}
+                <div className="flex justify-center gap-2 mt-5 mb-1">
+                  {filteredProjects.map((_, i) => {
+                    const isActive = i === activeIndex
+                    return (
+                      <button
+                        key={i}
+                        onClick={() => goTo(i)}
+                        aria-label={`Go to project ${i + 1}`}
+                        style={{
+                          width: isActive ? "24px" : "8px",
+                          height: "8px",
+                          borderRadius: "9999px",
+                          background: isActive
+                            ? "linear-gradient(90deg, #8b4fe8, #c9a7ff)"
+                            : "rgba(108, 43, 217, 0.32)",
+                          border: isActive
+                            ? "1px solid rgba(255, 255, 255, 0.3)"
+                            : "1px solid transparent",
+                          cursor: "pointer",
+                          transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+                          boxShadow: isActive
+                            ? "0 0 12px rgba(139, 79, 232, 0.7)"
+                            : "none",
+                          padding: 0,
+                          outline: "none",
+                        }}
+                        className="active:scale-90"
+                      />
+                    )
+                  })}
                 </div>
 
                 {/* Arrow Navigation */}
@@ -2045,7 +2359,7 @@ function ProjectsSection() {
                 aria-label="Project orbit navigation"
               >
                 <div className="projects-orbit-beam" aria-hidden="true" />
-                {PROJECTS.map((project, i) => {
+                {filteredProjects.map((project, i) => {
                   const isActive = i === activeIndex
                   return (
                     <button
@@ -2091,7 +2405,10 @@ function ProjectsSection() {
                     aria-hidden="true"
                   />
 
-                  <div key={activeProject.id} className="projects-orbit-preview">
+                  <TiltContainer
+                    key={activeProject.id}
+                    className="projects-orbit-preview"
+                  >
                     {activeProject.liveUrl && activeProject.liveUrl !== "#" ? (
                       <a
                         href={activeProject.liveUrl}
@@ -2125,7 +2442,8 @@ function ProjectsSection() {
                             alignItems: "center",
                             justifyContent: "center",
                             opacity: 0,
-                            transition: "opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+                            transition:
+                              "opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
                           }}
                           className="projects-orbit-preview-overlay"
                         >
@@ -2192,7 +2510,7 @@ function ProjectsSection() {
                         </span>
                       </>
                     )}
-                  </div>
+                  </TiltContainer>
                 </div>
 
                 <div
@@ -2241,17 +2559,24 @@ function ProjectsSection() {
                   </div>
 
                   <div className="projects-orbit-actions">
-                    <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-                      {activeProject.liveUrl && activeProject.liveUrl !== "#" && (
-                        <a
-                          href={activeProject.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="projects-orbit-cta"
-                        >
-                          Visit Website →
-                        </a>
-                      )}
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "0.75rem",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      {activeProject.liveUrl &&
+                        activeProject.liveUrl !== "#" && (
+                          <a
+                            href={activeProject.liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="projects-orbit-cta"
+                          >
+                            Visit Website →
+                          </a>
+                        )}
                     </div>
                     <div className="projects-orbit-arrows">
                       <button
