@@ -1476,170 +1476,148 @@ function Hero() {
           top: 0,
           height: "100vh",
           display: "flex",
-          alignItems: "center",
+          alignItems: "flex-start",
           justifyContent: "center",
           overflow: "hidden",
-          paddingTop: "clamp(3rem, 10vh, 6rem)",
+          paddingTop: "clamp(5rem, 12vh, 8rem)",
         }}
       >
         <div
           style={{
-            display: "grid",
-            alignItems: "center",
-            width: "100%",
-            maxWidth: "1240px",
-            padding: "0 2rem",
+            textAlign: "center",
+            position: "relative",
+            zIndex: 2,
+            padding: "1rem 2rem",
+            maxWidth: "880px",
             opacity: pinState.opacity,
             transform: `translateY(${pinState.translateY}px) scale(${pinState.scale})`,
             transition: "transform 0.1s ease-out, opacity 0.1s ease-out",
             willChange: "transform, opacity",
           }}
-          className="grid-cols-1 md:grid-cols-12 lg:grid-cols-12 gap-8 md:gap-12"
         >
-          {/* Left Column (Content) */}
-          <div className="md:col-span-7 lg:col-span-7 text-center md:text-left lg:text-left relative z-2 flex flex-col justify-center items-center md:items-start lg:items-start">
-            {/* Logo Emblem */}
-            <div
-              style={{
-                marginBottom: "1rem",
-                display: "inline-block",
-                opacity: heroReady ? 1 : 0,
-                transform: heroReady ? "scale(1)" : "scale(0.8)",
-                transition:
-                  "opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s cubic-bezier(0.16, 1, 0.3, 1)",
-              }}
-            >
-              <LogoIcon size={72} />
-            </div>
-
-            {/* Status badge - fades in smoothly after typewriter starts */}
-            <div
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                fontFamily: "Syne",
-                fontSize: "0.72rem",
-                letterSpacing: "0.18em",
-                textTransform: "uppercase",
-                color: "rgba(201,167,255,0.85)",
-                marginBottom: "1.5rem",
-                border: "1px solid rgba(108,43,217,0.42)",
-                padding: "0.45rem 1.25rem 0.45rem 0.95rem",
-                borderRadius: "9999px",
-                background: "rgba(108,43,217,0.12)",
-                backdropFilter: "blur(12px)",
-                opacity: heroReady ? 1 : 0,
-                transform: heroReady ? "translateY(0)" : "translateY(16px)",
-                transition:
-                  "opacity 1.1s 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
-              }}
-            >
-              <span
-                style={{
-                  width: "6px",
-                  height: "6px",
-                  borderRadius: "50%",
-                  background: "#8b4fe8",
-                  display: "inline-block",
-                  animation: "glow-pulse-dot 2.2s ease-in-out infinite",
-                }}
-              />
-              Web Developer @ WaveDev · Available for Custom Frontend Projects
-            </div>
-
-            {/* Main Title */}
-            <h1
-              className="text-glow-bright"
-              style={{
-                fontFamily: "Syne",
-                fontWeight: 700,
-                fontSize: "clamp(3.2rem, 6.5vw, 6.5rem)",
-                color: "#f0e8ff",
-                lineHeight: 0.98,
-                letterSpacing: "-0.035em",
-                marginBottom: "1rem",
-              }}
-            >
-              Khaled Amr
-            </h1>
-
-            {/* Typewriter Rotating Subtitle Line */}
-            <div
-              style={{
-                fontSize: "clamp(1.15rem, 2.5vw, 1.85rem)",
-                marginBottom: "1.75rem",
-                minHeight: "3rem",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <TypewriterText
-                phrases={phrases}
-                onFirstTypeComplete={() => setHeroReady(true)}
-              />
-            </div>
-
-            {/* Tagline Paragraph - Fades in smoothly after typewriter reveals first phrase */}
-            <p
-              style={{
-                fontFamily: "Plus Jakarta Sans",
-                fontSize: "clamp(0.95rem, 1.8vw, 1.15rem)",
-                color: "rgba(201,167,255,0.78)",
-                lineHeight: 1.65,
-                maxWidth: "580px",
-                margin: "0 auto 2.5rem md:margin-left-0 lg:margin-left-0",
-                fontWeight: 300,
-                letterSpacing: "0.005em",
-                opacity: heroReady ? 1 : 0,
-                transform: heroReady ? "translateY(0)" : "translateY(24px)",
-                transition:
-                  "opacity 1.1s 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-              }}
-              className="md:text-left lg:text-left"
-            >
-              I build high-performance, interactive web interfaces, custom 3D
-              web experiences, and pixel-perfect dark mode applications.
-            </p>
-
-            {/* Magnetic CTA Buttons - Fades in smoothly */}
-            <div
-              style={{
-                display: "flex",
-                gap: "1.25rem",
-                justifyContent: "center",
-                flexWrap: "wrap",
-                opacity: heroReady ? 1 : 0,
-                transform: heroReady ? "translateY(0)" : "translateY(28px)",
-                transition:
-                  "opacity 1.1s 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
-              }}
-            >
-              <MemoizedMagneticBtn href="#projects" variant="primary">
-                Explore Featured Work
-              </MemoizedMagneticBtn>
-              <MemoizedMagneticBtn href="#contact" variant="secondary">
-                Get In Touch
-              </MemoizedMagneticBtn>
-            </div>
-          </div>
-
-          {/* Right Column (Holographic Interactive 3D Model Panel) */}
+          {/* Logo Emblem */}
           <div
-            className="md:col-span-5 lg:col-span-5 w-full max-w-[400px] md:max-w-none lg:max-w-none mx-auto relative z-2 flex items-center justify-center"
             style={{
+              marginBottom: "1rem",
+              display: "inline-block",
               opacity: heroReady ? 1 : 0,
-              transform: heroReady
-                ? "scale(1) rotate(0deg)"
-                : "scale(0.9) rotate(-3deg)",
+              transform: heroReady ? "scale(1)" : "scale(0.8)",
               transition:
-                "opacity 1.2s 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s 0.65s cubic-bezier(0.16, 1, 0.3, 1)",
+                "opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s cubic-bezier(0.16, 1, 0.3, 1)",
             }}
           >
-            <div className="w-full aspect-square">
-              <Interactive3DModel />
-            </div>
+            <LogoIcon size={72} />
+          </div>
+
+          {/* Status badge - fades in smoothly after typewriter starts */}
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              fontFamily: "Syne",
+              fontSize: "0.72rem",
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              color: "rgba(201,167,255,0.85)",
+              marginBottom: "1.5rem",
+              border: "1px solid rgba(108,43,217,0.42)",
+              padding: "0.45rem 1.25rem 0.45rem 0.95rem",
+              borderRadius: "9999px",
+              background: "rgba(108,43,217,0.12)",
+              backdropFilter: "blur(12px)",
+              opacity: heroReady ? 1 : 0,
+              transform: heroReady ? "translateY(0)" : "translateY(16px)",
+              transition:
+                "opacity 1.1s 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
+            }}
+          >
+            <span
+              style={{
+                width: "6px",
+                height: "6px",
+                borderRadius: "50%",
+                background: "#8b4fe8",
+                display: "inline-block",
+                animation: "glow-pulse-dot 2.2s ease-in-out infinite",
+              }}
+            />
+            Web Developer @ WaveDev · Available for Custom Frontend Projects
+          </div>
+
+          {/* Main Title */}
+          <h1
+            className="text-glow-bright"
+            style={{
+              fontFamily: "Syne",
+              fontWeight: 700,
+              fontSize: "clamp(3.5rem, 8.5vw, 7.5rem)",
+              color: "#f0e8ff",
+              lineHeight: 0.98,
+              letterSpacing: "-0.035em",
+              marginBottom: "1rem",
+            }}
+          >
+            Khaled Amr
+          </h1>
+
+          {/* Typewriter Rotating Subtitle Line */}
+          <div
+            style={{
+              fontSize: "clamp(1.25rem, 3.2vw, 2.15rem)",
+              marginBottom: "1.75rem",
+              minHeight: "3rem",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <TypewriterText
+              phrases={phrases}
+              onFirstTypeComplete={() => setHeroReady(true)}
+            />
+          </div>
+
+          {/* Tagline Paragraph - Fades in smoothly after typewriter reveals first phrase */}
+          <p
+            style={{
+              fontFamily: "Plus Jakarta Sans",
+              fontSize: "clamp(1.0625rem, 2.2vw, 1.25rem)",
+              color: "rgba(201,167,255,0.78)",
+              lineHeight: 1.65,
+              maxWidth: "640px",
+              margin: "0 auto 2.5rem",
+              fontWeight: 300,
+              letterSpacing: "0.005em",
+              opacity: heroReady ? 1 : 0,
+              transform: heroReady ? "translateY(0)" : "translateY(24px)",
+              transition:
+                "opacity 1.1s 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+            }}
+          >
+            I build high-performance, interactive web interfaces, custom 3D web
+            experiences, and pixel-perfect dark mode applications.
+          </p>
+
+          {/* Magnetic CTA Buttons - Fades in smoothly */}
+          <div
+            style={{
+              display: "flex",
+              gap: "1.25rem",
+              justifyContent: "center",
+              flexWrap: "wrap",
+              opacity: heroReady ? 1 : 0,
+              transform: heroReady ? "translateY(0)" : "translateY(28px)",
+              transition:
+                "opacity 1.1s 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+            }}
+          >
+            <MemoizedMagneticBtn href="#projects" variant="primary">
+              Explore Featured Work
+            </MemoizedMagneticBtn>
+            <MemoizedMagneticBtn href="#contact" variant="secondary">
+              Get In Touch
+            </MemoizedMagneticBtn>
           </div>
         </div>
 
@@ -1898,6 +1876,21 @@ function About() {
                 <MemoizedSkillChip key={s} label={s} />
               ))}
             </div>
+          </div>
+
+          {/* Stacking the Interactive 3D Model beautifully below the Toolkit */}
+          <div
+            className="mt-8 w-full aspect-square max-w-[400px] mx-auto relative z-2 flex items-center justify-center"
+            style={{
+              borderRadius: "24px",
+              border: "1px solid rgba(108,43,217,0.18)",
+              background: "rgba(13,2,33,0.45)",
+              backdropFilter: "blur(12px)",
+              padding: "1rem",
+              boxShadow: "0 15px 45px rgba(0,0,0,0.4)"
+            }}
+          >
+            <Interactive3DModel />
           </div>
         </Reveal>
       </div>
@@ -2474,12 +2467,28 @@ function ProjectsSection() {
                                 href={activeProject.liveUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex-1 text-center bg-gradient-to-r from-purple-600 to-violet-600
+                                className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-violet-600
                                        text-white font-semibold text-sm px-5 py-3 rounded-full
                                        shadow-[0_0_30px_rgba(108,43,217,0.4)]
-                                       active:scale-95 transition-transform"
+                                       active:scale-95 transition-transform group"
                               >
-                                Visit Site →
+                                <span>Visit Site</span>
+                                <svg
+                                  width="14"
+                                  height="14"
+                                  viewBox="0 0 16 16"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="transform transition-transform group-hover:translate-x-1"
+                                >
+                                  <path
+                                    d="M3.33331 8H12.6666M12.6666 8L8.66665 4M12.6666 8L8.66665 12"
+                                    stroke="currentColor"
+                                    strokeWidth="1.8"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                </svg>
                               </a>
                             )}
                           {activeProject.githubUrl &&
@@ -2539,20 +2548,50 @@ function ProjectsSection() {
                   <button
                     onClick={() => goTo(activeIndex - 1)}
                     className="w-14 h-14 rounded-full bg-purple-900/30 border border-purple-500/30
-                             text-purple-300 flex items-center justify-center text-2xl
-                             active:scale-95 transition-transform"
+                             text-purple-300 flex items-center justify-center
+                             active:scale-95 transition-transform group"
                     aria-label="Previous project"
                   >
-                    ←
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="transform transition-transform group-hover:-translate-x-0.5"
+                    >
+                      <path
+                        d="M12.6667 8H3.33334M3.33334 8L7.33334 12M3.33334 8L7.33334 4"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
                   </button>
                   <button
                     onClick={() => goTo(activeIndex + 1)}
                     className="w-14 h-14 rounded-full bg-purple-900/30 border border-purple-500/30
-                             text-purple-300 flex items-center justify-center text-2xl
-                             active:scale-95 transition-transform"
+                             text-purple-300 flex items-center justify-center
+                             active:scale-95 transition-transform group"
                     aria-label="Next project"
                   >
-                    →
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="transform transition-transform group-hover:translate-x-0.5"
+                    >
+                      <path
+                        d="M3.33331 8H12.6666M12.6666 8L8.66665 4M12.6666 8L8.66665 12"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
                   </button>
                 </div>
               </div>
@@ -2779,28 +2818,74 @@ function ProjectsSection() {
                             href={activeProject.liveUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="projects-orbit-cta"
+                            className="projects-orbit-cta flex items-center justify-center gap-2 group"
                           >
-                            Visit Website →
+                            <span>Visit Website</span>
+                            <svg
+                              width="14"
+                              height="14"
+                              viewBox="0 0 16 16"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="transform transition-transform group-hover:translate-x-1"
+                            >
+                              <path
+                                d="M3.33331 8H12.6666M12.6666 8L8.66665 4M12.6666 8L8.66665 12"
+                                stroke="currentColor"
+                                strokeWidth="1.8"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
                           </a>
                         )}
                     </div>
                     <div className="projects-orbit-arrows">
                       <button
                         type="button"
-                        className="projects-orbit-arrow-btn"
+                        className="projects-orbit-arrow-btn group"
                         onClick={() => goTo(activeIndex - 1)}
                         aria-label="Previous project"
                       >
-                        {"\u2190"}
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="transform transition-transform group-hover:-translate-x-0.5"
+                        >
+                          <path
+                            d="M12.6667 8H3.33334M3.33334 8L7.33334 12M3.33334 8L7.33334 4"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
                       </button>
                       <button
                         type="button"
-                        className="projects-orbit-arrow-btn"
+                        className="projects-orbit-arrow-btn group"
                         onClick={() => goTo(activeIndex + 1)}
                         aria-label="Next project"
                       >
-                        {"\u2192"}
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="transform transition-transform group-hover:translate-x-0.5"
+                        >
+                          <path
+                            d="M3.33331 8H12.6666M12.6666 8L8.66665 4M12.6666 8L8.66665 12"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
                       </button>
                     </div>
                   </div>
@@ -2967,13 +3052,30 @@ function CertificateCard({
           textDecoration: "none",
           display: "inline-flex",
           alignItems: "center",
-          gap: "0.35rem",
+          gap: "0.45rem",
           transition: "color 0.2s",
           paddingTop: "1rem",
           borderTop: "1px solid rgba(108,43,217,0.18)",
         }}
+        className="group"
       >
-        View Credential Record →
+        <span>View Credential Record</span>
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="transform transition-transform group-hover:translate-x-1"
+        >
+          <path
+            d="M3.33331 8H12.6666M12.6666 8L8.66665 4M12.6666 8L8.66665 12"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
       </a>
     </div>
   )

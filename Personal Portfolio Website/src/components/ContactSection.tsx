@@ -988,15 +988,28 @@ export default function ContactSection() {
                     ) : (
                       <>
                         Send Message
-                        <span
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
                           style={{
                             marginLeft: "0.5rem",
                             display: "inline-block",
                             transform: "rotate(-45deg)",
+                            transition: "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
                           }}
+                          className="group-hover:translate-x-1 group-hover:-translate-y-1"
                         >
-                          →
-                        </span>
+                          <path
+                            d="M3.33331 8H12.6666M12.6666 8L8.66665 4M12.6666 8L8.66665 12"
+                            stroke="currentColor"
+                            strokeWidth="1.7"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
                       </>
                     )}
                   </button>
