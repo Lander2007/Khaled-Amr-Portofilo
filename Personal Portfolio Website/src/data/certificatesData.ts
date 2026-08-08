@@ -5,6 +5,7 @@ export interface Certificate {
   date: string
   image: string
   skills: string[]
+  verificationUrl?: string
 }
 
 export const certificatesData: Certificate[] = [

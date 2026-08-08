@@ -27,6 +27,9 @@ export default defineConfig(({ mode }) => {
               if (id.includes("framer-motion")) {
                 return "vendor-motion"
               }
+              if (id.includes("lucide-react")) {
+                return "vendor-icons"
+              }
             }
           },
         },

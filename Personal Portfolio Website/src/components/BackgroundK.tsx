@@ -142,7 +142,7 @@ function BackgroundKComponent() {
               y2="8%"
               stroke="rgba(6, 182, 212, 0.6)"
               strokeWidth="2"
-              transform={`rotate(${angle} 50% 50%)`}
+              style={{ transformOrigin: "center", transform: `rotate(${angle}deg)` }}
             />
           ))}
           <defs>
@@ -201,7 +201,7 @@ function BackgroundKComponent() {
               cy="5%"
               r="2"
               fill="rgba(217, 70, 239, 0.8)"
-              transform={`rotate(${angle} 50% 50%)`}
+              style={{ transformOrigin: "center", transform: `rotate(${angle}deg)` }}
             />
           ))}
           <defs>

@@ -1,60 +1,99 @@
 import { useEffect, useRef, useState, memo } from "react"
 
+export function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(() => {
+    if (typeof window === "undefined") return false
+    return window.matchMedia("(min-width: 768px)").matches
+  })
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 768px)")
+    setIsDesktop(mediaQuery.matches)
+
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches)
+    mediaQuery.addEventListener("change", handler)
+    return () => mediaQuery.removeEventListener("change", handler)
+  }, [])
+
+  return isDesktop
+}
+
 interface Particle {
-  x: number // original / target 3D coords
+  x: number
   y: number
   z: number
-  curX: number // current animated 3D coords
+  curX: number
   curY: number
   curZ: number
   color: string
   size: number
 }
 
+interface TechNode {
+  name: string
+  angle: number
+  orbitRadius: number
+  color: string
+  icon: string
+}
+
 function Interactive3DModel() {
+  const isDesktop = useIsDesktop()
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const particles = useRef<Particle[]>([])
   const mouse = useRef({ x: 0, y: 0, rx: 0, ry: 0, targetRx: 0, targetRy: 0 })
+  const mouseCanvasPos = useRef({ x: -1000, y: -1000 })
   const scrollProgress = useRef(0)
-  const [activeShape, setActiveShape] = useState<"torus" | "helix" | "sphere">(
-    "torus",
+  const [activeShape, setActiveShape] = useState<"core" | "expanding" | "constellation">(
+    "core",
   )
 
-  // Generate three sets of 3D coordinates for morphing
-  const generateShapes = () => {
-    const numParticles = 400
+  // Orbiting technology nodes
+  const techNodes: TechNode[] = [
+    { name: "React", angle: 0, orbitRadius: 140, color: "#61dafb", icon: "⚛" },
+    { name: "JavaScript", angle: Math.PI / 3, orbitRadius: 140, color: "#f7df1e", icon: "JS" },
+    { name: "Tailwind CSS", angle: (2 * Math.PI) / 3, orbitRadius: 140, color: "#38bdf8", icon: "🎨" },
+    { name: "Vite", angle: Math.PI, orbitRadius: 140, color: "#a855f7", icon: "⚡" },
+    { name: "TypeScript", angle: (4 * Math.PI) / 3, orbitRadius: 140, color: "#3178c6", icon: "TS" },
+    { name: "Next.js", angle: (5 * Math.PI) / 3, orbitRadius: 140, color: "#ffffff", icon: "▲" },
+  ]
+
+  const generateParticleSphere = () => {
+    const numParticles = 500
     const tempParticles: Particle[] = []
 
     for (let i = 0; i < numParticles; i++) {
-      // Shape 1: Torus Knot
-      const theta = (i / numParticles) * Math.PI * 2 * 3 // 3 loops
-      const phi = (i / numParticles) * Math.PI * 2 * 2 // 2 loops
-      const r = 60 + 20 * Math.sin(phi)
-      const tx = r * Math.cos(theta)
-      const ty = r * Math.sin(theta)
-      const tz = 30 * Math.cos(phi)
+      // Fibonacci sphere distribution
+      const lat = Math.acos(2 * (i / numParticles) - 1) - Math.PI / 2
+      const lon = Math.PI * (1 + Math.sqrt(5)) * i
+      const r = 80
+      
+      const x = r * Math.cos(lat) * Math.cos(lon)
+      const y = r * Math.sin(lat)
+      const z = r * Math.cos(lat) * Math.sin(lon)
 
-      // Color palette
-      const hue = (i / numParticles) * 120 + 240 // Transition from royal blue (240) to magenta/pink (360)
-      const color = `hsla(${hue}, 85%, 65%, 0.8)`
+      const hue = (i / numParticles) * 120 + 240
+      const color = `hsla(${hue}, 85%, 65%, 0.85)`
 
       tempParticles.push({
-        x: tx,
-        y: ty,
-        z: tz,
-        curX: tx * 2, // start exploded/scattered
-        curY: ty * 2,
-        curZ: tz * 2,
+        x,
+        y,
+        z,
+        curX: x,
+        curY: y,
+        curZ: z,
         color,
-        size: Math.random() * 2 + 1,
+        size: Math.random() * 2.5 + 1,
       })
     }
     particles.current = tempParticles
   }
 
   useEffect(() => {
-    generateShapes()
+    if (!isDesktop) return
+
+    generateParticleSphere()
 
     const canvas = canvasRef.current
     if (!canvas) return
@@ -63,7 +102,6 @@ function Interactive3DModel() {
 
     let width = (canvas.width = 450)
     let height = (canvas.height = 450)
-    let isHovered = false
 
     const handleResize = () => {
       const parent = canvas.parentElement
@@ -71,209 +109,259 @@ function Interactive3DModel() {
       width = canvas.width = parent.clientWidth || 450
       height = canvas.height = parent.clientHeight || 450
     }
-    window.addEventListener("resize", handleResize)
+    window.addEventListener("resize", handleResize, { passive: true })
     handleResize()
 
-    // Scroll Tracking
     const handleScroll = () => {
       const docHeight =
         document.documentElement.scrollHeight - window.innerHeight
       const currentScroll = docHeight > 0 ? window.scrollY / docHeight : 0
-      // Map scroll progress to a morph index
       scrollProgress.current = currentScroll
 
-      // Determine active shape label for telemetry
-      if (currentScroll < 0.25) {
-        setActiveShape("torus")
-      } else if (currentScroll < 0.55) {
-        setActiveShape("helix")
+      if (currentScroll < 0.3) {
+        setActiveShape("core")
+      } else if (currentScroll < 0.6) {
+        setActiveShape("expanding")
       } else {
-        setActiveShape("sphere")
+        setActiveShape("constellation")
       }
     }
     window.addEventListener("scroll", handleScroll, { passive: true })
-    handleScroll()
 
-    // Mouse Parallax & Gravity attractor
     const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect()
-      const mx = e.clientX - rect.left
-      const my = e.clientY - rect.top
+      const cx = rect.left + rect.width / 2
+      const cy = rect.top + rect.height / 2
+      
+      // Track mouse position relative to canvas for node hover detection
+      mouseCanvasPos.current = {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      }
 
-      // Target rotation based on mouse orientation relative to center
-      mouse.current.targetRx = (my / height - 0.5) * Math.PI * 0.8
-      mouse.current.targetRy = (mx / width - 0.5) * Math.PI * 0.8
-
-      // Attraction center point relative to canvas center
-      mouse.current.x = mx - width / 2
-      mouse.current.y = my - height / 2
-    }
-
-    const handleMouseEnter = () => {
-      isHovered = true
+      mouse.current.x = (e.clientX - cx) / (rect.width / 2)
+      mouse.current.y = (e.clientY - cy) / (rect.height / 2)
+      mouse.current.targetRy = mouse.current.x * 0.8
+      mouse.current.targetRx = -mouse.current.y * 0.8
     }
 
     const handleMouseLeave = () => {
-      isHovered = false
+      mouseCanvasPos.current = { x: -1000, y: -1000 }
       mouse.current.targetRx = 0
       mouse.current.targetRy = 0
     }
 
-    const container = containerRef.current
-    if (container) {
-      container.addEventListener("mousemove", handleMouseMove)
-      container.addEventListener("mouseenter", handleMouseEnter)
-      container.addEventListener("mouseleave", handleMouseLeave)
-    }
+    canvas.addEventListener("mousemove", handleMouseMove, { passive: true })
+    canvas.addEventListener("mouseleave", handleMouseLeave)
 
-    let animationId: number
-    let angleX = 0
+    let animationFrameId: number
     let angleY = 0
+    let angleX = 0
 
     const render = () => {
       ctx.clearRect(0, 0, width, height)
 
-      // Slow down auto-rotation, interpolate mouse driven target rotation
-      mouse.current.rx += (mouse.current.targetRx - mouse.current.rx) * 0.1
-      mouse.current.ry += (mouse.current.targetRy - mouse.current.ry) * 0.1
+      // Smooth rotation interpolation
+      mouse.current.rx += (mouse.current.targetRx - mouse.current.rx) * 0.05
+      mouse.current.ry += (mouse.current.targetRy - mouse.current.ry) * 0.05
 
-      angleX = 0.005 + mouse.current.rx
-      angleY = 0.008 + mouse.current.ry
+      angleY += 0.008 + mouse.current.ry * 0.01
+      angleX += 0.004 + mouse.current.rx * 0.01
 
-      const cosX = Math.cos(angleX)
-      const sinX = Math.sin(angleX)
       const cosY = Math.cos(angleY)
       const sinY = Math.sin(angleY)
+      const cosX = Math.cos(angleX)
+      const sinX = Math.sin(angleX)
 
-      const centerX = width / 2
-      const centerY = height / 2
-      const fov = 320 // depth projection factor
+      const cx = width / 2
+      const cy = height / 2
 
-      const pList = particles.current
-      const numParticles = pList.length
+      // Draw Orbit Rings
+      ctx.strokeStyle = "rgba(108, 43, 217, 0.25)"
+      ctx.lineWidth = 1.2
+      ctx.beginPath()
+      ctx.ellipse(cx, cy, 140, 50, angleY * 0.3, 0, Math.PI * 2)
+      ctx.stroke()
 
-      // Morphed shape calculation based on scrollProgress
-      const morphStage = scrollProgress.current * 3.5 // scale progress
+      // Sort and project particles 3D -> 2D
+      const projected = particles.current.map((p) => {
+        // Morph target positions
+        let targetX = p.x
+        let targetY = p.y
+        let targetZ = p.z
 
-      pList.forEach((p, idx) => {
-        // Compute targets for each of the three shapes
-        let targetX = 0
-        let targetY = 0
-        let targetZ = 0
-
-        // Shape 1: Torus Knot (base)
-        const thetaTorus = (idx / numParticles) * Math.PI * 2 * 3
-        const phiTorus = (idx / numParticles) * Math.PI * 2 * 2
-        const rTorus = 75 + 25 * Math.sin(phiTorus)
-        const tX1 = rTorus * Math.cos(thetaTorus)
-        const tY1 = rTorus * Math.sin(thetaTorus)
-        const tZ1 = 40 * Math.cos(phiTorus)
-
-        // Shape 2: Double Helix
-        const tHelix = (idx / numParticles) * Math.PI * 10
-        const isStrandB = idx % 2 === 0
-        const helixPhase = isStrandB ? Math.PI : 0
-        const tX2 = 45 * Math.cos(tHelix + helixPhase)
-        const tY2 = tHelix * 22 - 110 // vertical stack
-        const tZ2 = 45 * Math.sin(tHelix + helixPhase)
-
-        // Shape 3: Cosmic Sphere
-        const lat = Math.acos(2 * (idx / numParticles) - 1) - Math.PI / 2
-        const lon = Math.PI * (1 + Math.sqrt(5)) * idx // Fibonacci distribution
-        const tX3 = 90 * Math.cos(lat) * Math.cos(lon)
-        const tY3 = 90 * Math.sin(lat)
-        const tZ3 = 90 * Math.cos(lat) * Math.sin(lon)
-
-        // Interpolate between the 3 targets based on morphStage
-        if (morphStage < 1) {
-          // Transition Torus -> Helix
-          targetX = tX1 + (tX2 - tX1) * morphStage
-          targetY = tY1 + (tY2 - tY1) * morphStage
-          targetZ = tZ1 + (tZ2 - tZ1) * morphStage
-        } else if (morphStage < 2) {
-          // Transition Helix -> Sphere
-          const t = morphStage - 1
-          targetX = tX2 + (tX3 - tX2) * t
-          targetY = tY2 + (tY3 - tY2) * t
-          targetZ = tZ2 + (tZ3 - tZ2) * t
-        } else {
-          // Exploded galaxy form / sphere breathing
-          const t = morphStage - 2
-          const breathing = 1 + 0.15 * Math.sin(Date.now() * 0.003 + idx * 0.1)
-          targetX = tX3 * breathing * (1 + t * 0.2)
-          targetY = tY3 * breathing * (1 + t * 0.2)
-          targetZ = tZ3 * breathing * (1 + t * 0.2)
+        if (activeShape === "expanding") {
+          targetX *= 1.45
+          targetY *= 1.45
+          targetZ *= 1.45
+        } else if (activeShape === "constellation") {
+          const factor = Math.sin(p.x * 0.05 + angleY) * 30
+          targetX += factor
+          targetY += factor
         }
 
-        // Animate towards morphed targets
-        p.curX += (targetX - p.curX) * 0.08
-        p.curY += (targetY - p.curY) * 0.08
-        p.curZ += (targetZ - p.curZ) * 0.08
+        p.curX += (targetX - p.curX) * 0.04
+        p.curY += (targetY - p.curY) * 0.04
+        p.curZ += (targetZ - p.curZ) * 0.04
 
-        // Apply 3D Rotations
-        // Rotate Y
-        let x1 = p.curX * cosY - p.curZ * sinY
-        let z1 = p.curZ * cosY + p.curX * sinY
+        // 3D rotation Y
+        const x1 = p.curX * cosY - p.curZ * sinY
+        const z1 = p.curZ * cosY + p.curX * sinY
 
-        // Rotate X
-        let y2 = p.curY * cosX - z1 * sinX
-        let z2 = z1 * cosX + p.curY * sinX
-
-        // Mouse gravity pull vector
-        if (isHovered) {
-          const dx = mouse.current.x - x1
-          const dy = mouse.current.y - y2
-          const dist = Math.hypot(dx, dy)
-          if (dist < 150) {
-            const pull = (150 - dist) * 0.04
-            x1 += (dx / dist) * pull
-            y2 += (dy / dist) * pull
-          }
-        }
+        // 3D rotation X
+        const y2 = p.curY * cosX - z1 * sinX
+        const z2 = z1 * cosX + p.curY * sinX
 
         // Perspective projection
-        const scaleDepth = fov / (fov + z2)
-        const projX = x1 * scaleDepth + centerX
-        const projY = y2 * scaleDepth + centerY
+        const fov = 350
+        const scale = fov / (fov + z2 + 200)
+        const projX = cx + x1 * scale
+        const projY = cy + y2 * scale
 
-        // Draw particle
-        if (projX >= 0 && projX <= width && projY >= 0 && projY <= height) {
-          const size = p.size * scaleDepth * (isHovered ? 1.25 : 1)
-          const alpha = Math.max(0.15, Math.min(1, scaleDepth * 0.95))
-
-          ctx.fillStyle = p.color
-          ctx.globalAlpha = alpha
-
-          // Subtle neon blur on hover
-          if (isHovered && idx % 3 === 0) {
-            ctx.shadowBlur = 6
-            ctx.shadowColor = p.color
-          }
-
-          ctx.beginPath()
-          ctx.arc(projX, projY, size, 0, Math.PI * 2)
-          ctx.fill()
+        return {
+          projX,
+          projY,
+          scale,
+          z2,
+          color: p.color,
+          size: p.size * scale,
         }
       })
 
-      ctx.shadowBlur = 0
-      ctx.globalAlpha = 1.0
+      // Sort by depth (back to front)
+      projected.sort((a, b) => b.z2 - a.z2)
 
-      // Render futuristic grid overlay
-      ctx.strokeStyle = "rgba(139, 92, 246, 0.07)"
-      ctx.lineWidth = 1
-      ctx.strokeRect(20, 20, width - 40, height - 40)
+      // Draw Connection Lines between close particles
+      ctx.lineWidth = 0.4
+      for (let i = 0; i < projected.length; i += 8) {
+        for (let j = i + 1; j < projected.length; j += 12) {
+          const dx = projected[i].projX - projected[j].projX
+          const dy = projected[i].projY - projected[j].projY
+          const distSq = dx * dx + dy * dy
+          if (distSq < 1600) {
+            const alpha = (1 - Math.sqrt(distSq) / 40) * 0.25
+            ctx.strokeStyle = `rgba(168, 85, 247, ${alpha})`
+            ctx.beginPath()
+            ctx.moveTo(projected[i].projX, projected[i].projY)
+            ctx.lineTo(projected[j].projX, projected[j].projY)
+            ctx.stroke()
+          }
+        }
+      }
 
-      // HUD crosshairs
+      // Draw Particles
+      projected.forEach((p) => {
+        ctx.fillStyle = p.color
+        ctx.beginPath()
+        ctx.arc(p.projX, p.projY, Math.max(0.5, p.size), 0, Math.PI * 2)
+        ctx.fill()
+      })
+
+      // Central Energy Core Glow
+      const coreGradient = ctx.createRadialGradient(cx, cy, 5, cx, cy, 60)
+      coreGradient.addColorStop(0, "rgba(217, 70, 239, 0.45)")
+      coreGradient.addColorStop(0.5, "rgba(108, 43, 217, 0.2)")
+      coreGradient.addColorStop(1, "transparent")
+      ctx.fillStyle = coreGradient
       ctx.beginPath()
-      ctx.moveTo(centerX - 10, centerY)
-      ctx.lineTo(centerX + 10, centerY)
-      ctx.moveTo(centerX, centerY - 10)
-      ctx.lineTo(centerX, centerY + 10)
-      ctx.strokeStyle = "rgba(6, 182, 212, 0.25)"
-      ctx.stroke()
+      ctx.arc(cx, cy, 60, 0, Math.PI * 2)
+      ctx.fill()
 
-      animationId = requestAnimationFrame(render)
+      let hasHoveredNode = false
+
+      // Draw Orbiting Tech Stack Nodes
+      techNodes.forEach((node, idx) => {
+        const currentAngle = node.angle + angleY * 1.2 + idx * 0.2
+        const nx = Math.cos(currentAngle) * node.orbitRadius
+        const nz = Math.sin(currentAngle) * node.orbitRadius
+        const ny = Math.sin(angleX * 2 + idx) * 35
+
+        const fov = 350
+        const scale = fov / (fov + nz + 200)
+        const projX = cx + nx * scale
+        const projY = cy + ny * scale
+
+        const baseRadius = Math.max(5, 8.5 * scale)
+
+        // Mouse hover hit detection for node ball
+        const dx = mouseCanvasPos.current.x - projX
+        const dy = mouseCanvasPos.current.y - projY
+        const distSq = dx * dx + dy * dy
+        const hitRadius = Math.max(22, baseRadius + 15)
+        const isHovered = distSq <= hitRadius * hitRadius
+
+        if (isHovered) {
+          hasHoveredNode = true
+        }
+
+        const ballRadius = isHovered ? baseRadius * 1.6 : baseRadius
+
+        // Node Glow & Ball Rendering
+        ctx.fillStyle = node.color
+        ctx.shadowColor = node.color
+        ctx.shadowBlur = isHovered ? 24 * scale : 12 * scale
+        ctx.beginPath()
+        ctx.arc(projX, projY, ballRadius, 0, Math.PI * 2)
+        ctx.fill()
+
+        // White highlight ring on hover
+        if (isHovered) {
+          ctx.strokeStyle = "#ffffff"
+          ctx.lineWidth = 2 * scale
+          ctx.beginPath()
+          ctx.arc(projX, projY, ballRadius + 3 * scale, 0, Math.PI * 2)
+          ctx.stroke()
+        }
+
+        ctx.shadowBlur = 0 // reset shadow
+
+        // REVEAL NAME ON HOVER ONLY
+        if (isHovered) {
+          const badgeText = `${node.icon} ${node.name}`
+          ctx.font = "600 12px 'Space Grotesk', 'Syne', sans-serif"
+          const textMetrics = ctx.measureText(badgeText)
+          const textWidth = textMetrics.width
+          const paddingX = 10
+          const boxWidth = textWidth + paddingX * 2
+          const boxHeight = 24
+          const boxX = projX - boxWidth / 2
+          const boxY = projY - ballRadius - 32
+
+          // Tooltip container box
+          ctx.fillStyle = "rgba(10, 4, 30, 0.92)"
+          ctx.strokeStyle = node.color
+          ctx.lineWidth = 1.5
+          ctx.shadowColor = node.color
+          ctx.shadowBlur = 14
+
+          ctx.beginPath()
+          ctx.roundRect(boxX, boxY, boxWidth, boxHeight, 6)
+          ctx.fill()
+          ctx.stroke()
+
+          ctx.shadowBlur = 0 // reset shadow
+
+          // Tooltip pointer triangle
+          ctx.fillStyle = node.color
+          ctx.beginPath()
+          ctx.moveTo(projX - 5, boxY + boxHeight)
+          ctx.lineTo(projX + 5, boxY + boxHeight)
+          ctx.lineTo(projX, boxY + boxHeight + 5)
+          ctx.closePath()
+          ctx.fill()
+
+          // Tooltip text
+          ctx.fillStyle = "#ffffff"
+          ctx.textAlign = "center"
+          ctx.textBaseline = "middle"
+          ctx.fillText(badgeText, projX, boxY + boxHeight / 2)
+        }
+      })
+
+      // Change cursor pointer when hovering a node ball
+      canvas.style.cursor = hasHoveredNode ? "pointer" : "default"
+
+      animationFrameId = requestAnimationFrame(render)
     }
 
     render()
@@ -281,33 +369,32 @@ function Interactive3DModel() {
     return () => {
       window.removeEventListener("resize", handleResize)
       window.removeEventListener("scroll", handleScroll)
-      cancelAnimationFrame(animationId)
+      canvas.removeEventListener("mousemove", handleMouseMove)
+      canvas.removeEventListener("mouseleave", handleMouseLeave)
+      cancelAnimationFrame(animationFrameId)
     }
-  }, [])
+  }, [activeShape, isDesktop])
+
+  // Completely unmount on mobile viewports (<768px)
+  if (!isDesktop) return null
 
   return (
     <div
       ref={containerRef}
-      className="relative flex items-center justify-center rounded-3xl overflow-hidden border border-purple-500/10 bg-purple-950/5 backdrop-blur-md"
-      style={{
-        width: "100%",
-        height: "100%",
-        minHeight: "380px",
-        boxShadow:
-          "0 24px 80px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
-      }}
+      className="relative w-full h-full flex items-center justify-center select-none"
     >
-      {/* Absolute telemetry dashboard readout overlay */}
-      <div className="absolute top-4 left-4 font-mono text-[9px] text-cyan-400/80 uppercase tracking-widest flex flex-col gap-1">
-        <div>System: Core.3D</div>
-        <div>Render: Canvas2D_HQ</div>
-        <div className="text-fuchsia-400">Geometry: {activeShape}</div>
+      {/* Dynamic Mode HUD Tag */}
+      <div className="absolute top-2 left-2 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-950/60 border border-purple-500/30 backdrop-blur-md text-[10px] font-mono text-purple-200 uppercase tracking-widest">
+        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+        <span>3D_CORE // {activeShape}</span>
       </div>
 
-      <div className="absolute bottom-4 right-4 font-mono text-[9px] text-purple-400/70 uppercase tracking-wider">
-        Scroll morph enabled
+      {/* Control Hint */}
+      <div className="absolute bottom-2 right-2 z-20 text-[9px] font-mono text-purple-400/60 uppercase tracking-wider">
+        [ HOVER BALLS TO REVEAL TECH ]
       </div>
 
+      {/* Render Canvas */}
       <canvas ref={canvasRef} className="max-w-full max-h-full block z-10" />
     </div>
   )

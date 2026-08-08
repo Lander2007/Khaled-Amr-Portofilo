@@ -6,14 +6,17 @@ import {
   CSSProperties,
   memo,
   useCallback,
+  lazy,
+  Suspense,
 } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import ContactSection from "./components/ContactSection"
-import TopNav from "./components/TopNav"
+import Navbar from "./components/Navbar"
 import LogoIcon from "./components/LogoIcon"
 import BackgroundK from "./components/BackgroundK"
-import Certificates from "./components/Certificates"
-import Interactive3DModel from "./components/Interactive3DModel"
+import Interactive3DModel, { useIsDesktop } from "./components/Interactive3DModel"
+
+const ContactSection = lazy(() => import("./components/ContactSection"))
+const Certificates = lazy(() => import("./components/Certificates"))
 
 // â”€â”€â”€ Project Data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
@@ -508,11 +511,13 @@ const SECTIONS = [
 ]
 
 function ScrollProgressIndicator() {
+  const isDesktop = useIsDesktop()
   const progress = useScrollProgress()
   const [activeSection, setActiveSection] = useState("hero")
   const [hoveredSection, setHoveredSection] = useState<string | null>(null)
 
   useEffect(() => {
+    if (!isDesktop) return
     const handleScroll = () => {
       const scrollPos = window.scrollY + window.innerHeight * 0.35
       for (let i = SECTIONS.length - 1; i >= 0; i--) {
@@ -529,7 +534,9 @@ function ScrollProgressIndicator() {
     window.addEventListener("scroll", handleScroll, { passive: true })
     handleScroll()
     return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+  }, [isDesktop])
+
+  if (!isDesktop) return null
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id)
@@ -551,7 +558,7 @@ function ScrollProgressIndicator() {
         alignItems: "center",
         gap: "1.25rem",
       }}
-      className="hidden sm:flex"
+      className="hidden lg:flex"
     >
       <div
         style={{
@@ -677,9 +684,11 @@ function ScrollProgressIndicator() {
 // ─── Dynamic Canvas Nebula Background ─────────────────────────────────────────
 
 function DynamicNebulaCanvas() {
+  const isDesktop = useIsDesktop()
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
+    if (!isDesktop) return
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext("2d")
@@ -693,7 +702,7 @@ function DynamicNebulaCanvas() {
       width = canvas.width = window.innerWidth
       height = canvas.height = window.innerHeight
     }
-    window.addEventListener("resize", handleResize)
+    window.addEventListener("resize", handleResize, { passive: true })
 
     // Generate 240 stars across 3 layers
     const numStars = 240
@@ -721,7 +730,7 @@ function DynamicNebulaCanvas() {
       mouseX = e.clientX
       mouseY = e.clientY
     }
-    window.addEventListener("mousemove", handleMouseMove)
+    window.addEventListener("mousemove", handleMouseMove, { passive: true })
 
     let animationFrameId: number
     let time = 0
@@ -918,7 +927,9 @@ function DynamicNebulaCanvas() {
       window.removeEventListener("mousemove", handleMouseMove)
       cancelAnimationFrame(animationFrameId)
     }
-  }, [])
+  }, [isDesktop])
+
+  if (!isDesktop) return null
 
   return (
     <canvas
@@ -963,8 +974,8 @@ function CustomCursor() {
         e.target.closest('a, button, [role="button"]')
       )
     }
-    document.addEventListener("mousemove", onMove)
-    document.addEventListener("mouseover", onOver)
+    document.addEventListener("mousemove", onMove, { passive: true })
+    document.addEventListener("mouseover", onOver, { passive: true })
 
     let raf: number
     const loop = () => {
@@ -1547,15 +1558,15 @@ function Hero() {
 
           {/* Main Title */}
           <h1
-            className="text-glow-bright"
+            className="text-glow-bright bg-[linear-gradient(110deg,#fff,45%,#c084fc,55%,#fff)] bg-[length:200%_100%] bg-clip-text text-transparent"
             style={{
               fontFamily: "Syne",
               fontWeight: 700,
               fontSize: "clamp(3.5rem, 8.5vw, 7.5rem)",
-              color: "#f0e8ff",
               lineHeight: 0.98,
               letterSpacing: "-0.035em",
               marginBottom: "1rem",
+              animation: "shimmer 3s linear infinite",
             }}
           >
             Khaled Amr
@@ -1777,6 +1788,7 @@ const MemoizedSkillChip = memo(SkillChip)
 // â”€â”€â”€ About Section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function About() {
+  const isDesktop = useIsDesktop()
   return (
     <section
       id="about"
@@ -1878,20 +1890,22 @@ function About() {
             </div>
           </div>
 
-          {/* Stacking the Interactive 3D Model beautifully below the Toolkit */}
-          <div
-            className="mt-8 w-full aspect-square max-w-[400px] mx-auto relative z-2 flex items-center justify-center"
-            style={{
-              borderRadius: "24px",
-              border: "1px solid rgba(108,43,217,0.18)",
-              background: "rgba(13,2,33,0.45)",
-              backdropFilter: "blur(12px)",
-              padding: "1rem",
-              boxShadow: "0 15px 45px rgba(0,0,0,0.4)"
-            }}
-          >
-            <Interactive3DModel />
-          </div>
+          {/* Stacking the Interactive 3D Model beautifully below the Toolkit - Desktop Only */}
+          {isDesktop && (
+            <div
+              className="mt-8 w-full aspect-square max-w-[400px] mx-auto relative z-2 flex items-center justify-center"
+              style={{
+                borderRadius: "24px",
+                border: "1px solid rgba(108,43,217,0.18)",
+                background: "rgba(13,2,33,0.45)",
+                backdropFilter: "blur(12px)",
+                padding: "1rem",
+                boxShadow: "0 15px 45px rgba(0,0,0,0.4)",
+              }}
+            >
+              <Interactive3DModel />
+            </div>
+          )}
         </Reveal>
       </div>
     </section>
@@ -3246,16 +3260,20 @@ export default function App() {
     >
       <DynamicNebulaCanvas />
       <CustomCursor />
-      <TopNav />
+      <Navbar />
       <ScrollProgressIndicator />
 
       <main style={{ position: "relative", zIndex: 1, paddingTop: "5rem" }}>
         <Hero />
         <About />
         <ProjectsSection />
-        <Certificates />
+        <Suspense fallback={<div className="py-20 min-h-[300px]" />}>
+          <Certificates />
+        </Suspense>
         <ProcessSection />
-        <ContactSection />
+        <Suspense fallback={<div className="py-20 min-h-[300px]" />}>
+          <ContactSection />
+        </Suspense>
       </main>
     </div>
   )

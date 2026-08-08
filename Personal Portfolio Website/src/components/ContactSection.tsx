@@ -277,13 +277,20 @@ export default function ContactSection() {
 
   // Proximity glow effect
   useEffect(() => {
+    let ticking = false
     const handleMouseMove = (e: MouseEvent) => {
-      if (formRef.current) {
-        const rect = formRef.current.getBoundingClientRect()
-        setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top })
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (formRef.current) {
+            const rect = formRef.current.getBoundingClientRect()
+            setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top })
+          }
+          ticking = false
+        })
+        ticking = true
       }
     }
-    window.addEventListener("mousemove", handleMouseMove)
+    window.addEventListener("mousemove", handleMouseMove, { passive: true })
     return () => window.removeEventListener("mousemove", handleMouseMove)
   }, [])
 
