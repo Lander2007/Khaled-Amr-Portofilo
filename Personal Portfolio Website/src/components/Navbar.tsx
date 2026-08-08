@@ -155,12 +155,12 @@ export default function Navbar() {
     }
   }, [isTelemetryOpen])
 
-  // Active section intersection observer
+  // Active section intersection observer + bottom of page scroll fallback
   useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: "-25% 0px -45% 0px",
-      threshold: 0.15,
+      rootMargin: "-20% 0px -40% 0px",
+      threshold: 0.1,
     }
 
     const observerCallback: IntersectionObserverCallback = (entries) => {
@@ -177,7 +177,23 @@ export default function Navbar() {
       if (element) observer.observe(element)
     })
 
-    return () => observer.disconnect()
+    // 2. Bottom of Page Fallback (Crucial for Mobile Contact Section)
+    const handleScroll = () => {
+      const isAtBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 80
+
+      if (isAtBottom) {
+        setActiveSection("contact")
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    handleScroll()
+
+    return () => {
+      observer.disconnect()
+      window.removeEventListener("scroll", handleScroll)
+    }
   }, [])
 
   // Click outside & tap outside listener to dismiss telemetry or mobile menu morph
