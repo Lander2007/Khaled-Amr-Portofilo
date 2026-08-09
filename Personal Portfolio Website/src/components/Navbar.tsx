@@ -157,18 +157,32 @@ export default function Navbar() {
 
   // Active section intersection observer + bottom of page scroll fallback
   useEffect(() => {
+    let lastActiveSection = activeSection
+
     const observerOptions = {
       root: null,
-      rootMargin: "-20% 0px -40% 0px",
-      threshold: 0.1,
+      rootMargin: "-100px 0px -60% 0px", // Better detection for sections
+      threshold: [0, 0.25, 0.5, 0.75, 1],
     }
 
     const observerCallback: IntersectionObserverCallback = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id)
+      // Find the most visible section
+      const visibleEntries = entries
+        .filter((entry) => entry.isIntersecting && entry.intersectionRatio > 0)
+        .sort((a, b) => {
+          // Sort by intersection ratio and position
+          const ratioDiff = b.intersectionRatio - a.intersectionRatio
+          if (Math.abs(ratioDiff) > 0.1) return ratioDiff
+          return a.boundingClientRect.top - b.boundingClientRect.top
+        })
+
+      if (visibleEntries.length > 0) {
+        const newSection = visibleEntries[0].target.id
+        if (newSection !== lastActiveSection) {
+          lastActiveSection = newSection
+          setActiveSection(newSection)
         }
-      })
+      }
     }
 
     const observer = new IntersectionObserver(observerCallback, observerOptions)
@@ -177,22 +191,41 @@ export default function Navbar() {
       if (element) observer.observe(element)
     })
 
-    // 2. Bottom of Page Fallback (Crucial for Mobile Contact Section)
-    const handleScroll = () => {
+    // Fallback: Traditional scroll position detection
+    const handleScrollFallback = () => {
+      // Check if at bottom
       const isAtBottom =
-        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 80
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100
 
       if (isAtBottom) {
         setActiveSection("contact")
+        return
+      }
+
+      // Check each section's position
+      const scrollPosition = window.scrollY + 200 // Offset for navbar height
+
+      for (let i = NAV_ITEMS.length - 1; i >= 0; i--) {
+        const section = document.getElementById(NAV_ITEMS[i].id)
+        if (section) {
+          const sectionTop = section.offsetTop
+          if (scrollPosition >= sectionTop) {
+            if (NAV_ITEMS[i].id !== lastActiveSection) {
+              lastActiveSection = NAV_ITEMS[i].id
+              setActiveSection(NAV_ITEMS[i].id)
+            }
+            break
+          }
+        }
       }
     }
 
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    handleScroll()
+    window.addEventListener("scroll", handleScrollFallback, { passive: true })
+    handleScrollFallback()
 
     return () => {
       observer.disconnect()
-      window.removeEventListener("scroll", handleScroll)
+      window.removeEventListener("scroll", handleScrollFallback)
     }
   }, [])
 
