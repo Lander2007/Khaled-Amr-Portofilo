@@ -51,6 +51,21 @@ const PROJECTS: Project[] = [
     liveUrl: "https://el3almialeather.com/ar",
   },
   {
+    id: "chronos-engine",
+    title: "Chronos Engine — Interactive 3D Showcase",
+    subtitle: "Interactive 3D WebGL Showcase",
+    description:
+      "An experimental, scroll-driven 3D web application featuring smooth WebGL model rotation, custom shaders, and an unconventional layout.",
+    longDescription:
+      "An experimental, scroll-driven 3D web application featuring smooth WebGL model rotation, custom shaders, and an unconventional layout. Key highlights include 60FPS WebGL performance, Draco GLTF model compression, and a strict two-tone high-contrast design system.",
+    tools: ["React.js", "Three.js / React Three Fiber", "GSAP ScrollTrigger", "Tailwind CSS"],
+    metrics: "60FPS WebGL & Draco GLTF",
+    year: "2026",
+    image: "/projects/chronos-engine.png",
+    githubUrl: "https://github.com/Lander2007/Chronos-Engine",
+    liveUrl: "https://chronos-engine.vercel.app",
+  },
+  {
     id: "spaceedu",
     title: "SpaceEdu",
     subtitle: "3D Web & EduTech Experience",
