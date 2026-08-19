@@ -1862,8 +1862,8 @@ function About() {
 
           <div style={{ display: "flex", gap: "3.5rem", flexWrap: "wrap" }}>
             {[
-              ["5+", "Years experience"],
-              ["30+", "Projects shipped"],
+              ["2+", "Years experience"],
+              ["10+", "Projects shipped"],
               ["100%", "Custom delivery"],
             ].map(([num, label], idx) => (
               <Reveal key={label} delay={idx * 0.12} direction="up">
