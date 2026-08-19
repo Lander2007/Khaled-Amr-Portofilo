@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion"
+import { X, ExternalLink, CheckCircle2, Award } from "lucide-react"
 import { certificatesData } from "@/data/certificatesData"
 import { useState, useRef } from "react"
 
@@ -72,9 +73,7 @@ export default function Certificates() {
                 onClick={() => setSelectedCert(null)}
                 className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-purple-500/20 border border-purple-500/30 text-white hover:bg-purple-500/30 transition-colors"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                <X className="w-5 h-5 text-purple-300 hover:text-white transition-colors" />
               </button>
 
               <div className="p-8">
@@ -133,12 +132,10 @@ export default function Certificates() {
                       href={selectedCert.verificationUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-cyan-600 text-white font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all"
+                      className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-cyan-600 text-white font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all group"
                     >
-                      View Verification
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                      </svg>
+                      <span>View Verification</span>
+                      <ExternalLink className="w-4 h-4 transform transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 icon-glow-cyan" />
                     </a>
                   )}
                 </div>

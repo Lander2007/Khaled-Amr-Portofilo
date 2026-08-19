@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { Send, Sparkles, CheckCircle2 } from "lucide-react"
 import emailjs from "@emailjs/browser"
 import LogoIcon from "./LogoIcon"
 
@@ -993,31 +994,10 @@ export default function ContactSection() {
                         Launching...
                       </span>
                     ) : (
-                      <>
-                        Send Message
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 16 16"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          style={{
-                            marginLeft: "0.5rem",
-                            display: "inline-block",
-                            transform: "rotate(-45deg)",
-                            transition: "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
-                          }}
-                          className="group-hover:translate-x-1 group-hover:-translate-y-1"
-                        >
-                          <path
-                            d="M3.33331 8H12.6666M12.6666 8L8.66665 4M12.6666 8L8.66665 12"
-                            stroke="currentColor"
-                            strokeWidth="1.7"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </>
+                      <span className="flex items-center justify-center gap-2 group">
+                        <span>Send Message</span>
+                        <Send className="w-4 h-4 text-cyan-300 transform transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 icon-glow-cyan" />
+                      </span>
                     )}
                   </button>
                 </div>

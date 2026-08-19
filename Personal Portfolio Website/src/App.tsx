@@ -10,6 +10,27 @@ import {
   Suspense,
 } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import {
+  ArrowRight,
+  ArrowUpRight,
+  ArrowUp,
+  ChevronLeft,
+  ChevronRight,
+  ChevronDown,
+  Sparkles,
+  Code2,
+  Terminal,
+  Cpu,
+  Layers,
+  Globe,
+  ExternalLink,
+  CheckCircle2,
+  Zap,
+  Eye,
+  Filter,
+  Search,
+  Award,
+} from "lucide-react"
 import Navbar from "./components/Navbar"
 import LogoIcon from "./components/LogoIcon"
 import BackgroundK from "./components/BackgroundK"
@@ -224,81 +245,25 @@ const PROCESS = [
     step: "01",
     title: "Discover & Align",
     desc: "Deep-diving into your vision, audience, and market through structured interview probes and architectural mapping.",
-    icon: (
-      <svg
-        width="22"
-        height="22"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-      >
-        <circle cx="11" cy="11" r="8" />
-        <path d="M21 21l-4.35-4.35" />
-      </svg>
-    ),
+    icon: <Search className="w-6 h-6 text-purple-300 icon-glow-purple" />,
   },
   {
     step: "02",
     title: "Design & Prototype",
     desc: "Crafting fluid design systems, interactive prototypes, and spatial motion dynamics that make products feel inevitable.",
-    icon: (
-      <svg
-        width="22"
-        height="22"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-      >
-        <path d="M12 19l7-7 3 3-7 7-3-3z" />
-        <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
-        <path d="M2 2l7.586 7.586" />
-        <circle cx="11" cy="11" r="2" />
-      </svg>
-    ),
+    icon: <Layers className="w-6 h-6 text-purple-300 icon-glow-purple" />,
   },
   {
     step: "03",
     title: "Build & Polish",
     desc: "Translating designs into clean, resilient, production-ready code with weighted physics and frame-perfect micro-interactions.",
-    icon: (
-      <svg
-        width="22"
-        height="22"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-      >
-        <polyline points="16 18 22 12 16 6" />
-        <polyline points="8 6 2 12 8 18" />
-      </svg>
-    ),
+    icon: <Code2 className="w-6 h-6 text-purple-300 icon-glow-purple" />,
   },
   {
     step: "04",
     title: "Launch & Orbit",
     desc: "Deploying with precision monitoring, optimizing real-world telemetry, and scaling your brand into higher orbits.",
-    icon: (
-      <svg
-        width="22"
-        height="22"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-      >
-        <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
-        <path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
-        <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
-        <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
-      </svg>
-    ),
+    icon: <Zap className="w-6 h-6 text-cyan-300 icon-glow-cyan" />,
   },
 ]
 
@@ -842,7 +807,7 @@ function DynamicNebulaCanvas() {
         ctx.fill()
       }
 
-      // Render stars with scroll parallax speed boost
+      // Render stars with scroll parallax speed boost (Batched for 60+ FPS performance)
       const scrollSpeedBoost = 1 + progress * 2.2
 
       stars.forEach((star) => {
@@ -872,16 +837,8 @@ function DynamicNebulaCanvas() {
           Math.PI * 2,
         )
         ctx.fill()
-
-        // Subtle star glow for near layer
-        if (star.layer === 3 && star.size > 1.4) {
-          ctx.shadowBlur = 8 + progress * 10
-          ctx.shadowColor = star.color
-        } else {
-          ctx.shadowBlur = 0
-        }
       })
-      ctx.shadowBlur = 0
+      ctx.globalAlpha = 1.0
 
       // ── Shooting stars ────────────────────────────────────────────────────
       ssTick++
@@ -1298,11 +1255,15 @@ function SectionLabel({ children }: { children: string }) {
       }}
     >
       <span
+        className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse icon-glow-cyan"
+        style={{ flexShrink: 0 }}
+      />
+      <span
         style={{
           display: "inline-block",
-          width: "28px",
+          width: "24px",
           height: "1px",
-          background: "#6c2bd9",
+          background: "linear-gradient(90deg, #6c2bd9, transparent)",
           flexShrink: 0,
         }}
       />
@@ -2807,49 +2768,21 @@ function ProjectsSection() {
                     onClick={() => goTo(activeIndex - 1)}
                     className="w-14 h-14 rounded-full bg-purple-900/30 border border-purple-500/30
                              text-purple-300 flex items-center justify-center
-                             active:scale-95 transition-transform group"
+                             hover:border-cyan-400/50 hover:text-white hover:shadow-[0_0_20px_rgba(6,182,212,0.3)]
+                             active:scale-95 transition-all group"
                     aria-label="Previous project"
                   >
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="transform transition-transform group-hover:-translate-x-0.5"
-                    >
-                      <path
-                        d="M12.6667 8H3.33334M3.33334 8L7.33334 12M3.33334 8L7.33334 4"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                    <ChevronLeft className="w-6 h-6 transform transition-transform group-hover:-translate-x-1 icon-glow-cyan" />
                   </button>
                   <button
                     onClick={() => goTo(activeIndex + 1)}
                     className="w-14 h-14 rounded-full bg-purple-900/30 border border-purple-500/30
                              text-purple-300 flex items-center justify-center
-                             active:scale-95 transition-transform group"
+                             hover:border-cyan-400/50 hover:text-white hover:shadow-[0_0_20px_rgba(6,182,212,0.3)]
+                             active:scale-95 transition-all group"
                     aria-label="Next project"
                   >
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="transform transition-transform group-hover:translate-x-0.5"
-                    >
-                      <path
-                        d="M3.33331 8H12.6666M12.6666 8L8.66665 4M12.6666 8L8.66665 12"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                    <ChevronRight className="w-6 h-6 transform transition-transform group-hover:translate-x-1 icon-glow-cyan" />
                   </button>
                 </div>
               </div>
@@ -3120,31 +3053,16 @@ function ProjectsSection() {
                               className="projects-orbit-cta flex items-center justify-center gap-2 group"
                             >
                               <span>Visit Website</span>
-                              <svg
-                                width="14"
-                                height="14"
-                                viewBox="0 0 16 16"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="transform transition-transform group-hover:translate-x-1"
-                              >
-                                <path
-                                  d="M3.33331 8H12.6666M12.6666 8L8.66665 4M12.6666 8L8.66665 12"
-                                  stroke="currentColor"
-                                  strokeWidth="1.8"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
+                              <ArrowUpRight className="w-4 h-4 text-cyan-300 transform transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 icon-glow-cyan" />
                             </a>
                           )}
                         <button
                           type="button"
                           onClick={() => setModalProject(activeProject)}
-                          className="px-5 py-2.5 rounded-full border border-purple-500/40 text-purple-200 text-sm font-semibold hover:border-purple-300 hover:text-white backdrop-blur-md bg-purple-900/30 active:scale-95 transition-all flex items-center gap-1.5"
+                          className="px-5 py-2.5 rounded-full border border-purple-500/40 text-purple-200 text-sm font-semibold hover:border-purple-300 hover:text-white backdrop-blur-md bg-purple-900/30 active:scale-95 transition-all flex items-center gap-1.5 group"
                         >
                           <span>Case Study</span>
-                          <span className="text-xs">↗</span>
+                          <Eye className="w-4 h-4 text-purple-300 group-hover:text-cyan-300 transition-colors icon-glow-purple" />
                         </button>
                         {activeProject.githubUrl &&
                           activeProject.githubUrl !== "#" && (
@@ -3154,9 +3072,10 @@ function ProjectsSection() {
                               rel="noopener noreferrer"
                               className="px-5 py-2.5 rounded-full border border-purple-500/30
                                      text-purple-300 text-sm font-semibold hover:border-purple-400 hover:text-white
-                                     active:scale-95 transition-all backdrop-blur-sm bg-purple-950/20"
+                                     active:scale-95 transition-all backdrop-blur-sm bg-purple-950/20 flex items-center gap-2 group"
                             >
-                              Code Repository
+                              <Code2 className="w-4 h-4 text-purple-400 group-hover:text-cyan-300 transition-colors" />
+                              <span>Code Repository</span>
                             </a>
                           )}
                       </div>
@@ -3464,22 +3383,7 @@ function ScrollToTop() {
         </defs>
       </svg>
 
-      <svg
-        width="16"
-        height="16"
-        viewBox="0 0 16 16"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="transform transition-transform group-hover:-translate-y-0.5 relative z-10"
-      >
-        <path
-          d="M8 12.6667V3.33334M8 3.33334L4 7.33334M8 3.33334L12 7.33334"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
+      <ArrowUp className="w-4.5 h-4.5 text-cyan-300 group-hover:text-white transform transition-transform group-hover:-translate-y-1 relative z-10 icon-glow-cyan" />
     </motion.button>
   )
 }

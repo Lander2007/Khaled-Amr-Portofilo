@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { Activity, X, Menu, ChevronRight, Zap } from "lucide-react"
 import LogoIcon from "./LogoIcon"
 
 interface NavItem {
@@ -18,21 +19,7 @@ const NAV_ITEMS: NavItem[] = [
 const TYPEWRITER_PHRASES = ["KHALED AMR", "FRONTEND DEV", "REACT // UI"]
 
 function ActivityIcon({ size = 16, className = "" }: { size?: number; className?: string }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-    </svg>
-  )
+  return <Activity size={size} className={`icon-glow-cyan text-cyan-400 ${className}`} />
 }
 
 function TypewriterLogo() {
@@ -322,11 +309,9 @@ export default function Navbar() {
                   setIsMobileMenuOpen(false)
                 }}
                 aria-label="Close navigation menu"
-                className="p-1 text-purple-400 hover:text-white transition-colors cursor-pointer focus:outline-none"
+                className="p-1.5 rounded-full bg-purple-900/40 text-purple-300 hover:text-white hover:bg-purple-800/60 transition-all cursor-pointer focus:outline-none"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                <X className="w-4 h-4" />
               </button>
             </div>
 
@@ -403,11 +388,9 @@ export default function Navbar() {
                 type="button"
                 onClick={() => setIsTelemetryOpen(false)}
                 aria-label="Close Telemetry"
-                className="text-purple-400 hover:text-white cursor-pointer transition-colors focus:outline-none"
+                className="p-1 rounded-full bg-purple-900/40 text-purple-300 hover:text-white transition-colors focus:outline-none cursor-pointer"
               >
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                <X className="w-4 h-4" />
               </button>
             </div>
 
@@ -599,15 +582,9 @@ export default function Navbar() {
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 aria-expanded={isMobileMenuOpen}
                 aria-label="Toggle navigation menu"
-                className="md:hidden p-2 rounded-full text-slate-300 hover:text-white hover:bg-purple-900/40 border border-purple-500/20 focus:outline-none transition-colors cursor-pointer"
+                className="md:hidden p-2 rounded-full text-purple-300 hover:text-white hover:bg-purple-900/50 border border-purple-500/30 focus:outline-none transition-all cursor-pointer"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  {isMobileMenuOpen ? (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  ) : (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  )}
-                </svg>
+                {isMobileMenuOpen ? <X className="w-5 h-5 text-cyan-400" /> : <Menu className="w-5 h-5 text-purple-300" />}
               </button>
             </div>
           </motion.div>
