@@ -82,14 +82,14 @@ const PROJECTS: Project[] = [
   },
   {
     id: "aura",
-    title: "AURA SaaS Platform",
-    subtitle: "AI & Web App UI",
+    title: "Aura",
+    subtitle: "Modern Activewear & Sportswear Store",
     description:
-      "A sleek, high-performance AI SaaS interface complete with real-time analytics dashboards and dark-mode visualizers.",
+      "A sleek, high-performance e-commerce platform designed for premium activewear. Aura combines modern UI aesthetics with a seamless shopping experience, featuring dynamic product filtering, responsive collection showcases, and an athletic design language that emphasizes mobility, performance, and modern lifestyle fashion.",
     longDescription:
-      "A sleek, high-performance AI SaaS interface complete with real-time analytics dashboards, dark-mode visualizers, and responsive component architecture. Engineered for optimal user experience with modern design patterns and seamless data visualization.",
+      "A sleek, high-performance e-commerce platform designed for premium activewear. Aura combines modern UI aesthetics with a seamless shopping experience, featuring dynamic product filtering, responsive collection showcases, and an athletic design language that emphasizes mobility, performance, and modern lifestyle fashion.",
     tools: ["Next.js", "TypeScript", "Tailwind CSS", "Lucide Icons"],
-    metrics: "Real-Time Analytics Dashboard",
+    metrics: "Activewear & Sportswear Store",
     year: "2026",
     image: "/projects/aura.png",
     githubUrl: "https://github.com/Lander2007/AURA",
@@ -112,14 +112,14 @@ const PROJECTS: Project[] = [
   },
   {
     id: "maison",
-    title: "Maison Design Showcase",
-    subtitle: "Luxury Interior & UI",
+    title: "Maison",
+    subtitle: "Minimalist & Classic Fashion House",
     description:
-      "An elegant home decor showcase highlighting editorial layouts, smooth scroll reveals, and high-end aesthetic typography.",
+      "A refined, minimalist fashion e-commerce experience tailored for modern and classic wardrobe staples. Maison Nine focuses on clean visual hierarchy, sophisticated typography, and effortless navigation, offering fashion-conscious shoppers an elegant interface to explore curated collections of timeless apparel.",
     longDescription:
-      "An elegant home decor showcase highlighting editorial layouts, smooth scroll reveals, and high-end aesthetic typography for modern interiors. Features sophisticated animations, immersive visual storytelling, and a refined user experience tailored for luxury brands.",
+      "A refined, minimalist fashion e-commerce experience tailored for modern and classic wardrobe staples. Maison Nine focuses on clean visual hierarchy, sophisticated typography, and effortless navigation, offering fashion-conscious shoppers an elegant interface to explore curated collections of timeless apparel.",
     tools: ["React", "Tailwind CSS", "Framer Motion", "Vite"],
-    metrics: "Editorial Layout Experience",
+    metrics: "Minimalist Fashion House",
     year: "2026",
     image: "/projects/maison.png",
     githubUrl: "https://github.com/Lander2007/Maison",
@@ -127,14 +127,14 @@ const PROJECTS: Project[] = [
   },
   {
     id: "pharoh-view",
-    title: "Pharaoh View",
-    subtitle: "Cultural Tourism Web",
+    title: "PHAROVIEW",
+    subtitle: "Augmented Reality Spatial Commerce App",
     description:
-      "An interactive web experience exploring ancient Egyptian landmarks and historical monuments through rich media galleries.",
+      "A cutting-edge mobile AR application designed to eliminate spatial uncertainty in online furniture shopping. PHAROVIEW leverages real-time plane detection, 360° model rotation, dynamic lighting simulation, and precise dimension tracking to let users visualize products directly in their home environment—boosting buyer confidence while actively reducing return rates and carbon footprints.",
     longDescription:
-      "An interactive web experience exploring ancient Egyptian landmarks and historical monuments through rich media galleries and immersive visual storytelling. Combines cultural heritage with modern web design to create an engaging educational journey through ancient Egypt.",
+      "A cutting-edge mobile AR application designed to eliminate spatial uncertainty in online furniture shopping. PHAROVIEW leverages real-time plane detection, 360° model rotation, dynamic lighting simulation, and precise dimension tracking to let users visualize products directly in their home environment—boosting buyer confidence while actively reducing return rates and carbon footprints.",
     tools: ["React", "Tailwind CSS", "JavaScript", "Vite"],
-    metrics: "Interactive Cultural Experience",
+    metrics: "AR Spatial Commerce App",
     year: "2025",
     image: "/projects/pharoh-view.png",
     githubUrl: "https://github.com/Lander2007/Pharoh-view",
@@ -142,14 +142,14 @@ const PROJECTS: Project[] = [
   },
   {
     id: "02health",
-    title: "O2 Health",
-    subtitle: "HealthTech Platform",
+    title: "02 Health",
+    subtitle: "Smart IoT Air Quality & Fire Safety System",
     description:
-      "A digital healthcare portal facilitating patient appointment booking, doctor directory searches, and wellness tracking tools.",
+      "An advanced health tech mobile application integrating real-time IoT monitoring with intelligent safety alerts. Engineered primarily to protect vulnerable populations, 02 Health tracks indoor air quality metrics and deploys predictive fire safety algorithms, delivering instant hazard detection, environmental insights, and automated emergency response coordination.",
     longDescription:
-      "A digital healthcare portal facilitating patient appointment booking, doctor directory searches, and wellness tracking tools. Built with a focus on accessibility, patient privacy, and seamless integration with healthcare workflows to improve patient-provider communication.",
+      "An advanced health tech mobile application integrating real-time IoT monitoring with intelligent safety alerts. Engineered primarily to protect vulnerable populations, 02 Health tracks indoor air quality metrics and deploys predictive fire safety algorithms, delivering instant hazard detection, environmental insights, and automated emergency response coordination.",
     tools: ["React", "Tailwind CSS", "TypeScript", "Chart.js"],
-    metrics: "Healthcare Portal System",
+    metrics: "Smart IoT & Safety System",
     year: "2025",
     image: "/projects/02health.png",
     githubUrl: "https://github.com/Lander2007/02Health",
@@ -157,14 +157,14 @@ const PROJECTS: Project[] = [
   },
   {
     id: "savior",
-    title: "Savior Emergency App",
-    subtitle: "Healthcare & Aid",
+    title: "Saviora",
+    subtitle: "Fine Dining & Luxury Restaurant Experience",
     description:
-      "A fast-response emergency support web application engineered with accessible, high-contrast UI for rapid navigation.",
+      "An immersive, upscale digital destination crafted for a luxury culinary experience. Savior pairs rich visual storytelling with elegant layout architecture, allowing guests to explore seasonal gourmet menus, reserve private dining tables, and experience the restaurant's sophisticated atmosphere online.",
     longDescription:
-      "A fast-response emergency support web application engineered with accessible, high-contrast UI for rapid navigation during urgent situations. Prioritizes speed, clarity, and ease of use to deliver critical assistance when every second counts.",
+      "An immersive, upscale digital destination crafted for a luxury culinary experience. Savior pairs rich visual storytelling with elegant layout architecture, allowing guests to explore seasonal gourmet menus, reserve private dining tables, and experience the restaurant's sophisticated atmosphere online.",
     tools: ["React", "Tailwind CSS", "JavaScript", "REST API"],
-    metrics: "Emergency Response System",
+    metrics: "Luxury Dining Experience",
     year: "2026",
     image: "/projects/savior.png",
     githubUrl: "https://github.com/Lander2007/Savior",
