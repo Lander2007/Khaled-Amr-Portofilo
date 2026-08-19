@@ -1608,44 +1608,6 @@ function Hero() {
             </MemoizedMagneticBtn>
           </div>
         </div>
-
-        {/* Scroll-down indicator */}
-        <div
-          className="hero-scroll-indicator"
-          style={{
-            position: "absolute",
-            bottom: "2.5rem",
-            left: "50%",
-            transform: "translateX(-50%)",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "0.5rem",
-            opacity: pinState.opacity * 0.7,
-            pointerEvents: "none",
-            zIndex: 3,
-          }}
-        >
-          <span
-            style={{
-              fontFamily: "Syne",
-              fontSize: "0.6rem",
-              letterSpacing: "0.22em",
-              textTransform: "uppercase",
-              color: "rgba(201,167,255,0.45)",
-            }}
-          >
-            Scroll
-          </span>
-          <div
-            style={{
-              width: "1px",
-              height: "36px",
-              background:
-                "linear-gradient(to bottom, rgba(139,79,232,0.8), transparent)",
-            }}
-          />
-        </div>
       </div>
     </section>
   )
