@@ -83,7 +83,7 @@ const PROJECTS: Project[] = [
     tools: ["React.js", "Three.js / React Three Fiber", "GSAP ScrollTrigger", "Tailwind CSS"],
     metrics: "60FPS WebGL & Draco GLTF",
     year: "2026",
-    image: "/projects/chronos-engine origin.png",
+    image: "/projects/chronos-engine real.png",
     githubUrl: "https://github.com/Lander2007/Chronos-Engine",
     liveUrl: "https://chronos-engine.vercel.app",
   },
