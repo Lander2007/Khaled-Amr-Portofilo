@@ -30,6 +30,7 @@ import {
   Filter,
   Search,
   Award,
+  X,
 } from "lucide-react"
 import Navbar from "./components/Navbar"
 import LogoIcon from "./components/LogoIcon"
@@ -2232,7 +2233,7 @@ function ProjectModal({
               className="w-10 h-10 rounded-full bg-purple-900/30 border border-purple-500/30 text-purple-300 flex items-center justify-center hover:bg-purple-800/50 hover:text-white transition-all active:scale-90"
               aria-label="Close modal"
             >
-              ✕
+              <X className="w-5 h-5" />
             </button>
           </div>
 
@@ -2294,10 +2295,10 @@ function ProjectModal({
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 sm:flex-initial flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-violet-600 text-white font-semibold text-sm px-6 py-3 rounded-full shadow-[0_0_30px_rgba(108,43,217,0.5)] hover:scale-105 active:scale-95 transition-all"
+                className="flex-1 sm:flex-initial flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-violet-600 text-white font-semibold text-sm px-6 py-3 rounded-full shadow-[0_0_30px_rgba(108,43,217,0.5)] hover:scale-105 active:scale-95 transition-all group"
               >
                 <span>Visit Live Platform</span>
-                <span>↗</span>
+                <ArrowUpRight className="w-4 h-4 text-cyan-300 transform transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 icon-glow-cyan" />
               </a>
             )}
             {project.githubUrl && project.githubUrl !== "#" && (
@@ -2305,16 +2306,18 @@ function ProjectModal({
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-6 py-3 rounded-full border border-purple-500/40 text-purple-200 text-sm font-semibold hover:border-purple-300 hover:text-white backdrop-blur-md active:scale-95 transition-all"
+                className="px-6 py-3 rounded-full border border-purple-500/40 text-purple-200 text-sm font-semibold hover:border-purple-300 hover:text-white backdrop-blur-md active:scale-95 transition-all flex items-center gap-2 group"
               >
-                Source Code
+                <Code2 className="w-4 h-4 text-purple-400 group-hover:text-cyan-300 transition-colors" />
+                <span>Source Code</span>
               </a>
             )}
             <button
               onClick={onClose}
-              className="ml-auto px-5 py-3 text-xs font-mono text-purple-400 hover:text-purple-200 transition-colors"
+              className="ml-auto px-5 py-3 text-xs font-mono text-purple-400 hover:text-purple-200 transition-colors flex items-center gap-1.5"
             >
-              Close Window [ESC]
+              <X className="w-3.5 h-3.5" />
+              <span>Close Window [ESC]</span>
             </button>
           </div>
         </motion.div>
@@ -2710,19 +2713,34 @@ function ProjectsSection() {
                                 className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-violet-600
                                        text-white font-semibold text-xs px-4 py-2.5 rounded-full
                                        shadow-[0_0_30px_rgba(108,43,217,0.4)]
-                                       active:scale-95 transition-transform group"
+                                       active:scale-95 transition-all group"
                               >
                                 <span>Visit Site</span>
-                                <span className="text-xs">↗</span>
+                                <ArrowUpRight className="w-4 h-4 text-cyan-300 transform transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 icon-glow-cyan" />
                               </a>
                             )}
                           <button
                             type="button"
                             onClick={() => setModalProject(activeProject)}
-                            className="px-4 py-2.5 rounded-full border border-purple-500/40 text-purple-200 text-xs font-semibold backdrop-blur-md bg-purple-900/30 active:scale-95 transition-transform"
+                            className="px-4 py-2.5 rounded-full border border-purple-500/40 text-purple-200 text-xs font-semibold backdrop-blur-md bg-purple-900/30 active:scale-95 transition-all flex items-center gap-1.5 group"
                           >
-                            Case Study ↗
+                            <span>Case Study</span>
+                            <Eye className="w-4 h-4 text-purple-300 group-hover:text-cyan-300 transition-colors icon-glow-purple" />
                           </button>
+                          {activeProject.githubUrl &&
+                            activeProject.githubUrl !== "#" && (
+                              <a
+                                href={activeProject.githubUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-4 py-2.5 rounded-full border border-purple-500/30
+                                       text-purple-300 text-xs font-semibold hover:border-purple-400 hover:text-white
+                                       active:scale-95 transition-all backdrop-blur-sm bg-purple-950/20 flex items-center gap-1.5 group"
+                              >
+                                <Code2 className="w-4 h-4 text-purple-400 group-hover:text-cyan-300 transition-colors" />
+                                <span>Code</span>
+                              </a>
+                            )}
                         </div>
                       </div>
                     </motion.div>
