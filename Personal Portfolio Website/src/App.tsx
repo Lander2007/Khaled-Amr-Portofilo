@@ -61,7 +61,7 @@ const PROJECTS: Project[] = [
     tools: ["React.js", "Three.js / React Three Fiber", "GSAP ScrollTrigger", "Tailwind CSS"],
     metrics: "60FPS WebGL & Draco GLTF",
     year: "2026",
-    image: "/projects/chronos-engine.png",
+    image: "/projects/chronos-engine origin.png",
     githubUrl: "https://github.com/Lander2007/Chronos-Engine",
     liveUrl: "https://chronos-engine.vercel.app",
   },
@@ -2172,59 +2172,214 @@ function TiltContainer({
 
 // ─── Orbital Projects Explorer ────────────────────────────────────────────────
 
+const PROJECT_CATEGORIES = [
+  "All",
+  "3D & Interactive",
+  "E-Commerce",
+  "AR Spatial Commerce",
+  "SaaS & Dashboards",
+]
+
+const getProjectCategoryTag = (project: Project) => {
+  if (
+    project.tools.includes("Three.js") ||
+    project.subtitle.includes("3D") ||
+    project.id === "spaceedu" ||
+    project.id === "chronos-engine"
+  ) {
+    return "3D & Interactive"
+  }
+  if (
+    project.subtitle.toLowerCase().includes("e-commerce") ||
+    project.id === "el3almialeather" ||
+    project.id === "aura" ||
+    project.id === "el-king1" ||
+    project.id === "maison" ||
+    project.id === "furni"
+  ) {
+    return "E-Commerce"
+  }
+  if (project.id === "pharoh-view") {
+    return "AR Spatial Commerce"
+  }
+  return "SaaS & Dashboards"
+}
+
+function ProjectModal({
+  project,
+  onClose,
+}: {
+  project: Project
+  onClose: () => void
+}) {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose()
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [onClose])
+
+  return (
+    <AnimatePresence>
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+          className="fixed inset-0 bg-[#0d0221]/80 backdrop-blur-xl"
+        />
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.94, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.94, y: 20 }}
+          transition={{ type: "spring", stiffness: 300, damping: 28 }}
+          className="relative z-10 w-full max-w-4xl bg-gradient-to-br from-purple-950/90 via-[#0d0221]/95 to-cyan-950/90 border border-purple-500/40 rounded-3xl p-6 sm:p-8 shadow-[0_25px_80px_rgba(0,0,0,0.8)] overflow-hidden"
+        >
+          {/* Header & Close */}
+          <div className="flex items-start justify-between gap-4 mb-6">
+            <div>
+              <div className="flex flex-wrap items-center gap-2 mb-2">
+                <span className="px-3 py-1 rounded-full bg-purple-900/40 border border-purple-500/30 text-xs font-mono text-purple-300 font-semibold">
+                  {getProjectCategoryTag(project)}
+                </span>
+                <span className="px-3 py-1 rounded-full bg-purple-950/60 border border-purple-500/20 text-xs font-mono text-purple-400">
+                  {project.year}
+                </span>
+                {project.liveUrl && project.liveUrl !== "#" && (
+                  <span className="px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/40 text-xs font-mono text-emerald-300 font-semibold flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    LIVE PRODUCTION
+                  </span>
+                )}
+              </div>
+              <h2
+                className="text-2xl sm:text-4xl font-bold text-white"
+                style={{ fontFamily: "Syne" }}
+              >
+                {project.title}
+              </h2>
+              <p className="text-sm font-mono text-purple-400/80 mt-1">
+                {project.subtitle}
+              </p>
+            </div>
+
+            <button
+              onClick={onClose}
+              className="w-10 h-10 rounded-full bg-purple-900/30 border border-purple-500/30 text-purple-300 flex items-center justify-center hover:bg-purple-800/50 hover:text-white transition-all active:scale-90"
+              aria-label="Close modal"
+            >
+              ✕
+            </button>
+          </div>
+
+          {/* Banner Image */}
+          <div className="relative aspect-[16/9] rounded-2xl overflow-hidden mb-6 border border-purple-500/20 shadow-2xl">
+            <img
+              src={project.image}
+              alt={project.title}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0d0221]/80 via-transparent to-transparent" />
+          </div>
+
+          {/* Description & Specs */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <div className="lg:col-span-2">
+              <h4 className="text-xs font-mono text-purple-400 uppercase tracking-wider mb-2">
+                Overview & Case Study
+              </h4>
+              <p className="text-purple-200/90 leading-relaxed text-sm sm:text-base mb-4">
+                {project.longDescription || project.description}
+              </p>
+            </div>
+
+            <div className="bg-purple-950/30 border border-purple-500/20 rounded-2xl p-4">
+              <h4 className="text-xs font-mono text-purple-400 uppercase tracking-wider mb-3">
+                Key Highlights
+              </h4>
+              <div className="mb-4">
+                <span className="text-xs text-purple-300/70 block mb-1">
+                  Metrics & Impact
+                </span>
+                <span className="text-sm font-semibold text-purple-100 font-mono">
+                  {project.metrics}
+                </span>
+              </div>
+              <div>
+                <span className="text-xs text-purple-300/70 block mb-2">
+                  Built With
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {project.tools.map((t) => (
+                    <span
+                      key={t}
+                      className="text-xs px-2.5 py-1 rounded-md bg-purple-900/40 border border-purple-500/20 text-purple-200"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Action CTAs */}
+          <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-purple-500/20">
+            {project.liveUrl && project.liveUrl !== "#" && (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 sm:flex-initial flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-violet-600 text-white font-semibold text-sm px-6 py-3 rounded-full shadow-[0_0_30px_rgba(108,43,217,0.5)] hover:scale-105 active:scale-95 transition-all"
+              >
+                <span>Visit Live Platform</span>
+                <span>↗</span>
+              </a>
+            )}
+            {project.githubUrl && project.githubUrl !== "#" && (
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-3 rounded-full border border-purple-500/40 text-purple-200 text-sm font-semibold hover:border-purple-300 hover:text-white backdrop-blur-md active:scale-95 transition-all"
+              >
+                Source Code
+              </a>
+            )}
+            <button
+              onClick={onClose}
+              className="ml-auto px-5 py-3 text-xs font-mono text-purple-400 hover:text-purple-200 transition-colors"
+            >
+              Close Window [ESC]
+            </button>
+          </div>
+        </motion.div>
+      </div>
+    </AnimatePresence>
+  )
+}
+
 function ProjectsSection() {
-  const [selectedCategory, setSelectedCategory] = useState("All")
   const [activeIndex, setActiveIndex] = useState(0)
   const [direction, setDirection] = useState(1) // +1 = forward, -1 = backward
   const [touchStart, setTouchStart] = useState(0)
   const [touchEnd, setTouchEnd] = useState(0)
+  const [modalProject, setModalProject] = useState<Project | null>(null)
+  const navRailRef = useRef<HTMLDivElement>(null)
 
-  const filteredProjects = PROJECTS.filter((project) => {
-    if (selectedCategory === "All") return true
-    if (selectedCategory === "E-Commerce") {
-      return (
-        project.subtitle.toLowerCase().includes("e-commerce") ||
-        project.id === "el-king1" ||
-        project.id === "furni" ||
-        project.id === "el3almialeather"
-      )
-    }
-    if (selectedCategory === "3D & Interactive") {
-      return (
-        project.tools.includes("Three.js") ||
-        project.tools.includes("Framer Motion") ||
-        project.id === "pharoh-view" ||
-        project.id === "maison" ||
-        project.id === "spaceedu"
-      )
-    }
-    if (selectedCategory === "SaaS & Dashboards") {
-      return (
-        project.id === "aura" ||
-        project.id === "appexy" ||
-        project.id === "02health" ||
-        project.id === "savior"
-      )
-    }
-    return true
-  })
-
-  const activeProject = filteredProjects[activeIndex] || filteredProjects[0]
-
-  useEffect(() => {
-    setActiveIndex(0)
-  }, [selectedCategory])
+  const activeProject = PROJECTS[activeIndex] || PROJECTS[0]
 
   const goTo = useCallback(
     (index: number) => {
-      if (filteredProjects.length === 0) return
-      const next = (index + filteredProjects.length) % filteredProjects.length
+      if (PROJECTS.length === 0) return
+      const next = (index + PROJECTS.length) % PROJECTS.length
       setDirection(
-        next === (activeIndex + 1) % filteredProjects.length
+        next === (activeIndex + 1) % PROJECTS.length
           ? 1
-          : next ===
-              (activeIndex - 1 + filteredProjects.length) %
-                filteredProjects.length
+          : next === (activeIndex - 1 + PROJECTS.length) % PROJECTS.length
             ? -1
             : next > activeIndex
               ? 1
@@ -2232,28 +2387,84 @@ function ProjectsSection() {
       )
       setActiveIndex(next)
     },
-    [activeIndex, filteredProjects.length],
+    [activeIndex],
   )
+
+  const handleCategoryJump = (cat: string) => {
+    if (cat === "All") {
+      goTo(0)
+      return
+    }
+    const foundIdx = PROJECTS.findIndex(
+      (p) => getProjectCategoryTag(p) === cat,
+    )
+    if (foundIdx !== -1) {
+      goTo(foundIdx)
+    }
+  }
+
+  useEffect(() => {
+    if (navRailRef.current) {
+      const activeNode = navRailRef.current.children[
+        activeIndex + 1
+      ] as HTMLElement
+      if (activeNode) {
+        activeNode.scrollIntoView({ behavior: "smooth", block: "nearest" })
+      }
+    }
+  }, [activeIndex])
 
   // Framer Motion variants for image slide
   const imgVariants = {
     enter: (d: number) => ({
-      x: d > 0 ? 55 : -55,
+      x: d > 0 ? 45 : -45,
       opacity: 0,
+      scale: 0.96,
       filter: "blur(6px)",
     }),
-    center: { x: 0, opacity: 1, filter: "blur(0px)" },
+    center: {
+      x: 0,
+      opacity: 1,
+      scale: 1,
+      filter: "blur(0px)",
+      transition: {
+        x: { type: "spring" as const, stiffness: 300, damping: 28 },
+        opacity: { duration: 0.25 },
+        scale: { duration: 0.3 },
+      },
+    },
     exit: (d: number) => ({
-      x: d > 0 ? -35 : 35,
+      x: d > 0 ? -45 : 45,
       opacity: 0,
+      scale: 0.96,
       filter: "blur(4px)",
+      transition: {
+        x: { type: "spring" as const, stiffness: 300, damping: 28 },
+        opacity: { duration: 0.25 },
+        scale: { duration: 0.3 },
+      },
     }),
   }
+
   // Variants for details panel content
   const detailVariants = {
-    enter: { opacity: 0, y: 22, filter: "blur(5px)" },
-    center: { opacity: 1, y: 0, filter: "blur(0px)" },
-    exit: { opacity: 0, y: -10, filter: "blur(4px)" },
+    enter: (d: number) => ({
+      opacity: 0,
+      y: d > 0 ? 16 : -16,
+      filter: "blur(4px)",
+    }),
+    center: {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] as const },
+    },
+    exit: (d: number) => ({
+      opacity: 0,
+      y: d > 0 ? -16 : 16,
+      filter: "blur(3px)",
+      transition: { duration: 0.2, ease: [0.16, 1, 0.3, 1] as const },
+    }),
   }
 
   // Mobile Framer Motion card variants
@@ -2315,7 +2526,7 @@ function ProjectsSection() {
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (filteredProjects.length === 0) return
+      if (modalProject) return
       const section = document.getElementById("projects")
       if (!section) return
       const rect = section.getBoundingClientRect()
@@ -2324,19 +2535,18 @@ function ProjectsSection() {
 
       if (e.key === "ArrowDown" || e.key === "ArrowRight") {
         e.preventDefault()
-        setActiveIndex((prev) => (prev + 1) % filteredProjects.length)
+        goTo(activeIndex + 1)
       } else if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
         e.preventDefault()
-        setActiveIndex(
-          (prev) =>
-            (prev - 1 + filteredProjects.length) % filteredProjects.length,
-        )
+        goTo(activeIndex - 1)
       }
     }
 
     window.addEventListener("keydown", handleKey)
     return () => window.removeEventListener("keydown", handleKey)
-  }, [filteredProjects.length])
+  }, [activeIndex, goTo, modalProject])
+
+  const activeCategoryTag = getProjectCategoryTag(activeProject)
 
   return (
     <section
@@ -2348,63 +2558,86 @@ function ProjectsSection() {
         zIndex: 2,
       }}
     >
+      {modalProject && (
+        <ProjectModal
+          project={modalProject}
+          onClose={() => setModalProject(null)}
+        />
+      )}
+
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        {/* Section Header */}
+        {/* Section Header & Interactive Counter Bar */}
         <Reveal style={{ marginBottom: "2rem" }}>
-          <div className="text-center md:text-left">
-            <SectionLabel>03 / Featured Work</SectionLabel>
-            <h2
-              className="text-3xl sm:text-4xl md:text-5xl font-bold"
-              style={{
-                fontFamily: "Syne",
-                color: "#f0e8ff",
-                letterSpacing: "-0.028em",
-              }}
-            >
-              Featured Projects
-            </h2>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div className="text-center md:text-left">
+              <SectionLabel>03 / Featured Work</SectionLabel>
+              <h2
+                className="text-3xl sm:text-4xl md:text-5xl font-bold"
+                style={{
+                  fontFamily: "Syne",
+                  color: "#f0e8ff",
+                  letterSpacing: "-0.028em",
+                }}
+              >
+                Featured Projects
+              </h2>
+            </div>
+
+            <div className="flex items-center justify-center md:justify-end gap-3">
+              <div className="px-4 py-2 rounded-full bg-purple-950/40 border border-purple-500/30 backdrop-blur-md flex items-center gap-2.5 shadow-[0_0_20px_rgba(108,43,217,0.25)]">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-purple-500"></span>
+                </span>
+                <span className="text-xs font-mono font-semibold text-purple-300 tracking-wider">
+                  {String(activeIndex + 1).padStart(2, "0")} /{" "}
+                  {String(PROJECTS.length).padStart(2, "0")} CREATIVE WORKS
+                </span>
+              </div>
+            </div>
           </div>
         </Reveal>
 
-        {/* Dynamic Category Filter Bar */}
-        <Reveal delay={0.05} style={{ marginBottom: "3rem" }}>
-          <div className="flex flex-wrap justify-center md:justify-start gap-3">
-            {["All", "E-Commerce", "3D & Interactive", "SaaS & Dashboards"].map(
-              (cat) => {
-                const isSelected = selectedCategory === cat
+        {/* Quick Category Jump Bar & Keyboard Hints */}
+        <Reveal delay={0.03} style={{ marginBottom: "1.25rem" }}>
+          <div className="flex flex-wrap items-center justify-between gap-3 bg-purple-950/30 border border-purple-500/20 rounded-2xl p-2.5 px-4 backdrop-blur-md">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-xs font-mono text-purple-400/70 mr-1 hidden sm:inline">
+                Jump to:
+              </span>
+              {PROJECT_CATEGORIES.map((cat) => {
+                const isCurrentCat =
+                  activeCategoryTag === cat ||
+                  (cat === "All" && activeIndex === 0)
                 return (
                   <button
                     key={cat}
-                    onClick={() => setSelectedCategory(cat)}
-                    style={{
-                      fontFamily: "Syne",
-                      fontWeight: 600,
-                      fontSize: "0.85rem",
-                      padding: "0.55rem 1.25rem",
-                      borderRadius: "9999px",
-                      border: `1px solid ${
-                        isSelected
-                          ? "rgba(139, 79, 232, 0.85)"
-                          : "rgba(108, 43, 217, 0.22)"
-                      }`,
-                      background: isSelected
-                        ? "rgba(108, 43, 217, 0.25)"
-                        : "rgba(108, 43, 217, 0.05)",
-                      color: isSelected ? "#f0e8ff" : "#c9a7ff",
-                      cursor: "pointer",
-                      boxShadow: isSelected
-                        ? "0 0 24px rgba(108, 43, 217, 0.45)"
-                        : "none",
-                      backdropFilter: "blur(12px)",
-                      transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
-                    }}
-                    className="hover:bg-purple-900/25 active:scale-95"
+                    onClick={() => handleCategoryJump(cat)}
+                    className={`text-xs font-mono px-3 py-1.5 rounded-full border transition-all active:scale-95 ${
+                      isCurrentCat
+                        ? "bg-purple-600/40 border-purple-400/80 text-purple-100 shadow-[0_0_16px_rgba(139,79,232,0.4)] font-semibold"
+                        : "bg-purple-900/10 border-purple-500/20 text-purple-300/70 hover:border-purple-500/40 hover:text-purple-200"
+                    }`}
                   >
                     {cat}
                   </button>
                 )
-              },
-            )}
+              })}
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Global Showcase Timeline Indicator */}
+        <Reveal delay={0.05} style={{ marginBottom: "2.5rem" }}>
+          <div className="w-full bg-purple-950/30 border border-purple-500/20 rounded-full h-1.5 overflow-hidden backdrop-blur-sm">
+            <motion.div
+              className="h-full bg-gradient-to-r from-purple-600 via-purple-400 to-cyan-400 shadow-[0_0_12px_rgba(139,79,232,0.8)]"
+              initial={false}
+              animate={{
+                width: `${((activeIndex + 1) / PROJECTS.length) * 100}%`,
+              }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            />
           </div>
         </Reveal>
 
@@ -2420,12 +2653,15 @@ function ProjectsSection() {
               >
                 {/* Visual Counter */}
                 <div className="flex justify-between items-center px-2 mb-3">
-                  <span className="text-xs font-mono text-purple-400 font-semibold">
+                  <span className="text-xs font-mono text-purple-400 font-semibold flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded bg-purple-900/40 border border-purple-500/30 text-[10px] text-purple-200">
+                      {getProjectCategoryTag(activeProject)}
+                    </span>
                     {String(activeIndex + 1).padStart(2, "0")} /{" "}
-                    {String(filteredProjects.length).padStart(2, "0")}
+                    {String(PROJECTS.length).padStart(2, "0")}
                   </span>
                   <span className="text-xs font-mono text-purple-400/60 flex items-center gap-1.5">
-                    Swipe or tap arrows to explore
+                    Swipe or tap arrows
                   </span>
                 </div>
 
@@ -2452,6 +2688,20 @@ function ProjectsSection() {
                           loading="lazy"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-[#0d0221] via-[#0d0221]/40 to-transparent" />
+                        
+                        {/* Status Badges */}
+                        <div className="absolute top-4 left-4 flex gap-2">
+                          {activeProject.liveUrl &&
+                            activeProject.liveUrl !== "#" && (
+                              <div className="px-3 py-1 rounded-full bg-[#0d0221]/90 backdrop-blur-sm border border-emerald-500/40 flex items-center gap-1.5 shadow-[0_0_12px_rgba(16,185,129,0.3)]">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                                <span className="text-[10px] font-mono text-emerald-300 font-semibold tracking-wider">
+                                  LIVE
+                                </span>
+                              </div>
+                            )}
+                        </div>
+
                         <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-[#0d0221]/90 backdrop-blur-sm border border-purple-500/30">
                           <span className="text-xs font-mono text-purple-300">
                             {activeProject.year}
@@ -2489,7 +2739,7 @@ function ProjectsSection() {
                         </div>
 
                         {/* Actions */}
-                        <div className="flex gap-3">
+                        <div className="flex gap-2 flex-wrap">
                           {activeProject.liveUrl &&
                             activeProject.liveUrl !== "#" && (
                               <a
@@ -2497,42 +2747,21 @@ function ProjectsSection() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-violet-600
-                                       text-white font-semibold text-sm px-5 py-3 rounded-full
+                                       text-white font-semibold text-xs px-4 py-2.5 rounded-full
                                        shadow-[0_0_30px_rgba(108,43,217,0.4)]
                                        active:scale-95 transition-transform group"
                               >
                                 <span>Visit Site</span>
-                                <svg
-                                  width="14"
-                                  height="14"
-                                  viewBox="0 0 16 16"
-                                  fill="none"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="transform transition-transform group-hover:translate-x-1"
-                                >
-                                  <path
-                                    d="M3.33331 8H12.6666M12.6666 8L8.66665 4M12.6666 8L8.66665 12"
-                                    stroke="currentColor"
-                                    strokeWidth="1.8"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                  />
-                                </svg>
+                                <span className="text-xs">↗</span>
                               </a>
                             )}
-                          {activeProject.githubUrl &&
-                            activeProject.githubUrl !== "#" && (
-                              <a
-                                href={activeProject.githubUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="px-5 py-3 rounded-full border border-purple-500/30
-                                       text-purple-300 text-sm font-semibold
-                                       active:scale-95 transition-transform"
-                              >
-                                Code
-                              </a>
-                            )}
+                          <button
+                            type="button"
+                            onClick={() => setModalProject(activeProject)}
+                            className="px-4 py-2.5 rounded-full border border-purple-500/40 text-purple-200 text-xs font-semibold backdrop-blur-md bg-purple-900/30 active:scale-95 transition-transform"
+                          >
+                            Case Study ↗
+                          </button>
                         </div>
                       </div>
                     </motion.div>
@@ -2541,7 +2770,7 @@ function ProjectsSection() {
 
                 {/* Pagination Dots */}
                 <div className="flex justify-center gap-2 mt-5 mb-1">
-                  {filteredProjects.map((_, i) => {
+                  {PROJECTS.map((_, i) => {
                     const isActive = i === activeIndex
                     return (
                       <button
@@ -2626,15 +2855,16 @@ function ProjectsSection() {
               </div>
             </div>
 
-            {/* Desktop: Original Orbit Layout */}
+            {/* Desktop: Orbital Layout */}
             <div className="hidden md:block projects-orbit">
               {/* Constellation navigation rail */}
               <nav
+                ref={navRailRef}
                 className="projects-orbit-nav"
                 aria-label="Project orbit navigation"
               >
                 <div className="projects-orbit-beam" aria-hidden="true" />
-                {filteredProjects.map((project, i) => {
+                {PROJECTS.map((project, i) => {
                   const isActive = i === activeIndex
                   return (
                     <button
@@ -2643,7 +2873,7 @@ function ProjectsSection() {
                       className={`projects-orbit-node${
                         isActive ? " projects-orbit-node--active" : ""
                       }`}
-                      onClick={() => setActiveIndex(i)}
+                      onClick={() => goTo(i)}
                       aria-current={isActive ? "true" : undefined}
                     >
                       <span
@@ -2653,8 +2883,11 @@ function ProjectsSection() {
                         <span className="projects-orbit-node-core" />
                       </span>
                       <span className="projects-orbit-node-text">
-                        <span className="projects-orbit-node-num">
-                          {String(i + 1).padStart(2, "0")}
+                        <span className="projects-orbit-node-num flex items-center justify-between gap-1">
+                          <span>{String(i + 1).padStart(2, "0")}</span>
+                          <span className="text-[9px] px-1.5 py-0.2 rounded bg-purple-900/30 text-purple-300/70 border border-purple-500/10 font-normal">
+                            {getProjectCategoryTag(project)}
+                          </span>
                         </span>
                         <span className="projects-orbit-node-title">
                           {project.title}
@@ -2680,245 +2913,256 @@ function ProjectsSection() {
                     aria-hidden="true"
                   />
 
-                  <TiltContainer
-                    key={activeProject.id}
-                    className="projects-orbit-preview"
+                  {/* Ambient Glow behind preview */}
+                  <div className="absolute inset-4 bg-gradient-to-r from-purple-600/30 to-violet-600/20 blur-3xl rounded-full opacity-60 pointer-events-none" />
+
+                  <AnimatePresence mode="wait" custom={direction}>
+                    <motion.div
+                      key={activeProject.id}
+                      custom={direction}
+                      variants={imgVariants}
+                      initial="enter"
+                      animate="center"
+                      exit="exit"
+                    >
+                      <TiltContainer className="projects-orbit-preview">
+                        {activeProject.liveUrl && activeProject.liveUrl !== "#" ? (
+                          <a
+                            href={activeProject.liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              position: "relative",
+                              display: "block",
+                              width: "100%",
+                              height: "100%",
+                              textDecoration: "none",
+                            }}
+                          >
+                            <img
+                              src={activeProject.image}
+                              alt={activeProject.title}
+                              className="projects-orbit-preview-img"
+                              loading="lazy"
+                              decoding="async"
+                              width="1920"
+                              height="1080"
+                            />
+                            {/* Hover overlay */}
+                            <div
+                              style={{
+                                position: "absolute",
+                                inset: 0,
+                                background:
+                                  "linear-gradient(to top, rgba(108, 43, 217, 0.95) 0%, rgba(108, 43, 217, 0.75) 50%, rgba(108, 43, 217, 0.85) 100%)",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                opacity: 0,
+                                transition:
+                                  "opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+                              }}
+                              className="projects-orbit-preview-overlay"
+                            >
+                              <div
+                                style={{
+                                  fontFamily: "Syne",
+                                  fontSize: "1.25rem",
+                                  fontWeight: 700,
+                                  color: "#ffffff",
+                                  textAlign: "center",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: "0.75rem",
+                                  padding: "1rem 2rem",
+                                  borderRadius: "9999px",
+                                  background: "rgba(255, 255, 255, 0.15)",
+                                  backdropFilter: "blur(8px)",
+                                  border: "2px solid rgba(255, 255, 255, 0.3)",
+                                  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
+                                }}
+                              >
+                                Visit Website
+                                <span
+                                  style={{
+                                    display: "inline-block",
+                                    fontSize: "1.1rem",
+                                  }}
+                                >
+                                  ↗
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Live Badge Overlay */}
+                            <div className="absolute top-4 left-4 z-20 flex gap-2">
+                              <div className="px-3.5 py-1.5 rounded-full bg-[#0d0221]/90 backdrop-blur-md border border-emerald-500/40 flex items-center gap-2 shadow-[0_0_16px_rgba(16,185,129,0.4)]">
+                                <span className="relative flex h-2 w-2">
+                                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                </span>
+                                <span className="text-xs font-mono text-emerald-300 font-semibold tracking-wider">
+                                  LIVE PRODUCTION
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="projects-orbit-preview-shade" />
+                            <span
+                              className="projects-orbit-preview-ghost"
+                              aria-hidden="true"
+                            >
+                              {String(activeIndex + 1).padStart(2, "0")}
+                            </span>
+                            <span className="projects-orbit-preview-metric">
+                              {activeProject.metrics}
+                            </span>
+                          </a>
+                        ) : (
+                          <>
+                            <img
+                              src={activeProject.image}
+                              alt={activeProject.title}
+                              className="projects-orbit-preview-img"
+                              loading="lazy"
+                              decoding="async"
+                              width="1920"
+                              height="1080"
+                            />
+                            <div className="projects-orbit-preview-shade" />
+                            <span
+                              className="projects-orbit-preview-ghost"
+                              aria-hidden="true"
+                            >
+                              {String(activeIndex + 1).padStart(2, "0")}
+                            </span>
+                            <span className="projects-orbit-preview-metric">
+                              {activeProject.metrics}
+                            </span>
+                          </>
+                        )}
+                      </TiltContainer>
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+
+                <AnimatePresence mode="wait" custom={direction}>
+                  <motion.div
+                    key={`details-${activeProject.id}`}
+                    custom={direction}
+                    variants={detailVariants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    className="projects-orbit-details"
                   >
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <p className="projects-orbit-details-meta">
+                        {activeProject.year} · {activeProject.subtitle}
+                      </p>
+                      <span className="px-3 py-1 rounded-full bg-purple-900/30 border border-purple-500/25 text-xs font-mono font-semibold text-purple-300">
+                        {getProjectCategoryTag(activeProject)}
+                      </span>
+                    </div>
+
                     {activeProject.liveUrl && activeProject.liveUrl !== "#" ? (
                       <a
                         href={activeProject.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{
-                          position: "relative",
-                          display: "block",
-                          width: "100%",
-                          height: "100%",
                           textDecoration: "none",
+                          color: "inherit",
+                          display: "inline-block",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.color = "#c9a7ff"
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.color = "#f0e8ff"
                         }}
                       >
-                        <img
-                          src={activeProject.image}
-                          alt={activeProject.title}
-                          className="projects-orbit-preview-img"
-                          loading="lazy"
-                          decoding="async"
-                          width="1920"
-                          height="1080"
-                        />
-                        {/* Hover overlay */}
-                        <div
-                          style={{
-                            position: "absolute",
-                            inset: 0,
-                            background:
-                              "linear-gradient(to top, rgba(108, 43, 217, 0.95) 0%, rgba(108, 43, 217, 0.75) 50%, rgba(108, 43, 217, 0.85) 100%)",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            opacity: 0,
-                            transition:
-                              "opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
-                          }}
-                          className="projects-orbit-preview-overlay"
-                        >
-                          <div
-                            style={{
-                              fontFamily: "Syne",
-                              fontSize: "1.25rem",
-                              fontWeight: 700,
-                              color: "#ffffff",
-                              textAlign: "center",
-                              display: "flex",
-                              alignItems: "center",
-                              gap: "0.75rem",
-                              padding: "1rem 2rem",
-                              borderRadius: "9999px",
-                              background: "rgba(255, 255, 255, 0.15)",
-                              backdropFilter: "blur(8px)",
-                              border: "2px solid rgba(255, 255, 255, 0.3)",
-                              boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
-                            }}
-                          >
-                            Visit Website
-                            <span
-                              style={{
-                                display: "inline-block",
-                                fontSize: "1.1rem",
-                              }}
-                            >
-                              ↗
-                            </span>
-                          </div>
-                        </div>
-                        <div className="projects-orbit-preview-shade" />
-                        <span
-                          className="projects-orbit-preview-ghost"
-                          aria-hidden="true"
-                        >
-                          {String(activeIndex + 1).padStart(2, "0")}
-                        </span>
-                        <span className="projects-orbit-preview-metric">
-                          {activeProject.metrics}
-                        </span>
+                        <h3 className="projects-orbit-details-title">
+                          {activeProject.title}
+                        </h3>
                       </a>
                     ) : (
-                      <>
-                        <img
-                          src={activeProject.image}
-                          alt={activeProject.title}
-                          className="projects-orbit-preview-img"
-                          loading="lazy"
-                          decoding="async"
-                          width="1920"
-                          height="1080"
-                        />
-                        <div className="projects-orbit-preview-shade" />
-                        <span
-                          className="projects-orbit-preview-ghost"
-                          aria-hidden="true"
-                        >
-                          {String(activeIndex + 1).padStart(2, "0")}
-                        </span>
-                        <span className="projects-orbit-preview-metric">
-                          {activeProject.metrics}
-                        </span>
-                      </>
-                    )}
-                  </TiltContainer>
-                </div>
-
-                <div
-                  key={`details-${activeProject.id}`}
-                  className="projects-orbit-details"
-                >
-                  <p className="projects-orbit-details-meta">
-                    {activeProject.year} · {activeProject.subtitle}
-                  </p>
-                  {activeProject.liveUrl && activeProject.liveUrl !== "#" ? (
-                    <a
-                      href={activeProject.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        textDecoration: "none",
-                        color: "inherit",
-                        display: "inline-block",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.color = "#c9a7ff"
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.color = "#f0e8ff"
-                      }}
-                    >
                       <h3 className="projects-orbit-details-title">
                         {activeProject.title}
                       </h3>
-                    </a>
-                  ) : (
-                    <h3 className="projects-orbit-details-title">
-                      {activeProject.title}
-                    </h3>
-                  )}
-                  <p className="projects-orbit-details-desc">
-                    {activeProject.longDescription}
-                  </p>
+                    )}
+                    <p className="projects-orbit-details-desc">
+                      {activeProject.longDescription}
+                    </p>
 
-                  <div className="projects-orbit-tools">
-                    {activeProject.tools.map((tool) => (
-                      <span key={tool} className="projects-orbit-tool">
-                        {tool}
-                      </span>
-                    ))}
-                  </div>
+                    <div className="projects-orbit-tools">
+                      {activeProject.tools.map((tool) => (
+                        <span key={tool} className="projects-orbit-tool">
+                          {tool}
+                        </span>
+                      ))}
+                    </div>
 
-                  <div className="projects-orbit-actions">
-                    <div
-                      style={{
-                        display: "flex",
-                        gap: "0.75rem",
-                        flexWrap: "wrap",
-                      }}
-                    >
-                      {activeProject.liveUrl &&
-                        activeProject.liveUrl !== "#" && (
-                          <a
-                            href={activeProject.liveUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="projects-orbit-cta flex items-center justify-center gap-2 group"
-                          >
-                            <span>Visit Website</span>
-                            <svg
-                              width="14"
-                              height="14"
-                              viewBox="0 0 16 16"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="transform transition-transform group-hover:translate-x-1"
+                    <div className="projects-orbit-actions">
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "0.75rem",
+                          flexWrap: "wrap",
+                        }}
+                      >
+                        {activeProject.liveUrl &&
+                          activeProject.liveUrl !== "#" && (
+                            <a
+                              href={activeProject.liveUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="projects-orbit-cta flex items-center justify-center gap-2 group"
                             >
-                              <path
-                                d="M3.33331 8H12.6666M12.6666 8L8.66665 4M12.6666 8L8.66665 12"
-                                stroke="currentColor"
-                                strokeWidth="1.8"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          </a>
-                        )}
-                    </div>
-                    <div className="projects-orbit-arrows">
-                      <button
-                        type="button"
-                        className="projects-orbit-arrow-btn group"
-                        onClick={() => goTo(activeIndex - 1)}
-                        aria-label="Previous project"
-                      >
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 16 16"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="transform transition-transform group-hover:-translate-x-0.5"
+                              <span>Visit Website</span>
+                              <svg
+                                width="14"
+                                height="14"
+                                viewBox="0 0 16 16"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="transform transition-transform group-hover:translate-x-1"
+                              >
+                                <path
+                                  d="M3.33331 8H12.6666M12.6666 8L8.66665 4M12.6666 8L8.66665 12"
+                                  stroke="currentColor"
+                                  strokeWidth="1.8"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </a>
+                          )}
+                        <button
+                          type="button"
+                          onClick={() => setModalProject(activeProject)}
+                          className="px-5 py-2.5 rounded-full border border-purple-500/40 text-purple-200 text-sm font-semibold hover:border-purple-300 hover:text-white backdrop-blur-md bg-purple-900/30 active:scale-95 transition-all flex items-center gap-1.5"
                         >
-                          <path
-                            d="M12.6667 8H3.33334M3.33334 8L7.33334 12M3.33334 8L7.33334 4"
-                            stroke="currentColor"
-                            strokeWidth="1.8"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </button>
-                      <button
-                        type="button"
-                        className="projects-orbit-arrow-btn group"
-                        onClick={() => goTo(activeIndex + 1)}
-                        aria-label="Next project"
-                      >
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 16 16"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="transform transition-transform group-hover:translate-x-0.5"
-                        >
-                          <path
-                            d="M3.33331 8H12.6666M12.6666 8L8.66665 4M12.6666 8L8.66665 12"
-                            stroke="currentColor"
-                            strokeWidth="1.8"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </button>
+                          <span>Case Study</span>
+                          <span className="text-xs">↗</span>
+                        </button>
+                        {activeProject.githubUrl &&
+                          activeProject.githubUrl !== "#" && (
+                            <a
+                              href={activeProject.githubUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-5 py-2.5 rounded-full border border-purple-500/30
+                                     text-purple-300 text-sm font-semibold hover:border-purple-400 hover:text-white
+                                     active:scale-95 transition-all backdrop-blur-sm bg-purple-950/20"
+                            >
+                              Code Repository
+                            </a>
+                          )}
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  </motion.div>
+                </AnimatePresence>
               </div>
             </div>
           </div>
@@ -2928,7 +3172,7 @@ function ProjectsSection() {
   )
 }
 
-// â”€â”€â”€ Certificate Card Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Certificate Card Component ───────────────────────────────────────────────
 
 function CertificateCard({
   title,
@@ -3150,7 +3394,97 @@ function CertificatesSection() {
   )
 }
 
-// â”€â”€â”€ Process Step Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function ScrollToTop() {
+  const [visible, setVisible] = useState(false)
+  const [scrollProgress, setScrollProgress] = useState(0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrolled = window.scrollY
+      const maxScroll =
+        document.documentElement.scrollHeight - window.innerHeight
+      if (maxScroll > 0) {
+        setScrollProgress((scrolled / maxScroll) * 100)
+      }
+      setVisible(scrolled > 400)
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  if (!visible) return null
+
+  const radius = 18
+  const stroke = 3
+  const normalizedRadius = radius - stroke * 0.5
+  const circumference = normalizedRadius * 2 * Math.PI
+  const strokeDashoffset =
+    circumference - (scrollProgress / 100) * circumference
+
+  return (
+    <motion.button
+      initial={{ opacity: 0, scale: 0.8, y: 20 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.8, y: 20 }}
+      onClick={scrollToTop}
+      aria-label="Scroll to top"
+      className="fixed bottom-6 right-6 z-40 w-12 h-12 rounded-full bg-purple-950/80 border border-purple-500/40 backdrop-blur-md text-purple-300 flex items-center justify-center shadow-[0_0_25px_rgba(108,43,217,0.4)] hover:border-purple-300 hover:text-white hover:scale-110 active:scale-95 transition-all group"
+    >
+      <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 36 36">
+        <circle
+          cx="18"
+          cy="18"
+          r={normalizedRadius}
+          stroke="rgba(108, 43, 217, 0.2)"
+          strokeWidth={stroke}
+          fill="none"
+        />
+        <circle
+          cx="18"
+          cy="18"
+          r={normalizedRadius}
+          stroke="url(#scrollGradient)"
+          strokeWidth={stroke}
+          strokeDasharray={`${circumference} ${circumference}`}
+          style={{ strokeDashoffset }}
+          strokeLinecap="round"
+          fill="none"
+          className="transition-all duration-150"
+        />
+        <defs>
+          <linearGradient id="scrollGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#8b4fe8" />
+            <stop offset="100%" stopColor="#22d3ee" />
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="transform transition-transform group-hover:-translate-y-0.5 relative z-10"
+      >
+        <path
+          d="M8 12.6667V3.33334M8 3.33334L4 7.33334M8 3.33334L12 7.33334"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </motion.button>
+  )
+}
+
+// ─── Process Step Component ───────────────────────────────────────────────────
 
 function ProcessStep({ step, title, desc, icon }: typeof PROCESS[0]) {
   const [hovered, setHovered] = useState(false)

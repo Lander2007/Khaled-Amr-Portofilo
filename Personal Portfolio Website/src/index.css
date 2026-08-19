@@ -318,6 +318,20 @@ a { cursor: pointer; }
   flex-direction: column;
   gap: 0.35rem;
   padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  max-height: 560px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(108, 43, 217, 0.4) transparent;
+}
+
+.projects-orbit-nav::-webkit-scrollbar {
+  width: 4px;
+}
+
+.projects-orbit-nav::-webkit-scrollbar-thumb {
+  background: rgba(108, 43, 217, 0.4);
+  border-radius: 4px;
 }
 
 .projects-orbit-beam {
