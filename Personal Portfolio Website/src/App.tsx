@@ -73,6 +73,36 @@ const PROJECTS: Project[] = [
     liveUrl: "https://el3almialeather.com/ar",
   },
   {
+    id: "portal",
+    title: "Portal",
+    subtitle: "Interactive 3D Narrative & Valve Fan Tribute",
+    description:
+      "An original, Portal-inspired interactive 3D website — a fan tribute to Valve's Portal series, built as a single-scroll narrative experience with an interactive portal device, scroll-driven 3D, and reimagined signature mechanics.",
+    longDescription:
+      "An original, Portal-inspired interactive 3D website — a fan tribute to Valve's Portal series, built as a single-scroll narrative experience with an interactive portal device, scroll-driven 3D, and a couple of the game's signature mechanics reimagined for the web.\n\nThis is an unofficial fan project. Not affiliated with or endorsed by Valve Corporation. No trademarked assets, logos, or in-game dialogue are reproduced — the visual language is an original interpretation inspired by the game's aesthetic.",
+    tools: ["React 19", "Three.js", "GSAP ScrollTrigger", "Tailwind CSS", "Vite"],
+    metrics: "Scroll-Driven 3D & Portal Mechanics",
+    year: "2026",
+    image: "/projects/Portal.png",
+    githubUrl: "https://github.com/Lander2007",
+    liveUrl: "https://portal-psi-eight-43.vercel.app/",
+  },
+  {
+    id: "monolith",
+    title: "Monolith",
+    subtitle: "Scroll-Driven 3D Digital Art Installation",
+    description:
+      "Monolith is a scroll-driven 3D web experience engineered as an interactive digital art installation featuring a central obsidian monolith that deforms via custom vertex shaders and fractures across four narrative states based on user scroll and cursor position.",
+    longDescription:
+      "Monolith is a scroll-driven 3D web experience engineered as an interactive digital art installation. Built with React 19, Three.js, and GSAP, it features a central obsidian monolith that deforms via custom vertex shaders and fractures across four narrative states based on user scroll and cursor position.",
+    tools: ["React 19", "Three.js", "GLSL Shaders", "GSAP", "Tailwind CSS"],
+    metrics: "Custom Vertex Shaders & 3D Art",
+    year: "2026",
+    image: "/projects/Monolith.png",
+    githubUrl: "https://github.com/Lander2007",
+    liveUrl: "https://monolith-two.vercel.app/",
+  },
+  {
     id: "chronos-engine",
     title: "Chronos Engine — Interactive 3D Showcase",
     subtitle: "Interactive 3D WebGL Showcase",
@@ -2107,9 +2137,12 @@ const PROJECT_CATEGORIES = [
 const getProjectCategoryTag = (project: Project) => {
   if (
     project.tools.includes("Three.js") ||
+    project.tools.some((t) => t.toLowerCase().includes("three.js")) ||
     project.subtitle.includes("3D") ||
     project.id === "spaceedu" ||
-    project.id === "chronos-engine"
+    project.id === "chronos-engine" ||
+    project.id === "portal" ||
+    project.id === "monolith"
   ) {
     return "3D & Interactive"
   }
@@ -2215,7 +2248,7 @@ function ProjectModal({
               <h4 className="text-xs font-mono text-purple-400 uppercase tracking-wider mb-2">
                 Overview & Case Study
               </h4>
-              <p className="text-purple-200/90 leading-relaxed text-sm sm:text-base mb-4">
+              <p className="text-purple-200/90 leading-relaxed text-sm sm:text-base mb-4 whitespace-pre-line">
                 {project.longDescription || project.description}
               </p>
             </div>

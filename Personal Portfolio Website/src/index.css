@@ -585,6 +585,7 @@ a { cursor: pointer; }
   color: rgba(201, 167, 255, 0.72);
   font-weight: 300;
   margin-bottom: 1.25rem;
+  white-space: pre-line;
 }
 
 .projects-orbit-tools {
