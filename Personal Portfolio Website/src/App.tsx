@@ -58,6 +58,20 @@ interface Project {
 
 const PROJECTS: Project[] = [
   {
+    id: "retone",
+    title: "Retone",
+    subtitle: "Live Material You Theming Engine",
+    description:
+      "A live Material You theming engine for the web — drop a color or an image, and the entire interface retones itself in real time using Google's actual HCT color science.",
+    longDescription:
+      "Retone is an interactive demonstration of Material You's dynamic color system, rebuilt for the web. Pick a seed color, drop a photo, or sample your screen — the HCT (Hue-Chroma-Tone) engine generates a full tonal palette and retones every surface, button, and shape on the page live. Built with Material 3 Expressive's shape-morphing motion, floating components, and emphasized type system on top of a custom color engine.",
+    tools: ["HTML", "CSS", "JavaScript", "Material Color Utilities", "Material 3 Expressive"],
+    metrics: "Real-Time HCT Color Engine",
+    year: "2026",
+    image: "/projects/Retone.png",
+    liveUrl: "https://retone-two.vercel.app/",
+  },
+  {
     id: "el3almialeather",
     title: "El Almia Leather (العالمية)",
     subtitle: "Production E-Commerce Platform",
