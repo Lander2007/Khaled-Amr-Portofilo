@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Deep Plum Background Container -->
+  <rect width="64" height="64" rx="14" fill="#381932" />
+  <!-- Hairline Architectural Accent Border -->
+  <rect x="2.5" y="2.5" width="59" height="59" rx="11.5" stroke="#FFF3E6" stroke-opacity="0.22" stroke-width="1" />
+  
+  <!-- Architectural K / A / Shift Monogram -->
+  <!-- Left Vertical Structural Pillar -->
+  <rect x="14" y="16" width="7" height="32" rx="1.5" fill="#FFF3E6" />
+  
+  <!-- Dynamic Shift Diagonal Slash (K Upper Arm / Shift) -->
+  <path d="M24 31 L39 16 H48 L31 34 Z" fill="#FFF3E6" />
+  
+  <!-- K Lower Dynamic Leg & Apex Anchor -->
+  <path d="M30 30 L48 48 H39 L24 33 Z" fill="#FFF3E6" />
+  
+  <!-- Precision Engineering Accent Block in Electric Lime -->
+  <rect x="42" y="29" width="6" height="6" rx="1.5" fill="#C6F277" />
+</svg>
