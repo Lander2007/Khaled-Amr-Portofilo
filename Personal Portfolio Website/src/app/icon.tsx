@@ -5,6 +5,7 @@ export const size = {
   width: 32,
   height: 32,
 };
+export const dynamic = "force-static";
 export const contentType = "image/png";
 
 // Image generation
