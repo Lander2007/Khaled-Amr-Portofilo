@@ -218,6 +218,18 @@ export default function Navbar() {
                 <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             </MagneticButton>
+
+            {/* Developer Console Quick Launcher (Easter Egg 2 Trigger) */}
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent("open-developer-terminal"))}
+              className="ml-1 px-2.5 py-2 border border-[#381932]/25 text-[#381932]/75 hover:text-[#381932] hover:border-[#381932] hover:bg-[#381932]/5 transition-colors rounded-xs flex items-center gap-1.5 text-xs font-mono cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#381932]"
+              title="Open Developer Console (Ctrl + K / Cmd + K)"
+              aria-label="Open Developer Terminal"
+            >
+              <span className="text-[#381932] font-bold">&gt;_</span>
+              <kbd className="hidden lg:inline text-[10px] bg-[#381932]/10 px-1 py-0.5 rounded font-mono">⌘K</kbd>
+            </button>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -280,6 +292,22 @@ export default function Navbar() {
         </div>
 
         <div className="border-t border-[#381932]/15 pt-6 space-y-3 font-mono text-xs text-[#381932]/80">
+          {/* Mobile Terminal Entry Point */}
+          <button
+            type="button"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              window.dispatchEvent(new CustomEvent("open-developer-terminal"));
+            }}
+            className="w-full flex items-center justify-between px-3 py-2.5 border border-[#381932]/30 hover:bg-[#381932] hover:text-[#FFF3E6] transition-colors cursor-pointer group"
+          >
+            <span className="flex items-center gap-2">
+              <span className="text-[#C6F277] bg-[#381932] px-1.5 py-0.5 font-bold rounded-xs">&gt;_</span>
+              <span className="font-bold">DEVELOPER TERMINAL</span>
+            </span>
+            <span className="text-[10px] opacity-70 group-hover:text-[#FFF3E6]">[LAUNCH]</span>
+          </button>
+
           <div>LOCATION: ALEXANDRIA, EGYPT</div>
           <div>STATUS: AVAILABLE FOR 2026 ENGAGEMENTS</div>
           <a

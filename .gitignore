@@ -24,6 +24,8 @@ dist/
 # misc
 .DS_Store
 *.pem
+*.mp4
+*.webm
 
 # debug
 npm-debug.log*

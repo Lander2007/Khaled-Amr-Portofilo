@@ -73,6 +73,7 @@ export const metadata: Metadata = {
 };
 
 import PageTransitionProvider from "@/components/motion/PageTransitionProvider";
+import DeveloperTerminal from "@/components/ui/DeveloperTerminal";
 
 export default function RootLayout({
   children,
@@ -86,7 +87,10 @@ export default function RootLayout({
       className={`${syne.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} ${inter.variable}`}
     >
       <body className="min-h-screen bg-[#FFF3E6] text-[#381932] antialiased selection:bg-[#381932] selection:text-[#FFF3E6]">
-        <PageTransitionProvider>{children}</PageTransitionProvider>
+        <PageTransitionProvider>
+          {children}
+          <DeveloperTerminal />
+        </PageTransitionProvider>
       </body>
     </html>
   );
