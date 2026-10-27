@@ -11,7 +11,6 @@ import MagneticButton from "@/components/motion/MagneticButton";
 import ImageReveal from "@/components/motion/ImageReveal";
 import TypographicMarquee from "@/components/motion/TypographicMarquee";
 
-export const instant = false;
 
 export async function generateStaticParams() {
   return PROJECTS.map((project) => ({
