@@ -187,7 +187,7 @@ export default function Scene03SelectedWork() {
           {/* Monumental Headline */}
           <div className="space-y-3">
             <span className="font-mono text-xs tracking-[0.25em] text-[#381932]/60 uppercase block">
-              // ARCHITECTURAL EXPLORATION CONSOLE
+              {"// ARCHITECTURAL EXPLORATION CONSOLE"}
             </span>
             <h2 className="font-display text-[clamp(2.4rem,7vw,6.5rem)] font-extrabold uppercase leading-[0.9] tracking-tighter text-[#381932]">
               THE PROJECT
@@ -526,7 +526,7 @@ export default function Scene03SelectedWork() {
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div className="space-y-1.5">
               <span className="font-mono text-xs tracking-widest text-[#381932]/60 uppercase block">
-                // COMPACT CURATED APERTURES
+                {"// COMPACT CURATED APERTURES"}
               </span>
               <h3 className="font-display text-2xl sm:text-3xl font-extrabold uppercase tracking-tight text-[#381932]">
                 FLAGSHIP HIGHLIGHTS
