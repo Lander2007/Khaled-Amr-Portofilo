@@ -19,7 +19,22 @@ const ROW3_WORDS = [
   "EMOTION", "•", "DREAM", "•", "PASSION", "•", "EMOTION", "•", "DREAM", "•", "PASSION", "•", "EMOTION"
 ];
 
-export default function Scene01Hero() {
+export interface HeroScrollElements {
+  wordRow1: HTMLDivElement | null;
+  wordRow2: HTMLDivElement | null;
+  wordRow3: HTMLDivElement | null;
+  heroContent: HTMLDivElement | null;
+}
+
+interface Scene01HeroProps {
+  isEmbedded?: boolean;
+  onRegisterScrollElements?: (elements: HeroScrollElements) => void;
+}
+
+export default function Scene01Hero({
+  isEmbedded = false,
+  onRegisterScrollElements,
+}: Scene01HeroProps = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
   const wordWallRef = useRef<HTMLDivElement>(null);
@@ -227,6 +242,17 @@ export default function Scene01Hero() {
   }, []);
 
   useEffect(() => {
+    if (onRegisterScrollElements) {
+      onRegisterScrollElements({
+        wordRow1: wordRow1Ref.current,
+        wordRow2: wordRow2Ref.current,
+        wordRow3: wordRow3Ref.current,
+        heroContent: heroContentRef.current,
+      });
+    }
+  }, [onRegisterScrollElements]);
+
+  useEffect(() => {
     if (!containerRef.current) {
       return;
     }
@@ -250,6 +276,11 @@ export default function Scene01Hero() {
           ease: "power2.out",
           clearProps: "opacity,transform",
         });
+
+        // When embedded inside the Center Reveal transition, the parent orchestrator handles the scroll scrub
+        if (isEmbedded) {
+          return;
+        }
 
         // 2. Unpinned Smooth Scroll Scrub on Word Wall and Hero Elements
         const tl = gsap.timeline({
@@ -310,7 +341,7 @@ export default function Scene01Hero() {
     return () => {
       mm.revert();
     };
-  }, []);
+  }, [isEmbedded]);
 
   return (
     <section

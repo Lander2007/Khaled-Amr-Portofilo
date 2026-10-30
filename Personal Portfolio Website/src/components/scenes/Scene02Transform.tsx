@@ -13,7 +13,29 @@ import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function Scene02Transform() {
+export interface TransformScrollElements {
+  progressBar: HTMLDivElement | null;
+  stagePill1: HTMLDivElement | null;
+  stagePill2: HTMLDivElement | null;
+  stagePill3: HTMLDivElement | null;
+  wordForm: HTMLDivElement | null;
+  wordShift: HTMLDivElement | null;
+  stmt1: HTMLDivElement | null;
+  stmt2: HTMLDivElement | null;
+  stmt3: HTMLDivElement | null;
+  stage3Header: HTMLDivElement | null;
+  projectCard: HTMLDivElement | null;
+}
+
+interface Scene02TransformProps {
+  isEmbedded?: boolean;
+  onRegisterTransformElements?: (elements: TransformScrollElements) => void;
+}
+
+export default function Scene02Transform({
+  isEmbedded = false,
+  onRegisterTransformElements,
+}: Scene02TransformProps = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
 
@@ -40,8 +62,27 @@ export default function Scene02Transform() {
   // First verified genuine project from data
   const featuredProject = PROJECTS[0]; // Code Systems SW
 
+  // Register DOM elements with parent portal orchestrator when embedded
   useEffect(() => {
-    if (prefersReducedMotion || !containerRef.current) return;
+    if (onRegisterTransformElements) {
+      onRegisterTransformElements({
+        progressBar: progressBarRef.current,
+        stagePill1: stagePill1Ref.current,
+        stagePill2: stagePill2Ref.current,
+        stagePill3: stagePill3Ref.current,
+        wordForm: wordFormRef.current,
+        wordShift: wordShiftRef.current,
+        stmt1: stmt1Ref.current,
+        stmt2: stmt2Ref.current,
+        stmt3: stmt3Ref.current,
+        stage3Header: stage3HeaderRef.current,
+        projectCard: projectCardRef.current,
+      });
+    }
+  }, [onRegisterTransformElements]);
+
+  useEffect(() => {
+    if (prefersReducedMotion || !containerRef.current || isEmbedded) return;
 
     const mm = gsap.matchMedia();
 
@@ -242,7 +283,7 @@ export default function Scene02Transform() {
     );
 
     return () => mm.revert();
-  }, [prefersReducedMotion]);
+  }, [prefersReducedMotion, isEmbedded]);
 
   // Render static accessible layout for reduced motion
   if (prefersReducedMotion) {
