@@ -55,6 +55,13 @@ html {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+}
+
+/* Offset for fixed navbar anchor navigation */
+section[id], div[id] {
+  scroll-margin-top: 5.5rem;
 }
 
 body {

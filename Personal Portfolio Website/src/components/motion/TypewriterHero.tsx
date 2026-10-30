@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 interface TypewriterHeroProps {
   phrases?: string[];
@@ -30,27 +31,18 @@ export default function TypewriterHero({
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [phraseIndex, setPhraseIndex] = useState(0);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
   const isTabVisible = useRef(true);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Monitor prefers-reduced-motion and tab visibility
+  // Monitor tab visibility
   useEffect(() => {
-    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setPrefersReducedMotion(motionQuery.matches);
-
-    const onMotionChange = (e: MediaQueryListEvent) => {
-      setPrefersReducedMotion(e.matches);
-    };
-    motionQuery.addEventListener("change", onMotionChange);
-
     const handleVisibilityChange = () => {
       isTabVisible.current = !document.hidden;
     };
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
-      motionQuery.removeEventListener("change", onMotionChange);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
@@ -58,7 +50,6 @@ export default function TypewriterHero({
   // Continuous, infinitely looping typewriter state machine
   useEffect(() => {
     if (prefersReducedMotion) {
-      setDisplayText(phrases[0] || "");
       return;
     }
 
@@ -128,34 +119,25 @@ export default function TypewriterHero({
     prefersReducedMotion,
   ]);
 
-  // Reduced motion accessible fallback: Static, stable phrase with zero layout shift
-  if (prefersReducedMotion) {
-    return (
-      <div
-        className={`font-mono text-xs sm:text-sm text-[#381932] tracking-wide flex items-center min-h-[1.75rem] sm:min-h-[2rem] select-none ${className}`}
-        aria-label={phrases[0]}
-      >
-        <span className="text-[#381932]/60 mr-2 shrink-0 select-none">//</span>
-        <span className="font-semibold text-[#381932] truncate">{phrases[0]}</span>
-      </div>
-    );
-  }
+  const textToRender = prefersReducedMotion ? phrases[0] || "" : displayText;
 
   return (
     <div
       className={`font-mono text-xs sm:text-sm text-[#381932] tracking-wide flex items-center min-h-[1.75rem] sm:min-h-[2rem] select-none overflow-hidden max-w-full ${className}`}
       aria-live="polite"
-      aria-label={displayText || phrases[phraseIndex % phrases.length]}
+      aria-label={textToRender || phrases[0]}
     >
-      <span className="text-[#381932]/60 mr-2 shrink-0 select-none">//</span>
+      <span className="text-[#381932]/60 mr-2 shrink-0 select-none">{"//"}</span>
       <span className="font-semibold text-[#381932] whitespace-nowrap overflow-hidden text-ellipsis">
-        {displayText}
+        {textToRender}
       </span>
       {/* Blinking Caret in Electric Lime */}
-      <span
-        className="inline-block w-2 h-3.5 sm:h-4 bg-[#C6F277] ml-1.5 shrink-0 animate-caret shadow-[0_0_8px_rgba(198,242,119,0.7)]"
-        aria-hidden="true"
-      />
+      {!prefersReducedMotion && (
+        <span
+          className="inline-block w-2 h-3.5 sm:h-4 bg-[#C6F277] ml-1.5 shrink-0 animate-caret shadow-[0_0_8px_rgba(198,242,119,0.7)]"
+          aria-hidden="true"
+        />
+      )}
     </div>
   );
 }

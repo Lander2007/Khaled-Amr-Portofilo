@@ -6,6 +6,8 @@ import { PERSONAL_DETAILS } from "@/data/projectsData";
 import MagneticButton from "@/components/motion/MagneticButton";
 import TiltCard from "@/components/motion/TiltCard";
 import LiquidDivider from "@/components/motion/LiquidDivider";
+import FooterWordWall from "@/components/motion/FooterWordWall";
+import ContactForm from "@/components/forms/ContactForm";
 
 export default function Scene05Contact() {
   const [copied, setCopied] = useState(false);
@@ -93,19 +95,105 @@ export default function Scene05Contact() {
           </MagneticButton>
         </div>
 
-        {/* Closing Monumental Headline */}
-        <div className="space-y-4">
-          <p className="font-mono text-sm sm:text-base text-[#FFF3E6]/70 uppercase tracking-widest">
-            HAVE AN IDEA WORTH BUILDING?
-          </p>
-          <h2 className="font-display text-[10vw] sm:text-[9vw] md:text-[8vw] font-black uppercase tracking-tighter leading-[0.86] text-[#FFF3E6]">
-            LET&apos;S MAKE IT
-            <br />
-            <span className="font-serif italic font-normal lowercase tracking-normal text-[#FFF3E6]/90">
-              move.
-            </span>
-          </h2>
+        {/* ============================================================== */}
+        {/* EDITORIAL CONTACT EXPERIENCE: TYPOGRAPHY & BESPOKE INTAKE FORM */}
+        {/* ============================================================== */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 xl:gap-20 items-start">
+          {/* Left Column: Monumental Editorial Statement & Contact Info */}
+          <div className="lg:col-span-6 space-y-8 relative z-10">
+            {/* Eyebrow */}
+            <div className="flex items-center gap-2 font-mono text-xs tracking-widest text-[#C6F277] uppercase font-bold">
+              <span className="w-2 h-2 rounded-full bg-[#C6F277] shadow-[0_0_8px_rgba(198,242,119,0.8)] animate-pulse" />
+              <span>{"GET IN TOUCH // LET'S CONNECT"}</span>
+            </div>
+
+            {/* Main Dominant Heading */}
+            <h2 className="font-display text-[clamp(2.4rem,4.4vw,4.5rem)] font-black uppercase tracking-tight leading-[0.94] text-[#FFF3E6] break-words">
+              HAVE A PROJECT
+              <br />
+              <span className="font-serif italic font-normal lowercase tracking-normal text-[#C6F277] drop-shadow-[0_0_20px_rgba(198,242,119,0.3)] block mt-1">
+                in mind?
+              </span>
+            </h2>
+
+            {/* Supporting Text */}
+            <p className="font-serif italic text-xl sm:text-2xl text-[#FFF3E6]/85 max-w-xl leading-relaxed">
+              &ldquo;Have an idea, a project, or an opportunity in mind? I&apos;d love to hear about it. Let&apos;s create something meaningful together.&rdquo;
+            </p>
+
+            {/* Compact Direct Contact Information Area */}
+            <div className="pt-6 border-t border-[#FFF3E6]/15 space-y-4 font-mono text-xs">
+              <span className="text-[10px] tracking-[0.25em] text-[#FFF3E6]/40 uppercase block">
+                {"// DIRECT COMMS CHANNELS"}
+              </span>
+
+              <div className="space-y-3">
+                {/* Email */}
+                <a
+                  href={`mailto:${PERSONAL_DETAILS.email}`}
+                  className="group flex items-center justify-between p-3.5 border border-[#FFF3E6]/10 bg-[#240f20]/40 hover:border-[#C6F277]/50 hover:bg-[#240f20]/90 transition-all duration-300 cursor-pointer"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#C6F277] group-hover:scale-125 transition-transform duration-200" />
+                    <span className="text-[#FFF3E6]/50 group-hover:text-[#FFF3E6] font-mono text-xs transition-colors duration-200">
+                      EMAIL:
+                    </span>
+                    <span className="font-bold text-[#FFF3E6] group-hover:text-[#C6F277] font-mono text-xs transition-colors duration-200">
+                      {PERSONAL_DETAILS.email}
+                    </span>
+                  </div>
+                  <ArrowUpRight className="w-4 h-4 text-[#C6F277] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200" />
+                </a>
+
+                {/* GitHub */}
+                <a
+                  href={PERSONAL_DETAILS.github}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="group flex items-center justify-between p-3.5 border border-[#FFF3E6]/10 bg-[#240f20]/40 hover:border-[#C6F277]/50 hover:bg-[#240f20]/90 transition-all duration-300 cursor-pointer"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#C6F277] group-hover:scale-125 transition-transform duration-200" />
+                    <span className="text-[#FFF3E6]/50 group-hover:text-[#FFF3E6] font-mono text-xs transition-colors duration-200">
+                      GITHUB:
+                    </span>
+                    <span className="font-bold text-[#FFF3E6] group-hover:text-[#C6F277] font-mono text-xs transition-colors duration-200">
+                      github.com/Lander2007
+                    </span>
+                  </div>
+                  <ArrowUpRight className="w-4 h-4 text-[#C6F277] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200" />
+                </a>
+
+                {/* LinkedIn */}
+                <a
+                  href={PERSONAL_DETAILS.linkedin}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="group flex items-center justify-between p-3.5 border border-[#FFF3E6]/10 bg-[#240f20]/40 hover:border-[#C6F277]/50 hover:bg-[#240f20]/90 transition-all duration-300 cursor-pointer"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#C6F277] group-hover:scale-125 transition-transform duration-200" />
+                    <span className="text-[#FFF3E6]/50 group-hover:text-[#FFF3E6] font-mono text-xs transition-colors duration-200">
+                      LINKEDIN:
+                    </span>
+                    <span className="font-bold text-[#FFF3E6] group-hover:text-[#C6F277] font-mono text-xs transition-colors duration-200">
+                      linkedin.com/in/khaled-amr
+                    </span>
+                  </div>
+                  <ArrowUpRight className="w-4 h-4 text-[#C6F277] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200" />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Contact Form */}
+          <div className="lg:col-span-6 w-full">
+            <ContactForm />
+          </div>
         </div>
+
+        {/* The Typographic Afterimage Word Wall */}
+        <FooterWordWall />
 
         {/* Strict 1px Bordered Swiss Grid Channels */}
         <div className="border-t border-[#FFF3E6]/25 divide-y divide-[#FFF3E6]/20">

@@ -29,8 +29,10 @@ export default function NumberCounter({
     ).matches;
 
     if (prefersReducedMotion) {
-      setDisplayValue(end);
-      setHasAnimated(true);
+      setTimeout(() => {
+        setDisplayValue(end);
+        setHasAnimated(true);
+      }, 0);
       return;
     }
 

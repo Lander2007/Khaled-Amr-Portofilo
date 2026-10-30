@@ -20,11 +20,19 @@ export default function TiltCard({
   const glareRef = useRef<HTMLDivElement>(null);
   const rafId = useRef<number | null>(null);
 
+  const rectRef = useRef<DOMRect | null>(null);
+
   useEffect(() => {
     return () => {
       if (rafId.current) cancelAnimationFrame(rafId.current);
     };
   }, []);
+
+  const handleMouseEnter = () => {
+    if (cardRef.current) {
+      rectRef.current = cardRef.current.getBoundingClientRect();
+    }
+  };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
@@ -32,7 +40,11 @@ export default function TiltCard({
     if (!window.matchMedia("(pointer: fine)").matches) return;
 
     const el = cardRef.current;
-    const rect = el.getBoundingClientRect();
+    let rect = rectRef.current;
+    if (!rect) {
+      rect = el.getBoundingClientRect();
+      rectRef.current = rect;
+    }
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
@@ -53,6 +65,7 @@ export default function TiltCard({
   };
 
   const handleMouseLeave = () => {
+    rectRef.current = null;
     if (!cardRef.current) return;
     if (rafId.current) cancelAnimationFrame(rafId.current);
     rafId.current = requestAnimationFrame(() => {
@@ -68,6 +81,7 @@ export default function TiltCard({
   return (
     <div
       ref={cardRef}
+      onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{

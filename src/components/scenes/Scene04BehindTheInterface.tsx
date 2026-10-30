@@ -1,8 +1,7 @@
 "use client";
 
-import { CheckCircle2, Cpu, Globe, Gauge, Code2, Terminal, Layers } from "lucide-react";
+import { Gauge } from "lucide-react";
 import CursorSpotlight from "@/components/motion/CursorSpotlight";
-import TiltCard from "@/components/motion/TiltCard";
 
 export default function Scene04BehindTheInterface() {
   const skillGroups = [

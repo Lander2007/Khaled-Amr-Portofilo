@@ -13,16 +13,15 @@ const ROW1_WORDS = [
   "FORM", "•", "SHIFT", "•", "KINETIC", "•", "ARCHITECTURE", "•", "FORM", "•", "SHIFT", "•", "KINETIC", "•", "ARCHITECTURE"
 ];
 const ROW2_WORDS = [
-  "PRECISION", "•", "STRUCTURE", "•", "SPACE", "•", "CRAFT", "•", "PRECISION", "•", "STRUCTURE", "•", "SPACE", "•", "CRAFT"
+  "DREAM", "•", "PASSION", "•", "EMOTION", "•", "DREAM", "•", "PASSION", "•", "EMOTION", "•", "DREAM", "•", "PASSION"
 ];
 const ROW3_WORDS = [
-  "TACTILE", "•", "MOTION", "•", "ENGINEERING", "•", "INTERACTION", "•", "TACTILE", "•", "MOTION", "•", "ENGINEERING"
+  "EMOTION", "•", "DREAM", "•", "PASSION", "•", "EMOTION", "•", "DREAM", "•", "PASSION", "•", "EMOTION"
 ];
 
 export default function Scene01Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
-  const curtainOverlayRef = useRef<HTMLDivElement>(null);
   const wordWallRef = useRef<HTMLDivElement>(null);
   const wordRow1Ref = useRef<HTMLDivElement>(null);
   const wordRow2Ref = useRef<HTMLDivElement>(null);
@@ -217,53 +216,6 @@ export default function Scene01Hero() {
     }
   }, [handleShiftTrigger]);
 
-  // Easter Egg 3 — Pointer proximity distortion for fine pointers (Mouse)
-  const handleWordWallPointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    if (typeof window === "undefined") return;
-    if (window.matchMedia("(pointer: coarse)").matches) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const mouseX = e.clientX;
-    const mouseY = e.clientY;
-
-    const words = wordWallRef.current?.querySelectorAll<HTMLElement>(".interactive-word");
-    if (!words) return;
-
-    words.forEach((el) => {
-      if (el.dataset.inRipple === "true") return;
-
-      const rect = el.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const distX = mouseX - centerX;
-      const distY = mouseY - centerY;
-      const dist = Math.hypot(distX, distY);
-
-      if (dist < 170) {
-        const factor = 1 - dist / 170;
-        const offsetX = -(distX / dist) * factor * 7;
-        const offsetY = -(distY / dist) * factor * 5;
-        const skew = -(distX / dist) * factor * 6;
-        el.style.transform = `translate(${offsetX}px, ${offsetY}px) skewX(${skew}deg) scale(${1 + factor * 0.03})`;
-        el.style.opacity = `${0.07 + factor * 0.16}`;
-      } else {
-        el.style.transform = "";
-        el.style.opacity = "";
-      }
-    });
-  }, []);
-
-  const handleWordWallPointerLeave = useCallback(() => {
-    const words = wordWallRef.current?.querySelectorAll<HTMLElement>(".interactive-word");
-    if (!words) return;
-    words.forEach((el) => {
-      if (el.dataset.inRipple !== "true") {
-        el.style.transform = "";
-        el.style.opacity = "";
-      }
-    });
-  }, []);
-
   // Cleanup all timers on unmount
   useEffect(() => {
     return () => {
@@ -275,7 +227,7 @@ export default function Scene01Hero() {
   }, []);
 
   useEffect(() => {
-    if (!containerRef.current || !curtainOverlayRef.current) {
+    if (!containerRef.current) {
       return;
     }
 
@@ -289,9 +241,8 @@ export default function Scene01Hero() {
       },
       (context) => {
         const { isDesktop } = context.conditions as { isDesktop: boolean; isMobile: boolean };
-        const splitStop = isDesktop ? "36%" : "0%";
 
-        // 1. Initial Page Load Staggered Entrance (clears props so no inline styles conflict)
+        // 1. Initial Page Load Staggered Entrance
         gsap.from(heroContentRef.current, {
           opacity: 0,
           y: 24,
@@ -300,147 +251,58 @@ export default function Scene01Hero() {
           clearProps: "opacity,transform",
         });
 
-        // 2. Scroll-Driven Master Timeline with explicit fromTo and failsafe resets
+        // 2. Unpinned Smooth Scroll Scrub on Word Wall and Hero Elements
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: containerRef.current,
             start: "top top",
-            end: isDesktop ? "+=200%" : "+=140%",
-            pin: true,
-            scrub: 0.4,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-            onLeaveBack: () => {
-              // Guaranteed restoration when scrolling back to the very top
-              if (heroContentRef.current) {
-                gsap.set(heroContentRef.current, {
-                  opacity: 1,
-                  scale: 1,
-                  xPercent: 0,
-                  clearProps: "transform",
-                });
-              }
-              if (curtainOverlayRef.current) {
-                gsap.set(curtainOverlayRef.current, {
-                  clipPath: "inset(0% 0% 0% 100%)",
-                });
-              }
-            },
-            onUpdate: (self) => {
-              // Safety guard: if near top, ensure hero text is fully visible
-              if (self.progress <= 0.02 && heroContentRef.current) {
-                heroContentRef.current.style.opacity = "1";
-              }
-            },
+            end: "bottom top",
+            scrub: 0.5,
           },
         });
 
         // Animated Word Wall Opposing Glides
         if (wordRow1Ref.current && wordRow2Ref.current && wordRow3Ref.current) {
-          tl.fromTo(
+          tl.to(
             wordRow1Ref.current,
-            { xPercent: 0 },
             {
-              xPercent: isDesktop ? -16 : -25,
+              xPercent: isDesktop ? -15 : -24,
               ease: "none",
-              duration: 1,
             },
             0
           );
 
-          tl.fromTo(
+          tl.to(
             wordRow2Ref.current,
-            { xPercent: 0 },
             {
-              xPercent: isDesktop ? 16 : 25,
+              xPercent: isDesktop ? 15 : 24,
               ease: "none",
-              duration: 1,
             },
             0
           );
 
-          tl.fromTo(
+          tl.to(
             wordRow3Ref.current,
-            { xPercent: 0 },
             {
-              xPercent: isDesktop ? -12 : -20,
+              xPercent: isDesktop ? -12 : -18,
               ease: "none",
-              duration: 1,
             },
             0
           );
         }
 
-        if (wordWallRef.current) {
-          tl.fromTo(
-            wordWallRef.current,
-            { yPercent: 0, opacity: 0.07 },
+        // Hero Content gentle upward translation and soft fade on scroll
+        if (heroContentRef.current) {
+          tl.to(
+            heroContentRef.current,
             {
-              yPercent: -10,
-              opacity: 0.03,
+              y: -40,
+              opacity: 0.25,
               ease: "none",
-              duration: 1,
             },
             0
           );
         }
-
-        // Camera-shutter curtain wipe transition
-        tl.fromTo(
-          curtainOverlayRef.current,
-          {
-            clipPath: "inset(0% 0% 0% 100%)",
-          },
-          {
-            clipPath: `inset(0% 0% 0% ${splitStop})`,
-            ease: "none",
-            duration: 0.45,
-          },
-          0
-        );
-
-        // Explicit fromTo so returning to progress 0 always restores opacity: 1
-        tl.fromTo(
-          heroContentRef.current,
-          {
-            opacity: 1,
-            scale: 1,
-            xPercent: 0,
-          },
-          {
-            xPercent: isDesktop ? -4 : 0,
-            scale: 0.96,
-            opacity: isDesktop ? 0.75 : 0.4,
-            ease: "none",
-            duration: 0.45,
-          },
-          0
-        );
-
-        // Phase 2: Hold briefly to inspect transition title
-        tl.to({}, { duration: 0.15 });
-
-        // Phase 3: Shutter wipes completely across into Scene 02 / Work
-        tl.to(
-          curtainOverlayRef.current,
-          {
-            clipPath: "inset(0% 0% 0% 0%)",
-            ease: "none",
-            duration: 0.4,
-          },
-          0.6
-        );
-
-        tl.to(
-          heroContentRef.current,
-          {
-            opacity: 0,
-            scale: 0.92,
-            ease: "power1.in",
-            duration: 0.3,
-          },
-          0.65
-        );
       },
       containerRef
     );
@@ -461,8 +323,6 @@ export default function Scene01Hero() {
       {/* ============================================================== */}
       <div
         ref={wordWallRef}
-        onPointerMove={handleWordWallPointerMove}
-        onPointerLeave={handleWordWallPointerLeave}
         className="absolute inset-0 overflow-hidden pointer-events-auto select-none flex flex-col justify-around py-8 opacity-[0.06] sm:opacity-[0.075] z-0"
         aria-hidden="false"
         role="region"
@@ -503,7 +363,7 @@ export default function Scene01Hero() {
                           : "opacity-0 scale-75 pointer-events-none w-0 p-0 m-0 overflow-hidden"
                       }`}
                     >
-                      [DISCOVERED // 01]
+                      {"[DISCOVERED // 01]"}
                     </span>
                   )}
                 </span>
@@ -646,63 +506,6 @@ export default function Scene01Hero() {
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
             </MagneticButton>
-          </div>
-        </div>
-      </div>
-
-      {/* ============================================================== */}
-      {/* 03. SIGNATURE DEEP PLUM CURTAIN OVERLAY: SHUTTER WIPE (Z-20)    */}
-      {/* ============================================================== */}
-      <div
-        ref={curtainOverlayRef}
-        className="absolute inset-0 w-screen h-screen bg-[#381932] text-[#FFF3E6] z-20 overflow-hidden shadow-2xl flex items-center justify-end"
-        style={{ clipPath: "inset(0% 0% 0% 100%)" }}
-      >
-        {/* Fixed-Position Inner Showcase Container: Locked to right 58vw */}
-        <div className="w-full lg:w-[58vw] h-full flex flex-col justify-center px-6 sm:px-12 md:px-16 pt-20 pb-20 space-y-6">
-          {/* Header Tag */}
-          <div className="flex items-center gap-3 border-b border-[#FFF3E6]/20 pb-3">
-            <span className="w-2 h-2 bg-[#FFF3E6] inline-block" />
-            <span className="font-serif italic text-2xl text-[#FFF3E6]">
-              Selected Works
-            </span>
-            <span className="ml-auto font-mono text-xs tracking-widest text-[#FFF3E6]/70">
-              CATALOGUE ENTRANCE // 2026
-            </span>
-          </div>
-
-          <div className="space-y-6 max-w-xl">
-            <div className="font-mono text-xs tracking-widest text-[#FFF3E6]/70 uppercase">
-              // PRODUCTION ARCHITECTURES
-            </div>
-
-            <h2 className="font-display text-4xl sm:text-5xl md:text-6xl leading-[0.88] tracking-tighter text-[#FFF3E6] uppercase">
-              FORM
-              <br />
-              / SHIFT
-              <br />
-              <span className="text-[#FFF3E6]/60 font-mono text-2xl sm:text-3xl font-light">
-                [ 15 PROJECTS ]
-              </span>
-            </h2>
-
-            <p className="font-sans text-sm sm:text-base text-[#FFF3E6]/80 leading-relaxed">
-              An audited repertoire of client production platforms, Arabic/English bilingual e-commerce storefronts, and interactive audio/visual prototypes.
-            </p>
-
-            <div className="flex flex-wrap items-center gap-4 pt-2 font-mono text-xs">
-              <a
-                href="#work"
-                className="px-6 py-3.5 bg-[#FFF3E6] text-[#381932] font-bold uppercase tracking-wider hover:bg-[#F5E6D6] transition-colors shadow-md flex items-center gap-2"
-              >
-                <span>VIEW FULL CATALOGUE</span>
-                <ArrowDown className="w-3.5 h-3.5" />
-              </a>
-
-              <span className="text-xs text-[#FFF3E6]/70 px-4 py-3 border border-[#FFF3E6]/25">
-                SCROLL TO PROCEED &darr;
-              </span>
-            </div>
           </div>
         </div>
       </div>

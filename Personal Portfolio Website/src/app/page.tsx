@@ -4,10 +4,14 @@ import Scene02Transform from "@/components/scenes/Scene02Transform";
 import Scene03SelectedWork from "@/components/scenes/Scene03SelectedWork";
 import Scene04BehindTheInterface from "@/components/scenes/Scene04BehindTheInterface";
 import Scene05Contact from "@/components/scenes/Scene05Contact";
+import CinematicIntro from "@/components/motion/CinematicIntro";
 
 export default function HomePage() {
   return (
     <main className="relative w-full min-h-screen bg-[#FFF3E6] text-[#381932]">
+      {/* Cinematic Autonomous Intro: The Digital Awakening */}
+      <CinematicIntro />
+
       {/* Navigation */}
       <Navbar />
 

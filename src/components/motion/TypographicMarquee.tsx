@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 interface MarqueeProps {
   items: string[];
@@ -15,16 +15,7 @@ export default function TypographicMarquee({
   theme = "plum",
   className = "",
 }: MarqueeProps) {
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-
-  useEffect(() => {
-    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setPrefersReducedMotion(motionQuery.matches);
-
-    const onMotion = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
-    motionQuery.addEventListener("change", onMotion);
-    return () => motionQuery.removeEventListener("change", onMotion);
-  }, []);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const isPlum = theme === "plum";
   const bgClass = isPlum ? "bg-[#381932] text-[#FFF3E6]" : "bg-[#FFF3E6] text-[#381932]";

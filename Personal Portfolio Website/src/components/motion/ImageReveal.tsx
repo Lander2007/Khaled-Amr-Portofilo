@@ -37,7 +37,7 @@ export default function ImageReveal({
     setMotionAllowed(true);
 
     const ctx = gsap.context(() => {
-      let initialClip = "polygon(0 0, 100% 0, 100% 100%, 0 100%)";
+      const initialClip = "polygon(0 0, 100% 0, 100% 100%, 0 100%)";
       let targetClip = "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)";
 
       if (direction === "left") {

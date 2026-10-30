@@ -18,6 +18,7 @@ export default function MagneticButton({
 }: MagneticButtonProps) {
   const ref = useRef<HTMLDivElement>(null);
   const rafId = useRef<number | null>(null);
+  const rectRef = useRef<{ left: number; top: number; width: number; height: number } | null>(null);
 
   useEffect(() => {
     return () => {
@@ -25,15 +26,28 @@ export default function MagneticButton({
     };
   }, []);
 
+  const handleMouseEnter = () => {
+    if (ref.current) {
+      const rect = ref.current.getBoundingClientRect();
+      rectRef.current = { left: rect.left, top: rect.top, width: rect.width, height: rect.height };
+    }
+  };
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (!window.matchMedia("(pointer: fine)").matches) return;
 
     const el = ref.current;
-    const { left, top, width, height } = el.getBoundingClientRect();
-    const centerX = left + width / 2;
-    const centerY = top + height / 2;
+    let rect = rectRef.current;
+    if (!rect) {
+      const r = el.getBoundingClientRect();
+      rect = { left: r.left, top: r.top, width: r.width, height: r.height };
+      rectRef.current = rect;
+    }
+
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
 
     const deltaX = (e.clientX - centerX) * strength;
     const deltaY = (e.clientY - centerY) * strength;
@@ -49,6 +63,7 @@ export default function MagneticButton({
   };
 
   const handleMouseLeave = () => {
+    rectRef.current = null;
     if (!ref.current) return;
     if (rafId.current) cancelAnimationFrame(rafId.current);
     rafId.current = requestAnimationFrame(() => {
@@ -62,6 +77,7 @@ export default function MagneticButton({
   return (
     <div
       ref={ref}
+      onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{

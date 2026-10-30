@@ -15,20 +15,39 @@ export default function CursorSpotlight({
 }: CursorSpotlightProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const spotlightRef = useRef<HTMLDivElement>(null);
+  const rectRef = useRef<DOMRect | null>(null);
   const rafId = useRef<number | null>(null);
 
   useEffect(() => {
+    const handleScrollOrResize = () => {
+      rectRef.current = null;
+    };
+    window.addEventListener("scroll", handleScrollOrResize, { passive: true });
+    window.addEventListener("resize", handleScrollOrResize, { passive: true });
     return () => {
+      window.removeEventListener("scroll", handleScrollOrResize);
+      window.removeEventListener("resize", handleScrollOrResize);
       if (rafId.current) cancelAnimationFrame(rafId.current);
     };
   }, []);
+
+  const handleMouseEnter = () => {
+    if (containerRef.current) {
+      rectRef.current = containerRef.current.getBoundingClientRect();
+    }
+  };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current || !spotlightRef.current) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (!window.matchMedia("(pointer: fine)").matches) return;
 
-    const rect = containerRef.current.getBoundingClientRect();
+    let rect = rectRef.current;
+    if (!rect) {
+      rect = containerRef.current.getBoundingClientRect();
+      rectRef.current = rect;
+    }
+
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
@@ -42,6 +61,7 @@ export default function CursorSpotlight({
   };
 
   const handleMouseLeave = () => {
+    rectRef.current = null;
     if (!spotlightRef.current) return;
     if (rafId.current) cancelAnimationFrame(rafId.current);
     rafId.current = requestAnimationFrame(() => {
@@ -54,6 +74,7 @@ export default function CursorSpotlight({
   return (
     <div
       ref={containerRef}
+      onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className={`relative overflow-hidden ${className}`}

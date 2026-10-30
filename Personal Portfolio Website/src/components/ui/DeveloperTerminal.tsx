@@ -8,15 +8,6 @@ interface CommandHistoryItem {
   output: React.ReactNode;
 }
 
-const ALLOWED_COMMANDS = [
-  "help",
-  "about",
-  "projects",
-  "secret",
-  "clear",
-  "exit",
-] as const;
-
 export default function DeveloperTerminal() {
   const [isOpen, setIsOpen] = useState(false);
   const [inputVal, setInputVal] = useState("");

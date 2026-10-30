@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 interface LiquidDividerProps {
   fillColor?: string; // e.g. "#381932" or "#FFF3E6"
@@ -13,16 +13,7 @@ export default function LiquidDivider({
   direction = "bottom",
   className = "",
 }: LiquidDividerProps) {
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-
-  useEffect(() => {
-    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setPrefersReducedMotion(motionQuery.matches);
-
-    const onMotion = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
-    motionQuery.addEventListener("change", onMotion);
-    return () => motionQuery.removeEventListener("change", onMotion);
-  }, []);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const isFlipped = direction === "top";
 

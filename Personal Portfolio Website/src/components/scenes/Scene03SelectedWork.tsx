@@ -11,13 +11,13 @@ import {
   Compass,
   CheckCircle2,
   SlidersHorizontal,
-  ExternalLink,
   Layers,
 } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { PROJECTS, CaseStudy } from "@/data/projectsData";
+import { PROJECTS } from "@/data/projectsData";
 import MagneticButton from "@/components/motion/MagneticButton";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -27,6 +27,60 @@ export default function Scene03SelectedWork() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const previewStageRef = useRef<HTMLDivElement>(null);
   const indexContainerRef = useRef<HTMLDivElement>(null);
+
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  // Living Project Preview Interactive Tilt & Dynamic Image Shift (Direct GPU DOM transforms, zero React re-renders)
+  const cardInnerRef = useRef<HTMLDivElement>(null);
+  const imgInnerRef = useRef<HTMLDivElement>(null);
+  const tiltRafRef = useRef<number | null>(null);
+
+  const handleImagePointerMove = useCallback(
+    (e: React.PointerEvent<HTMLAnchorElement>) => {
+      if (prefersReducedMotion) return;
+      if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) return;
+
+      const rect = e.currentTarget.getBoundingClientRect();
+      const normX = (e.clientX - rect.left) / rect.width;
+      const normY = (e.clientY - rect.top) / rect.height;
+
+      const rotX = (0.5 - normY) * 4;
+      const rotY = (normX - 0.5) * 4;
+      const shiftX = (normX - 0.5) * -10;
+      const shiftY = (normY - 0.5) * -10;
+
+      if (tiltRafRef.current) cancelAnimationFrame(tiltRafRef.current);
+      tiltRafRef.current = requestAnimationFrame(() => {
+        if (cardInnerRef.current) {
+          cardInnerRef.current.style.transform = `perspective(1000px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg)`;
+          cardInnerRef.current.style.transition = "transform 0.1s ease-out";
+        }
+        if (imgInnerRef.current) {
+          imgInnerRef.current.style.transform = `translate3d(${shiftX.toFixed(1)}px, ${shiftY.toFixed(1)}px, 0) scale(1.03)`;
+          imgInnerRef.current.style.transition = "transform 0.1s ease-out";
+        }
+      });
+    },
+    [prefersReducedMotion]
+  );
+
+  const handleImagePointerLeave = useCallback(() => {
+    if (tiltRafRef.current) cancelAnimationFrame(tiltRafRef.current);
+    if (cardInnerRef.current) {
+      cardInnerRef.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg)";
+      cardInnerRef.current.style.transition = "transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)";
+    }
+    if (imgInnerRef.current) {
+      imgInnerRef.current.style.transform = "translate3d(0, 0, 0) scale(1)";
+      imgInnerRef.current.style.transition = "transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)";
+    }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (tiltRafRef.current) cancelAnimationFrame(tiltRafRef.current);
+    };
+  }, []);
 
   // Category definitions with live counts
   const categories = useMemo(
@@ -58,15 +112,20 @@ export default function Scene03SelectedWork() {
     return PROJECTS.filter((proj) => proj.category === activeCategory);
   }, [activeCategory]);
 
-  // Synchronize active project when category changes
-  useEffect(() => {
-    if (filteredProjects.length > 0) {
-      const exists = filteredProjects.some((p) => p.slug === activeSlug);
-      if (!exists) {
-        setActiveSlug(filteredProjects[0].slug);
+  // Handle category change and keep active project aligned
+  const handleCategorySelect = useCallback(
+    (categoryId: string) => {
+      setActiveCategory(categoryId);
+      const nextFiltered =
+        categoryId === "all"
+          ? PROJECTS
+          : PROJECTS.filter((proj) => proj.category === categoryId);
+      if (!nextFiltered.some((p) => p.slug === activeSlug) && nextFiltered.length > 0) {
+        setActiveSlug(nextFiltered[0].slug);
       }
-    }
-  }, [filteredProjects, activeSlug]);
+    },
+    [activeSlug]
+  );
 
   // Currently selected active project
   const activeProject = useMemo(() => {
@@ -217,7 +276,7 @@ export default function Scene03SelectedWork() {
               return (
                 <button
                   key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
+                  onClick={() => handleCategorySelect(cat.id)}
                   className={`px-3.5 py-1.5 font-mono text-xs whitespace-nowrap uppercase tracking-wider transition-all duration-200 cursor-pointer border flex items-center gap-1.5 ${
                     isActive
                       ? "bg-[#381932] text-[#FFF3E6] border-[#381932] font-bold shadow-sm"
@@ -273,25 +332,52 @@ export default function Scene03SelectedWork() {
                 </div>
               </div>
 
-              {/* Main Substantial Image Viewport with Smooth Image Reveal */}
+              {/* Main Substantial Image Viewport with Living Project Preview & Cursor Spotlight */}
               <Link
                 href={`/work/${activeProject.slug}`}
+                onPointerMove={handleImagePointerMove}
+                onPointerLeave={handleImagePointerLeave}
                 className="group relative block w-full aspect-[16/10] sm:aspect-[16/9] overflow-hidden bg-[#240f20] border border-[#381932]/20 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#381932]"
+                style={{
+                  perspective: "1200px",
+                }}
                 aria-label={`Open case study for ${activeProject.title}`}
               >
-                {/* Keyed container for instant smooth reveal animation */}
+                {/* Keyed container with 3D perspective tilt & instant smooth reveal animation */}
                 <div
                   key={activeProject.slug}
-                  className="relative w-full h-full animate-observatory-reveal"
+                  ref={cardInnerRef}
+                  className="relative w-full h-full animate-observatory-reveal will-change-transform"
+                  style={{
+                    transformStyle: "preserve-3d",
+                  }}
                 >
-                  <Image
-                    src={activeProject.coverImage}
-                    alt={activeProject.title}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 65vw"
-                    priority
-                    className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.025]"
-                  />
+                  {/* Internal Image Plane with Counter-Parallax Shift */}
+                  <div
+                    ref={imgInnerRef}
+                    className="relative w-full h-full will-change-transform"
+                  >
+                    <Image
+                      src={activeProject.coverImage}
+                      alt={activeProject.title}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 65vw"
+                      priority
+                      className="object-cover object-top"
+                    />
+                  </div>
+
+                  {/* Architectural Blueprint Hover Lens Accent */}
+                  {!prefersReducedMotion && (
+                    <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute inset-0 bg-[#381932]/20" />
+                      <div className="absolute inset-0 bg-grid-plum opacity-20" />
+                      <div className="absolute top-3 right-3 font-mono text-[9px] sm:text-[10px] text-[#381932] bg-[#C6F277] px-2 py-0.5 font-bold uppercase tracking-wider select-none shadow-sm flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#381932] animate-pulse" />
+                        <span>INSPECTION LENS // ACTIVE</span>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Minimal Architectural Frame Corner Accents */}
                   <div className="absolute top-3 left-3 font-mono text-[10px] tracking-widest text-[#FFF3E6] bg-[#381932]/85 px-2.5 py-1 uppercase backdrop-blur-xs select-none">
@@ -300,7 +386,7 @@ export default function Scene03SelectedWork() {
 
                   <div className="absolute bottom-3 right-3 font-mono text-[11px] tracking-wider text-[#FFF3E6] bg-[#381932] px-3 py-1.5 uppercase flex items-center gap-1.5 opacity-90 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all shadow-md">
                     <span>EXPLORE ARCHITECTURE</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <ArrowRight className="w-3.5 h-3.5 text-[#C6F277]" />
                   </div>
                 </div>
               </Link>
@@ -443,7 +529,7 @@ export default function Scene03SelectedWork() {
               role="tablist"
               aria-label="Project Observatory Directory"
             >
-              {filteredProjects.map((project, idx) => {
+              {filteredProjects.map((project) => {
                 const isSelected = activeProject.slug === project.slug;
 
                 return (
