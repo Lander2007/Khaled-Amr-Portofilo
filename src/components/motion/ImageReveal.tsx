@@ -26,11 +26,11 @@ export default function ImageReveal({
   const [motionAllowed, setMotionAllowed] = useState(false);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
+    const isReduced =
+      typeof document !== "undefined" &&
+      document.documentElement.getAttribute("data-reduced-motion") === "true";
 
-    if (prefersReducedMotion || !containerRef.current || !curtainRef.current) {
+    if (isReduced || !containerRef.current || !curtainRef.current) {
       return;
     }
 

@@ -21,11 +21,11 @@ export default function ScrollTextFill({
   const textRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
+    const isReduced =
+      typeof document !== "undefined" &&
+      document.documentElement.getAttribute("data-reduced-motion") === "true";
 
-    if (prefersReducedMotion || !containerRef.current || !textRef.current) return;
+    if (isReduced || !containerRef.current || !textRef.current) return;
 
     const words = textRef.current.querySelectorAll(".fill-word");
 

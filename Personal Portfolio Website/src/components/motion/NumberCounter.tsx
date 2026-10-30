@@ -24,11 +24,11 @@ export default function NumberCounter({
   const elRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
+    const isReduced =
+      typeof document !== "undefined" &&
+      document.documentElement.getAttribute("data-reduced-motion") === "true";
 
-    if (prefersReducedMotion) {
+    if (isReduced) {
       setTimeout(() => {
         setDisplayValue(end);
         setHasAnimated(true);

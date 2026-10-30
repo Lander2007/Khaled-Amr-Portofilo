@@ -2,6 +2,9 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface CinematicIntroProps {
   onComplete?: () => void;
@@ -26,7 +29,6 @@ export default function CinematicIntro({
   const skipButtonRef = useRef<HTMLButtonElement>(null);
 
   const [isFinished, setIsFinished] = useState(false);
-
   const [isBypassing, setIsBypassing] = useState(false);
 
   // Clean, idempotent dismissal and cleanup
@@ -36,22 +38,27 @@ export default function CinematicIntro({
       masterTimelineRef.current = null;
     }
 
+    const finalize = () => {
+      setIsFinished(true);
+      document.body.style.overflow = "";
+      if (typeof window !== "undefined") {
+        requestAnimationFrame(() => {
+          ScrollTrigger.refresh();
+        });
+      }
+      if (onComplete) onComplete();
+    };
+
     if (containerRef.current) {
       gsap.to(containerRef.current, {
         opacity: 0,
         scale: 1.02,
         duration: 0.5,
         ease: "power2.inOut",
-        onComplete: () => {
-          setIsFinished(true);
-          document.body.style.overflow = "";
-          if (onComplete) onComplete();
-        },
+        onComplete: finalize,
       });
     } else {
-      setIsFinished(true);
-      document.body.style.overflow = "";
-      if (onComplete) onComplete();
+      finalize();
     }
   }, [onComplete]);
 
@@ -68,13 +75,14 @@ export default function CinematicIntro({
     // Lock body scroll strictly during active intro playback
     document.body.style.overflow = "hidden";
 
+    const startTime = Date.now();
+    let accumulatedWheel = 0;
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (
         e.key === "Escape" ||
         e.key === " " ||
-        e.key === "Enter" ||
-        e.key === "ArrowDown" ||
-        e.key === "PageDown"
+        e.key === "Enter"
       ) {
         e.preventDefault();
         handleSkip();
@@ -87,14 +95,20 @@ export default function CinematicIntro({
     };
 
     const handleTouchMove = (e: TouchEvent) => {
+      // Ignore initial touch momentum during first 600ms
+      if (Date.now() - startTime < 600) return;
       const deltaY = Math.abs(e.touches[0].clientY - startTouchY);
-      if (deltaY > 25) {
+      if (deltaY > 80) {
         handleSkip();
       }
     };
 
     const handleWheel = (e: WheelEvent) => {
-      if (Math.abs(e.deltaY) > 20) {
+      // Ignore wheel events during initial 600ms to prevent accidental dismissals on page reload
+      if (Date.now() - startTime < 600) return;
+      accumulatedWheel += Math.abs(e.deltaY);
+      // Require deliberate cumulative scroll (> 180) rather than a single accidental 20px notch
+      if (accumulatedWheel > 180) {
         handleSkip();
       }
     };
@@ -110,6 +124,11 @@ export default function CinematicIntro({
       window.removeEventListener("touchstart", handleTouchStart);
       window.removeEventListener("touchmove", handleTouchMove);
       document.body.style.overflow = "";
+      if (typeof window !== "undefined") {
+        requestAnimationFrame(() => {
+          ScrollTrigger.refresh();
+        });
+      }
     };
   }, [isFinished, handleSkip]);
 
@@ -119,11 +138,8 @@ export default function CinematicIntro({
 
     // Reduced motion check safely executed on client
     try {
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
-
-      if (prefersReducedMotion) {
+      const mode = localStorage.getItem("portfolio-motion-mode");
+      if (mode === "reduced" && !forcePlay) {
         queueMicrotask(() => {
           handleFinish();
         });

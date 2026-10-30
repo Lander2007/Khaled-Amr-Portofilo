@@ -36,7 +36,7 @@ export default function TiltCard({
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (typeof document !== "undefined" && document.documentElement.getAttribute("data-reduced-motion") === "true") return;
     if (!window.matchMedia("(pointer: fine)").matches) return;
 
     const el = cardRef.current;

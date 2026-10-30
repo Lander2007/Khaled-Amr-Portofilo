@@ -39,7 +39,7 @@ export default function CursorSpotlight({
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current || !spotlightRef.current) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (typeof document !== "undefined" && document.documentElement.getAttribute("data-reduced-motion") === "true") return;
     if (!window.matchMedia("(pointer: fine)").matches) return;
 
     let rect = rectRef.current;

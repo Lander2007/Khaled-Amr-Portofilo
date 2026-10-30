@@ -7,6 +7,7 @@ import { ArrowUpRight, Menu, X } from "lucide-react";
 import { gsap } from "gsap";
 import MagneticButton from "@/components/motion/MagneticButton";
 import BrandLogo from "@/components/ui/BrandLogo";
+import { usePrefersReducedMotion, setMotionPreference } from "@/hooks/usePrefersReducedMotion";
 
 interface NavItem {
   id: string;
@@ -34,6 +35,12 @@ export default function Navbar() {
   const navRef = useRef<HTMLElement>(null);
   const indicatorRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<{ [key: string]: HTMLAnchorElement | null }>({});
+
+  const prefersReduced = usePrefersReducedMotion();
+
+  const toggleMotion = () => {
+    setMotionPreference(prefersReduced ? "full" : "reduced");
+  };
 
   // 1. Passive scroll listener strictly for header background blur boundary & top-of-page hero snap
   useEffect(() => {
@@ -303,6 +310,22 @@ export default function Navbar() {
               </a>
             </MagneticButton>
 
+            {/* Motion Mode Toggle Button */}
+            <button
+              type="button"
+              onClick={toggleMotion}
+              className={`ml-1 px-2.5 py-2 border rounded-xs flex items-center gap-1.5 text-xs font-mono cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#381932] transition-colors ${
+                prefersReduced
+                  ? "border-[#381932]/25 text-[#381932]/50 hover:border-[#381932]/60 hover:text-[#381932]"
+                  : "border-[#381932]/30 text-[#381932] bg-[#381932]/5 hover:bg-[#381932]/10"
+              }`}
+              title={prefersReduced ? "Enable Full Motion & Animations" : "Switch to Reduced Motion"}
+              aria-label={prefersReduced ? "Enable Full Motion" : "Switch to Reduced Motion"}
+            >
+              <span className={`w-1.5 h-1.5 rounded-full ${prefersReduced ? "bg-[#381932]/40" : "bg-[#C6F277] shadow-[0_0_6px_#C6F277]"}`} />
+              <span className="font-semibold text-[11px]">{prefersReduced ? "FX: OFF" : "FX: ON"}</span>
+            </button>
+
             {/* Developer Console Quick Launcher (Cmd+K / Ctrl+K) */}
             <button
               type="button"
@@ -375,6 +398,23 @@ export default function Navbar() {
         </div>
 
         <div className="border-t border-[#381932]/15 pt-6 space-y-3 font-mono text-xs text-[#381932]/80">
+          {/* Mobile Motion Toggle */}
+          <div className="flex items-center justify-between px-3 py-2 border border-[#381932]/20 bg-[#381932]/5">
+            <span className="font-semibold text-[11px]">CREATIVE MOTION (FX)</span>
+            <button
+              type="button"
+              onClick={toggleMotion}
+              className={`px-2.5 py-1 text-[11px] font-bold border rounded-xs flex items-center gap-1.5 ${
+                prefersReduced
+                  ? "border-[#381932]/30 text-[#381932]/60"
+                  : "border-[#381932] bg-[#381932] text-[#C6F277]"
+              }`}
+            >
+              <span className={`w-1.5 h-1.5 rounded-full ${prefersReduced ? "bg-[#381932]/40" : "bg-[#C6F277]"}`} />
+              <span>{prefersReduced ? "OFF" : "ON"}</span>
+            </button>
+          </div>
+
           {/* Mobile Terminal Entry Point */}
           <button
             type="button"

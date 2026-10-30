@@ -48,8 +48,8 @@ export default function Scene01Hero() {
     setEgg1MessageVisible(true);
 
     const prefersReducedMotion =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      typeof document !== "undefined" &&
+      document.documentElement.getAttribute("data-reduced-motion") === "true";
 
     // 1. Polished typographic transformation sequence
     const glyphs = ["// DEV", "010", "K.A.", "AMR"];
@@ -153,8 +153,8 @@ export default function Scene01Hero() {
     }, 2400);
 
     const prefersReducedMotion =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      typeof document !== "undefined" &&
+      document.documentElement.getAttribute("data-reduced-motion") === "true";
 
     if (prefersReducedMotion) return;
 

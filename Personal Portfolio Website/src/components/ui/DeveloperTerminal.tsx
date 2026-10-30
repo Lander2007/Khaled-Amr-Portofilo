@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Terminal, X, ArrowRight, CornerDownLeft } from "lucide-react";
+import { getMotionPreference, setMotionPreference } from "@/hooks/usePrefersReducedMotion";
 
 interface CommandHistoryItem {
   command: string;
@@ -131,6 +132,10 @@ export default function DeveloperTerminal() {
             <div className="grid grid-cols-[100px_1fr] gap-x-2 gap-y-1 font-mono">
               <span className="text-[#C6F277]">help</span>
               <span>List all supported commands</span>
+              <span className="text-[#C6F277]">motion</span>
+              <span>Toggle motion mode [full | reduced | system]</span>
+              <span className="text-[#C6F277]">intro</span>
+              <span>Replay the cinematic digital awakening</span>
               <span className="text-[#C6F277]">about</span>
               <span>Factual engineering profile of Khaled Amr</span>
               <span className="text-[#C6F277]">projects</span>
@@ -201,6 +206,55 @@ export default function DeveloperTerminal() {
         setHistory([]);
         setInputVal("");
         return;
+
+      case "motion":
+      case "motion on":
+      case "motion full":
+      case "motion off":
+      case "motion reduced":
+      case "motion system": {
+        let newPref: "full" | "reduced" | "system" = "full";
+        if (normalized === "motion off" || normalized === "motion reduced") {
+          newPref = "reduced";
+        } else if (normalized === "motion system") {
+          newPref = "system";
+        } else if (normalized === "motion on" || normalized === "motion full") {
+          newPref = "full";
+        } else {
+          const current = getMotionPreference();
+          newPref = current === "full" ? "reduced" : "full";
+        }
+        setMotionPreference(newPref);
+        resultOutput = (
+          <div className="text-xs space-y-1 font-mono">
+            <p className="text-[#C6F277] font-bold">
+              &gt; MOTION CHOREOGRAPHY: [{newPref.toUpperCase()}]
+            </p>
+            <p className="text-[#FFF3E6]/75">
+              {newPref === "full"
+                ? "Full kinetic sequences, 3D tilt physics, and GSAP scroll choreography enabled."
+                : newPref === "reduced"
+                ? "Reduced motion active. Accessible static layouts and transitions enforced."
+                : "Synchronized with operating system prefers-reduced-motion media query."}
+            </p>
+          </div>
+        );
+        break;
+      }
+
+      case "intro":
+      case "replay": {
+        resultOutput = (
+          <div className="text-xs text-[#C6F277] space-y-1 font-mono">
+            <p>&gt; Rebooting Digital Awakening sequence...</p>
+          </div>
+        );
+        setTimeout(() => {
+          closeTerminal();
+          window.location.reload();
+        }, 300);
+        break;
+      }
 
       case "exit":
         closeTerminal();
