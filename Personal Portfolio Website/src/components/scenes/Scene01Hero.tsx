@@ -5,7 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import MagneticButton from "@/components/motion/MagneticButton";
-import TypewriterHero from "@/components/motion/TypewriterHero";
+import HeroGlitchLockup from "@/components/motion/HeroGlitchLockup";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -42,161 +42,13 @@ export default function Scene01Hero({
   const wordRow2Ref = useRef<HTMLDivElement>(null);
   const wordRow3Ref = useRef<HTMLDivElement>(null);
 
-  // Glitch Engine State & Refs
-  const [isGlitching, setIsGlitching] = useState(false);
-  const glitchTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Easter Egg 1 — Secret Identity state & refs
-  const [amrText, setAmrText] = useState("AMR");
-  const [isEgg1Active, setIsEgg1Active] = useState(false);
-  const [egg1MessageVisible, setEgg1MessageVisible] = useState(false);
-  const clickCountRef = useRef(0);
-  const clickWindowTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const egg1ResetTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const glyphCycleIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const khaledTitleRef = useRef<HTMLHeadingElement>(null);
-  const amrBadgeRef = useRef<HTMLButtonElement>(null);
-
   // Easter Egg 3 — Interactive Word Wall state & refs
   const [isLimeRevealed, setIsLimeRevealed] = useState(false);
   const limeRevealTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Trigger Glitch Burst (Signal & Slice aberration)
-  const triggerGlitchBurst = useCallback((durationMs = 280) => {
-    const prefersReducedMotion =
-      typeof document !== "undefined" &&
-      document.documentElement.getAttribute("data-reduced-motion") === "true";
-    if (prefersReducedMotion) return;
-
-    if (glitchTimerRef.current) clearTimeout(glitchTimerRef.current);
-    setIsGlitching(true);
-    glitchTimerRef.current = setTimeout(() => {
-      setIsGlitching(false);
-    }, durationMs);
-  }, []);
-
-  // Ambient Architectural Glitch Pulse (occasional subtle 220ms pulse)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (Math.random() > 0.45) {
-        triggerGlitchBurst(220);
-      }
-    }, 7500);
-
-    return () => {
-      clearInterval(interval);
-      if (glitchTimerRef.current) clearTimeout(glitchTimerRef.current);
-    };
-  }, [triggerGlitchBurst]);
-
-  // Easter Egg 1 Trigger Logic
-  const triggerSecretIdentity = useCallback(() => {
-    setIsEgg1Active(true);
-    setEgg1MessageVisible(true);
-    triggerGlitchBurst(550);
-
-    const prefersReducedMotion =
-      typeof document !== "undefined" &&
-      document.documentElement.getAttribute("data-reduced-motion") === "true";
-
-    // 1. Polished typographic transformation sequence
-    const glyphs = ["// DEV", "010", "K.A.", "AMR"];
-    let step = 0;
-    if (glyphCycleIntervalRef.current) clearInterval(glyphCycleIntervalRef.current);
-    glyphCycleIntervalRef.current = setInterval(() => {
-      if (step < glyphs.length) {
-        setAmrText(glyphs[step]);
-        step++;
-      } else {
-        if (glyphCycleIntervalRef.current) clearInterval(glyphCycleIntervalRef.current);
-      }
-    }, 130);
-
-    // 2. Animate subtle Electric Lime accent through Hero typography
-    if (!prefersReducedMotion && khaledTitleRef.current) {
-      gsap.fromTo(
-        khaledTitleRef.current,
-        { color: "inherit" },
-        {
-          color: "#D4FF33",
-          textShadow: "0 0 25px rgba(212, 255, 51, 0.5)",
-          duration: 0.5,
-          yoyo: true,
-          repeat: 1,
-          ease: "power2.inOut",
-          onComplete: () => {
-            if (khaledTitleRef.current) {
-              khaledTitleRef.current.style.color = "";
-              khaledTitleRef.current.style.textShadow = "";
-            }
-          },
-        }
-      );
-    }
-
-    if (!prefersReducedMotion && amrBadgeRef.current) {
-      gsap.fromTo(
-        amrBadgeRef.current,
-        { scale: 1, rotate: -1 },
-        {
-          scale: 1.08,
-          rotate: 2,
-          duration: 0.22,
-          yoyo: true,
-          repeat: 1,
-          ease: "power2.out",
-          onComplete: () => {
-            if (amrBadgeRef.current) {
-              amrBadgeRef.current.style.transform = "";
-            }
-          },
-        }
-      );
-    }
-
-    // 4. Return to original visual state after approximately two seconds
-    if (egg1ResetTimerRef.current) clearTimeout(egg1ResetTimerRef.current);
-    egg1ResetTimerRef.current = setTimeout(() => {
-      if (glyphCycleIntervalRef.current) clearInterval(glyphCycleIntervalRef.current);
-      setAmrText("AMR");
-      setEgg1MessageVisible(false);
-      setIsEgg1Active(false);
-    }, 2200);
-  }, [triggerGlitchBurst]);
-
-  const handleAmrClick = useCallback(() => {
-    if (isEgg1Active) return;
-
-    clickCountRef.current += 1;
-    triggerGlitchBurst(350);
-
-    // Tactile micro-pulse on each intentional click
-    if (amrBadgeRef.current) {
-      gsap.fromTo(
-        amrBadgeRef.current,
-        { scale: 0.95 },
-        { scale: 1, duration: 0.12, ease: "power1.out" }
-      );
-    }
-
-    // Reset counter window after 4.0s of inactivity
-    if (clickWindowTimerRef.current) clearTimeout(clickWindowTimerRef.current);
-    clickWindowTimerRef.current = setTimeout(() => {
-      clickCountRef.current = 0;
-    }, 4000);
-
-    // 5 intentional clicks trigger the secret identity
-    if (clickCountRef.current >= 5) {
-      clickCountRef.current = 0;
-      if (clickWindowTimerRef.current) clearTimeout(clickWindowTimerRef.current);
-      triggerSecretIdentity();
-    }
-  }, [isEgg1Active, triggerSecretIdentity, triggerGlitchBurst]);
-
   // Easter Egg 3 — SHIFT Click Ripple Trigger
   const handleShiftTrigger = useCallback((targetEl: HTMLElement) => {
     setIsLimeRevealed(true);
-    triggerGlitchBurst(300);
     if (limeRevealTimerRef.current) clearTimeout(limeRevealTimerRef.current);
     limeRevealTimerRef.current = setTimeout(() => {
       setIsLimeRevealed(false);
@@ -253,7 +105,7 @@ export default function Scene01Hero({
         ease: "power2.inOut",
       });
     });
-  }, [triggerGlitchBurst]);
+  }, []);
 
   const handleShiftClick = useCallback((e: React.MouseEvent<HTMLElement>) => {
     handleShiftTrigger(e.currentTarget);
@@ -269,11 +121,7 @@ export default function Scene01Hero({
   // Cleanup all timers on unmount
   useEffect(() => {
     return () => {
-      if (clickWindowTimerRef.current) clearTimeout(clickWindowTimerRef.current);
-      if (egg1ResetTimerRef.current) clearTimeout(egg1ResetTimerRef.current);
-      if (glyphCycleIntervalRef.current) clearInterval(glyphCycleIntervalRef.current);
       if (limeRevealTimerRef.current) clearTimeout(limeRevealTimerRef.current);
-      if (glitchTimerRef.current) clearTimeout(glitchTimerRef.current);
     };
   }, []);
 
@@ -507,88 +355,9 @@ export default function Scene01Hero({
         className="absolute inset-0 w-full h-full flex flex-col justify-center px-6 sm:px-12 md:px-16 lg:px-20 pt-12 sm:pt-14 pb-8 z-10 pointer-events-none"
       >
         <div className="w-full max-w-5xl mx-auto space-y-6 sm:space-y-8 pointer-events-none">
-          {/* Expressive Typographic Name Treatment with Architectural Slice & Chromatic Glitch */}
-          <div className="flex items-baseline flex-wrap gap-3 sm:gap-6 pointer-events-auto">
-            {/* KHALED with Architectural Slice Layers */}
-            <div
-              className="glitch-wrapper relative inline-block cursor-default select-none group"
-              data-glitching={isGlitching ? "true" : "false"}
-              onMouseEnter={() => triggerGlitchBurst(320)}
-            >
-              {/* Primary Base Layer */}
-              <h1
-                ref={khaledTitleRef}
-                className="font-display text-[clamp(2.8rem,9.2vw,9.5rem)] leading-[0.86] font-extrabold tracking-tighter text-current uppercase transition-colors relative z-10"
-              >
-                KHALED
-              </h1>
-
-              {/* Chromatic Slice Layer 1 (Acid Chartreuse & International Orange) */}
-              <span
-                aria-hidden="true"
-                className="glitch-slice glitch-slice-lime font-display text-[clamp(2.8rem,9.2vw,9.5rem)] leading-[0.86] font-extrabold tracking-tighter uppercase text-current z-20"
-              >
-                KHALED
-              </span>
-
-              {/* Chromatic Slice Layer 2 (Acid Chartreuse & Deep Plum / Milk) */}
-              <span
-                aria-hidden="true"
-                className="glitch-slice glitch-slice-orange font-display text-[clamp(2.8rem,9.2vw,9.5rem)] leading-[0.86] font-extrabold tracking-tighter uppercase text-current z-20"
-              >
-                KHALED
-              </span>
-            </div>
-
-            {/* AMR Tilted Badge with Chromatic Aberration Layers */}
-            <div className="relative inline-flex items-center">
-              <button
-                ref={amrBadgeRef}
-                type="button"
-                onClick={handleAmrClick}
-                onMouseEnter={() => triggerGlitchBurst(220)}
-                aria-label="Amr identity — Click repeatedly to discover secret"
-                className="relative overflow-hidden bg-[#381932] text-[#D4FF33] px-4 sm:px-7 py-1.5 sm:py-3 mb-2 inline-flex items-center justify-center transform -rotate-1 shadow-sm cursor-pointer select-none outline-none focus-visible:ring-2 focus-visible:ring-[#D4FF33] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-primary)] transition-transform active:scale-95 group"
-              >
-                {/* Chromatic Channel B (International Orange offset) */}
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-0 flex items-center justify-center font-display text-[clamp(1.5rem,4.4vw,4.5rem)] leading-none font-black tracking-normal text-[#FF4D1C] opacity-0 group-hover:opacity-90 translate-x-[2px] -translate-y-[1px] transition-opacity pointer-events-none select-none z-0"
-                >
-                  {amrText}
-                </span>
-
-                {/* Chromatic Channel A (Acid Chartreuse offset) */}
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-0 flex items-center justify-center font-display text-[clamp(1.5rem,4.4vw,4.5rem)] leading-none font-black tracking-normal text-[#D4FF33] opacity-0 group-hover:opacity-90 -translate-x-[2px] translate-y-[1px] transition-opacity pointer-events-none select-none z-0"
-                >
-                  {amrText}
-                </span>
-
-                {/* Primary Badge Content */}
-                <span className="relative z-10 font-display text-[clamp(1.5rem,4.4vw,4.5rem)] leading-none font-black tracking-normal text-[#D4FF33]">
-                  {amrText}
-                </span>
-              </button>
-
-              {/* Secret Message Tooltip / Toast (Easter Egg 1 Step 3) */}
-              {egg1MessageVisible && (
-                <div
-                  role="status"
-                  aria-live="polite"
-                  className="absolute top-full left-0 mt-3 z-30 px-4 py-2 bg-[#381932] border-2 border-[#D4FF33] text-[#FFF3E6] text-xs sm:text-sm font-mono shadow-2xl flex items-center gap-2.5 whitespace-nowrap pointer-events-none animate-fadeIn"
-                >
-                  <span className="w-2 h-2 rounded-full bg-[#D4FF33] animate-pulse" />
-                  <span className="font-semibold">You found the part that wasn&apos;t supposed to be obvious.</span>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* 3. Infinite Looping Typewriter Phrases */}
-          <div className="pt-1 pointer-events-auto">
-            <TypewriterHero className="max-w-2xl" />
+          {/* High-Impact 5-Slice Destructive Glitch & Character Scramble Engine */}
+          <div className="pointer-events-auto">
+            <HeroGlitchLockup />
           </div>
 
           {/* 4. Concise Professional Supporting Statement */}
