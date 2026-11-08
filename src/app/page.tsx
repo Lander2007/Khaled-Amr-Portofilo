@@ -7,7 +7,7 @@ import CinematicIntro from "@/components/motion/CinematicIntro";
 
 export default function HomePage() {
   return (
-    <main className="relative w-full min-h-screen bg-[var(--surface-primary)] text-[var(--ink-primary)] transition-colors duration-500">
+    <main className="relative w-full min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
       {/* Cinematic Autonomous Intro: The Digital Awakening */}
       <CinematicIntro />
 

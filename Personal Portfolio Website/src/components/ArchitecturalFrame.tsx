@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import PixelThemeToggle from "@/components/PixelThemeToggle";
 
 export default function ArchitecturalFrame() {
   const [localTime, setLocalTime] = useState<string>("");
@@ -44,9 +43,8 @@ export default function ArchitecturalFrame() {
           <span className="tracking-widest">ARCHITECTURAL POLARITY HUD</span>
         </div>
 
-        {/* Top-Right Section: ALEXANDRIA, EG [LOCAL TIME] and PIXEL THEME TOGGLE */}
+        {/* Top-Right Section: ALEXANDRIA, EG [LOCAL TIME] */}
         <div className="ml-auto flex items-center gap-3 sm:gap-4 pointer-events-auto">
-          {/* Alexandria Local Time Display */}
           <div
             className="flex items-center gap-2 px-2.5 sm:px-3 py-1.5 rounded-md border border-current/15 bg-current/5 backdrop-blur-md text-[10px] sm:text-[11px] font-mono transition-colors"
             title="Alexandria, Egypt (GMT+2 / Cairo Time)"
@@ -60,12 +58,8 @@ export default function ArchitecturalFrame() {
               [LOCAL TIME{localTime ? `: ${localTime}` : ""}]
             </span>
           </div>
-
-          {/* Bespoke Pixel-Matrix Theme Polarity Toggle */}
-          <PixelThemeToggle />
         </div>
       </div>
     </div>
   );
 }
-

@@ -225,7 +225,7 @@ export default function Navbar() {
         className={`fixed top-9 sm:top-10 left-0 right-0 z-40 transition-all duration-300 ${
           scrolled
             ? "bg-[var(--surface-primary)]/95 backdrop-blur-md border-b border-current/10 py-2.5 shadow-xs"
-            : "bg-transparent py-4 sm:py-5"
+            : "bg-transparent py-3 sm:py-4"
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 sm:px-10 flex items-center justify-between">
@@ -233,34 +233,35 @@ export default function Navbar() {
           <Link
             href="/#hero"
             onClick={handleHomeClick}
-            className="group flex items-center gap-2.5 sm:gap-3 font-display tracking-tight text-lg sm:text-xl font-bold uppercase transition-opacity hover:opacity-85 outline-none focus-visible:ring-2 focus-visible:ring-[#381932] rounded-xs cursor-pointer"
+            className="group flex items-center gap-2.5 sm:gap-3 font-display tracking-tight text-lg sm:text-xl font-bold uppercase transition-opacity hover:opacity-85 outline-none focus-visible:ring-2 focus-visible:ring-current rounded-xs cursor-pointer"
             aria-label="Khaled Amr — Return to Home section"
             title="Khaled Amr — Return to top"
           >
             <BrandLogo className="w-6 h-6 sm:w-7 sm:h-7 transition-transform group-hover:scale-105" />
-            <span className="tracking-normal transition-colors duration-200 text-[#381932]">
+            <span className="tracking-normal transition-colors duration-200 text-current">
               KHALED AMR
             </span>
-            <span className="hidden md:inline-block font-mono text-[10px] tracking-widest uppercase ml-1 border-l pl-2.5 font-normal transition-colors duration-200 text-[#381932]/60 border-[#381932]/20">
+            <span className="hidden md:inline-block font-mono text-[10px] tracking-widest uppercase ml-1 border-l pl-2.5 font-normal transition-colors duration-200 text-current/60 border-current/20">
               FORM / SHIFT
             </span>
           </Link>
 
-          {/* Desktop Navigation with Sliding Indicator & Refined Typography Hover */}
+          {/* Desktop Navigation Row: Nav Links + PixelThemeToggle + Action Buttons */}
           <nav
             ref={navRef}
             onMouseLeave={() => setHoveredSection(null)}
-            className="relative hidden md:flex items-center gap-6 lg:gap-8 font-mono text-xs tracking-wider uppercase font-medium"
+            className="relative hidden md:flex items-center gap-5 lg:gap-7 font-mono text-xs tracking-wider uppercase font-medium"
             aria-label="Primary Navigation"
           >
-            {/* Sliding Indicator with Refined Editorial Motion */}
+            {/* Sliding Indicator with Refined Motion */}
             <div
               ref={indicatorRef}
-              className="absolute -bottom-1 h-[2px] bg-[#381932] pointer-events-none rounded-full"
+              className="absolute -bottom-1 h-[2px] bg-current pointer-events-none rounded-full"
               style={{ left: 0, width: 0, opacity: 0 }}
               aria-hidden="true"
             />
 
+            {/* Navigation Links */}
             {NAV_ITEMS.map((item) => {
               const isActive = activeSection === item.id;
               const isHovered = hoveredSection === item.id;
@@ -277,18 +278,17 @@ export default function Navbar() {
                   onMouseLeave={() => setHoveredSection(null)}
                   onFocus={() => setHoveredSection(item.id)}
                   onBlur={() => setHoveredSection(null)}
-                  className="group relative py-1 px-1 transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[#381932] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFF3E6] rounded-xs"
+                  className="group relative py-1 px-1 transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-current rounded-xs"
                   aria-current={isActive ? "page" : undefined}
                 >
-                  {/* Subtle Magnetic Response (restrained 2-3px offset on desktop) */}
                   <MagneticButton strength={0.14} maxOffset={3} className="inline-block">
                     <span
                       className={`inline-block transition-all duration-200 ease-out select-none ${
-                        isHovered ? "-translate-y-0.5 text-[#381932] font-semibold" : "translate-y-0"
+                        isHovered ? "-translate-y-0.5 text-current font-semibold" : "translate-y-0"
                       } ${
                         isActive
-                          ? "text-[#381932] font-bold"
-                          : "text-[#381932]/75 hover:text-[#381932]"
+                          ? "text-current font-bold"
+                          : "text-current/75 hover:text-current"
                       }`}
                     >
                       {item.label}
@@ -298,11 +298,22 @@ export default function Navbar() {
               );
             })}
 
+            {/* Hairline Separator */}
+            <div className="h-4 w-[1px] bg-current/15 mx-0.5 pointer-events-none" aria-hidden="true" />
+
+            {/* Directly Integrated Pixel-Particle Theme Polarity Toggle */}
+            <div className="flex items-center py-0.5">
+              <PixelThemeToggle />
+            </div>
+
+            {/* Hairline Separator */}
+            <div className="h-4 w-[1px] bg-current/15 mx-0.5 pointer-events-none" aria-hidden="true" />
+
             {/* Direct CTA Button */}
             <MagneticButton strength={0.2} maxOffset={5}>
               <a
                 href="mailto:kaled.amr0210@gmail.com"
-                className="ml-2 px-4 py-2 border border-[#381932] text-[#381932] hover:bg-[#381932] hover:text-[#FFF3E6] transition-all duration-200 flex items-center gap-1.5 text-xs font-bold tracking-wider cursor-pointer group outline-none focus-visible:ring-2 focus-visible:ring-[#381932]"
+                className="px-4 py-2 border border-current text-current hover:bg-current hover:text-[var(--bg-primary)] transition-all duration-200 flex items-center gap-1.5 text-xs font-bold tracking-wider cursor-pointer group outline-none focus-visible:ring-2 focus-visible:ring-current rounded-xs"
               >
                 <span className="transition-transform duration-200 group-hover:-translate-y-0.5">
                   Get in Touch
@@ -311,39 +322,23 @@ export default function Navbar() {
               </a>
             </MagneticButton>
 
-            {/* Motion Mode Toggle Button */}
-            <button
-              type="button"
-              onClick={toggleMotion}
-              className={`ml-1 px-2.5 py-2 border rounded-xs flex items-center gap-1.5 text-xs font-mono cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#381932] transition-colors ${
-                prefersReduced
-                  ? "border-[#381932]/25 text-[#381932]/50 hover:border-[#381932]/60 hover:text-[#381932]"
-                  : "border-[#381932]/30 text-[#381932] bg-[#381932]/5 hover:bg-[#381932]/10"
-              }`}
-              title={prefersReduced ? "Enable Full Motion & Animations" : "Switch to Reduced Motion"}
-              aria-label={prefersReduced ? "Enable Full Motion" : "Switch to Reduced Motion"}
-            >
-              <span className={`w-1.5 h-1.5 rounded-full ${prefersReduced ? "bg-[#381932]/40" : "bg-[#C6F277] shadow-[0_0_6px_#C6F277]"}`} />
-              <span className="font-semibold text-[11px]">{prefersReduced ? "FX: OFF" : "FX: ON"}</span>
-            </button>
-
             {/* Developer Console Quick Launcher (Cmd+K / Ctrl+K) */}
             <button
               type="button"
               onClick={() => window.dispatchEvent(new CustomEvent("open-developer-terminal"))}
-              className="ml-1 px-2.5 py-2 border border-[#381932]/25 text-[#381932]/75 hover:text-[#381932] hover:border-[#381932] hover:bg-[#381932]/5 transition-colors rounded-xs flex items-center gap-1.5 text-xs font-mono cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#381932]"
+              className="px-2.5 py-2 border border-current/25 text-current/80 hover:text-current hover:border-current hover:bg-current/5 transition-colors rounded-xs flex items-center gap-1.5 text-xs font-mono cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-current"
               title="Open Developer Console (Ctrl + K / Cmd + K)"
               aria-label="Open Developer Terminal"
             >
-              <span className="text-[#381932] font-bold">&gt;_</span>
-              <kbd className="hidden lg:inline text-[10px] bg-[#381932]/10 px-1 py-0.5 rounded font-mono">⌘K</kbd>
+              <span className="font-bold">&gt;_</span>
+              <kbd className="hidden lg:inline text-[10px] bg-current/10 px-1 py-0.5 rounded font-mono">⌘K</kbd>
             </button>
           </nav>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-[#381932] hover:opacity-75 focus:outline-none cursor-pointer transition-colors focus-visible:ring-2 focus-visible:ring-[#381932] rounded-xs"
+            className="md:hidden p-2 text-current hover:opacity-75 focus:outline-none cursor-pointer transition-colors focus-visible:ring-2 focus-visible:ring-current rounded-xs"
             aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={mobileMenuOpen}
           >
@@ -406,18 +401,18 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Motion Toggle */}
-          <div className="flex items-center justify-between px-3 py-2 border border-[#381932]/20 bg-[#381932]/5">
+          <div className="flex items-center justify-between px-3 py-2 border border-current/20 bg-current/5 rounded-xs">
             <span className="font-semibold text-[11px]">CREATIVE MOTION (FX)</span>
             <button
               type="button"
               onClick={toggleMotion}
               className={`px-2.5 py-1 text-[11px] font-bold border rounded-xs flex items-center gap-1.5 ${
                 prefersReduced
-                  ? "border-[#381932]/30 text-[#381932]/60"
-                  : "border-[#381932] bg-[#381932] text-[#C6F277]"
+                  ? "border-current/30 text-current/60"
+                  : "border-current bg-current text-[var(--bg-primary)]"
               }`}
             >
-              <span className={`w-1.5 h-1.5 rounded-full ${prefersReduced ? "bg-[#381932]/40" : "bg-[#C6F277]"}`} />
+              <span className={`w-1.5 h-1.5 rounded-full ${prefersReduced ? "bg-current/40" : "bg-[#C6F277]"}`} />
               <span>{prefersReduced ? "OFF" : "ON"}</span>
             </button>
           </div>
@@ -429,23 +424,23 @@ export default function Navbar() {
               setMobileMenuOpen(false);
               window.dispatchEvent(new CustomEvent("open-developer-terminal"));
             }}
-            className="w-full flex items-center justify-between px-3 py-2.5 border border-[#381932]/30 hover:bg-[#381932] hover:text-[#FFF3E6] transition-colors cursor-pointer group"
+            className="w-full flex items-center justify-between px-3 py-2.5 border border-current/30 hover:bg-current hover:text-[var(--bg-primary)] transition-colors cursor-pointer group rounded-xs"
           >
             <span className="flex items-center gap-2">
               <span className="text-[#C6F277] bg-[#381932] px-1.5 py-0.5 font-bold rounded-xs">&gt;_</span>
               <span className="font-bold">DEVELOPER TERMINAL</span>
             </span>
-            <span className="text-[10px] opacity-70 group-hover:text-[#FFF3E6]">[LAUNCH]</span>
+            <span className="text-[10px] opacity-70 group-hover:opacity-100">[LAUNCH]</span>
           </button>
 
           <div className="flex items-center justify-between pt-1">
             <span>LOCATION: ALEXANDRIA, EGYPT</span>
-            <span className="text-[#C6F277] bg-[#381932] px-2 py-0.5 font-bold text-[10px]">ACTIVE</span>
+            <span className="text-[#C6F277] bg-[#381932] px-2 py-0.5 font-bold text-[10px] rounded-xs">ACTIVE</span>
           </div>
           <div>STATUS: AVAILABLE FOR 2026 ENGAGEMENTS</div>
           <a
             href="mailto:kaled.amr0210@gmail.com"
-            className="inline-block mt-2 font-bold underline hover:text-[#381932]"
+            className="inline-block mt-2 font-bold underline hover:opacity-80"
           >
             kaled.amr0210@gmail.com
           </a>

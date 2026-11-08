@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-:root {
+:root, [data-theme="milk"] {
   --plum: #381932;
   --plum-dark: #240f20;
   --plum-deep: #1b0a18;
@@ -21,43 +21,49 @@
   --orange: #FF4D1C;
   --international-orange: #FF4D1C;
 
-  /* Polarity Mapping — Default: Milk (Light Mode) */
-  --surface-primary: #FFF3E6;
-  --surface-secondary: #F4E5D4;
-  --surface-elevated: #FFFDF9;
-  --surface-inverse: #381932;
+  /* Curated Light Mode (Milk) Design Tokens */
+  --bg-primary: #FFF3E6;
+  --bg-elevated: #F5E6D6;
+  --text-primary: #381932;
+  --text-muted: rgba(56, 25, 50, 0.62);
+  --border-subtle: rgba(56, 25, 50, 0.14);
 
-  --ink-primary: #381932;
-  --ink-secondary: rgba(56, 25, 50, 0.75);
+  --surface-primary: var(--bg-primary);
+  --surface-secondary: var(--bg-elevated);
+  --surface-elevated: #FFFDF9;
+  --surface-inverse: #220E1F;
+
+  --ink-primary: var(--text-primary);
+  --ink-secondary: var(--text-muted);
   --ink-muted: rgba(56, 25, 50, 0.45);
   --ink-inverse: #FFF3E6;
 
-  --border-hairline: rgba(56, 25, 50, 0.15);
+  --border-hairline: var(--border-subtle);
   --border-medium: rgba(56, 25, 50, 0.28);
   --border-inverse: rgba(255, 243, 230, 0.2);
-
-  --bg-primary: var(--surface-primary);
-  --text-primary: var(--ink-primary);
 }
 
-/* Polarity Inversion — Plum (Dark Mode) */
-html[data-theme="plum"] {
-  --surface-primary: #381932;
-  --surface-secondary: #240f20;
-  --surface-elevated: #421e3b;
+/* Curated Dark Mode (Plum) Design Tokens */
+[data-theme="plum"] {
+  --bg-primary: #220E1F; /* Deeper, richer nocturnal plum so dark mode feels distinct and luxurious */
+  --bg-elevated: #381932;
+  --text-primary: #FFF3E6;
+  --text-muted: rgba(255, 243, 230, 0.62);
+  --border-subtle: rgba(255, 243, 230, 0.14);
+
+  --surface-primary: var(--bg-primary);
+  --surface-secondary: #190917;
+  --surface-elevated: var(--bg-elevated);
   --surface-inverse: #FFF3E6;
 
-  --ink-primary: #FFF3E6;
-  --ink-secondary: rgba(255, 243, 230, 0.78);
+  --ink-primary: var(--text-primary);
+  --ink-secondary: var(--text-muted);
   --ink-muted: rgba(255, 243, 230, 0.45);
-  --ink-inverse: #381932;
+  --ink-inverse: #220E1F;
 
-  --border-hairline: rgba(255, 243, 230, 0.2);
-  --border-medium: rgba(255, 243, 230, 0.35);
-  --border-inverse: rgba(56, 25, 50, 0.15);
-
-  --bg-primary: var(--surface-primary);
-  --text-primary: var(--ink-primary);
+  --border-hairline: var(--border-subtle);
+  --border-medium: rgba(255, 243, 230, 0.28);
+  --border-inverse: rgba(56, 25, 50, 0.14);
 }
 
 @theme {
@@ -89,17 +95,22 @@ html[data-theme="plum"] {
   box-sizing: border-box;
 }
 
+/* Smooth 650ms Theme Color Transition Across the Entire DOM (No Jarring Inversions) */
+body, section, nav, header, footer, div {
+  transition: background-color 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              color 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 html {
-  background-color: var(--surface-primary);
-  color: var(--ink-primary);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   font-family: var(--font-sans);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
   scroll-padding-top: 5.5rem;
-  transition: background-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-              color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Offset for fixed navbar anchor navigation */
@@ -110,16 +121,14 @@ section[id], div[id] {
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--surface-primary);
-  color: var(--ink-primary);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   overflow-x: hidden;
-  transition: background-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-              color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 ::selection {
-  background: var(--ink-primary);
-  color: var(--surface-primary);
+  background: var(--text-primary);
+  color: var(--bg-primary);
 }
 
 /* Subtle architectural hairline grid backgrounds */
@@ -142,10 +151,10 @@ body {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--surface-primary);
+  background: var(--bg-primary);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--ink-primary);
+  background: var(--text-primary);
 }
 
 /* Reduced motion preference (active when explicitly enabled) */
@@ -225,20 +234,20 @@ html[data-reduced-motion="true"] ::after {
 }
 
 /* ========================================================================= */
-/* THEME POLARITY INVERSION UTILITIES (Dark Plum Theme Overrides)             */
+/* THEME POLARITY INVERSION UTILITIES (Dark Nocturnal Plum Theme Overrides)   */
 /* ========================================================================= */
 html[data-theme="plum"] body {
-  background-color: #381932;
+  background-color: #220E1F;
   color: #FFF3E6;
 }
 
 html[data-theme="plum"] ::selection {
   background: #FFF3E6;
-  color: #381932;
+  color: #220E1F;
 }
 
 html[data-theme="plum"] ::-webkit-scrollbar-track {
-  background: #381932;
+  background: #220E1F;
 }
 
 html[data-theme="plum"] ::-webkit-scrollbar-thumb {
@@ -246,15 +255,15 @@ html[data-theme="plum"] ::-webkit-scrollbar-thumb {
 }
 
 html[data-theme="plum"] .bg-\[\#FFF3E6\] {
-  background-color: #381932 !important;
+  background-color: #220E1F !important;
 }
 
 html[data-theme="plum"] .bg-\[\#FFF3E6\]\/95 {
-  background-color: rgba(56, 25, 50, 0.95) !important;
+  background-color: rgba(34, 14, 31, 0.95) !important;
 }
 
 html[data-theme="plum"] .bg-\[\#FFF3E6\]\/90 {
-  background-color: rgba(56, 25, 50, 0.9) !important;
+  background-color: rgba(34, 14, 31, 0.9) !important;
 }
 
 html[data-theme="plum"] .text-\[\#381932\] {
@@ -276,7 +285,7 @@ html[data-theme="plum"] .text-\[\#381932\]\/30 {
 }
 
 html[data-theme="plum"] .border-\[\#381932\] {
-  border-color: #FFF3E6 !important;
+  border-color: rgba(255, 243, 230, 0.22) !important;
 }
 
 html[data-theme="plum"] .border-\[\#381932\]\/10,
@@ -298,6 +307,6 @@ html[data-theme="plum"] .bg-\[\#381932\]\/10 {
 
 html[data-theme="plum"] .bg-grid-milk {
   background-image: 
-    linear-gradient(to right, rgba(255, 243, 230, 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 243, 230, 0.06) 1px, transparent 1px) !important;
+    linear-gradient(to right, rgba(255, 243, 230, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 243, 230, 0.05) 1px, transparent 1px) !important;
 }
