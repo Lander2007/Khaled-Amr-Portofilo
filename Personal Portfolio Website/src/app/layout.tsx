@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Syne, Instrument_Serif, JetBrains_Mono, Inter } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/context/ThemeContext";
+import ArchitecturalFrame from "@/components/ArchitecturalFrame";
+import PageTransitionProvider from "@/components/motion/PageTransitionProvider";
+import DeveloperTerminal from "@/components/ui/DeveloperTerminal";
 
 const syne = Syne({
   subsets: ["latin"],
@@ -72,9 +76,6 @@ export const metadata: Metadata = {
   },
 };
 
-import PageTransitionProvider from "@/components/motion/PageTransitionProvider";
-import DeveloperTerminal from "@/components/ui/DeveloperTerminal";
-
 export default function RootLayout({
   children,
 }: {
@@ -85,12 +86,28 @@ export default function RootLayout({
       lang="en"
       data-scroll-behavior="smooth"
       className={`${syne.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} ${inter.variable}`}
+      suppressHydrationWarning
     >
-      <body className="min-h-screen bg-[#FFF3E6] text-[#381932] antialiased selection:bg-[#381932] selection:text-[#FFF3E6]">
-        <PageTransitionProvider>
-          {children}
-          <DeveloperTerminal />
-        </PageTransitionProvider>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                const theme = localStorage.getItem('portfolio-polarity-theme') || 'milk';
+                document.documentElement.setAttribute('data-theme', theme);
+              } catch (_) {}
+            `,
+          }}
+        />
+      </head>
+      <body className="min-h-screen bg-[var(--surface-primary)] text-[var(--ink-primary)] antialiased selection:bg-[var(--ink-primary)] selection:text-[var(--surface-primary)]">
+        <ThemeProvider>
+          <PageTransitionProvider>
+            <ArchitecturalFrame />
+            {children}
+            <DeveloperTerminal />
+          </PageTransitionProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

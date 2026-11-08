@@ -7,6 +7,7 @@ import { ArrowUpRight, Menu, X } from "lucide-react";
 import { gsap } from "gsap";
 import MagneticButton from "@/components/motion/MagneticButton";
 import BrandLogo from "@/components/ui/BrandLogo";
+import PixelThemeToggle from "@/components/PixelThemeToggle";
 import { usePrefersReducedMotion, setMotionPreference } from "@/hooks/usePrefersReducedMotion";
 
 interface NavItem {
@@ -221,10 +222,10 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-9 sm:top-10 left-0 right-0 z-40 transition-all duration-300 ${
           scrolled
-            ? "bg-[#FFF3E6]/95 backdrop-blur-md border-b border-[#381932]/10 py-3 shadow-xs"
-            : "bg-transparent py-5 sm:py-6"
+            ? "bg-[var(--surface-primary)]/95 backdrop-blur-md border-b border-current/10 py-2.5 shadow-xs"
+            : "bg-transparent py-4 sm:py-5"
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 sm:px-10 flex items-center justify-between">
@@ -357,7 +358,7 @@ export default function Navbar() {
 
       {/* Mobile Drawer Menu */}
       <div
-        className={`fixed inset-0 z-40 bg-[#FFF3E6] pt-24 px-8 pb-12 flex flex-col justify-between md:hidden border-b border-[#381932]/20 transition-all duration-300 ease-in-out ${
+        className={`fixed inset-0 z-40 bg-[var(--surface-primary)] pt-24 px-8 pb-12 flex flex-col justify-between md:hidden border-b border-current/20 transition-all duration-300 ease-in-out ${
           mobileMenuOpen
             ? "opacity-100 pointer-events-auto translate-y-0"
             : "opacity-0 pointer-events-none -translate-y-4"
@@ -367,10 +368,10 @@ export default function Navbar() {
         aria-label="Mobile Navigation Menu"
       >
         <div className="space-y-6">
-          <p className="font-mono text-xs text-[#381932]/50 tracking-widest uppercase">
+          <p className="font-mono text-xs opacity-50 tracking-widest uppercase">
             {"// INDEX NAVIGATION"}
           </p>
-          <div className="flex flex-col space-y-3 font-display text-2xl font-bold uppercase text-[#381932]">
+          <div className="flex flex-col space-y-3 font-display text-2xl font-bold uppercase">
             {NAV_ITEMS.map((item) => {
               const isActive = activeSection === item.id;
               return (
@@ -378,17 +379,17 @@ export default function Navbar() {
                   key={item.id}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href, item.id)}
-                  className={`hover:translate-x-2 transition-all flex items-center justify-between py-2 border-b border-[#381932]/10 ${
+                  className={`hover:translate-x-2 transition-all flex items-center justify-between py-2 border-b border-current/10 ${
                     isActive
-                      ? "text-[#381932] font-black pl-3 border-l-4 border-l-[#381932]"
-                      : "text-[#381932]/75 hover:text-[#381932]"
+                      ? "font-black pl-3 border-l-4 border-l-current"
+                      : "opacity-75 hover:opacity-100"
                   }`}
                   aria-current={isActive ? "page" : undefined}
                 >
                   <span>
                     {item.num}. {item.label}
                   </span>
-                  <span className="font-mono text-xs text-[#381932]/50 tracking-normal">
+                  <span className="font-mono text-xs opacity-50 tracking-normal">
                     [{item.num}]
                   </span>
                 </Link>
@@ -397,7 +398,13 @@ export default function Navbar() {
           </div>
         </div>
 
-        <div className="border-t border-[#381932]/15 pt-6 space-y-3 font-mono text-xs text-[#381932]/80">
+        <div className="border-t border-current/15 pt-6 space-y-3 font-mono text-xs text-current/80">
+          {/* Mobile Theme Polarity Toggle */}
+          <div className="flex items-center justify-between px-3 py-2 border border-current/20 bg-current/5 rounded-xs">
+            <span className="font-semibold text-[11px]">THEME POLARITY</span>
+            <PixelThemeToggle />
+          </div>
+
           {/* Mobile Motion Toggle */}
           <div className="flex items-center justify-between px-3 py-2 border border-[#381932]/20 bg-[#381932]/5">
             <span className="font-semibold text-[11px]">CREATIVE MOTION (FX)</span>

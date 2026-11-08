@@ -18,8 +18,46 @@
   --lime-dim: rgba(198, 242, 119, 0.2);
   --lime-glow: rgba(198, 242, 119, 0.4);
 
-  --bg-primary: var(--milk);
-  --text-primary: var(--plum);
+  --orange: #FF4D1C;
+  --international-orange: #FF4D1C;
+
+  /* Polarity Mapping — Default: Milk (Light Mode) */
+  --surface-primary: #FFF3E6;
+  --surface-secondary: #F4E5D4;
+  --surface-elevated: #FFFDF9;
+  --surface-inverse: #381932;
+
+  --ink-primary: #381932;
+  --ink-secondary: rgba(56, 25, 50, 0.75);
+  --ink-muted: rgba(56, 25, 50, 0.45);
+  --ink-inverse: #FFF3E6;
+
+  --border-hairline: rgba(56, 25, 50, 0.15);
+  --border-medium: rgba(56, 25, 50, 0.28);
+  --border-inverse: rgba(255, 243, 230, 0.2);
+
+  --bg-primary: var(--surface-primary);
+  --text-primary: var(--ink-primary);
+}
+
+/* Polarity Inversion — Plum (Dark Mode) */
+html[data-theme="plum"] {
+  --surface-primary: #381932;
+  --surface-secondary: #240f20;
+  --surface-elevated: #421e3b;
+  --surface-inverse: #FFF3E6;
+
+  --ink-primary: #FFF3E6;
+  --ink-secondary: rgba(255, 243, 230, 0.78);
+  --ink-muted: rgba(255, 243, 230, 0.45);
+  --ink-inverse: #381932;
+
+  --border-hairline: rgba(255, 243, 230, 0.2);
+  --border-medium: rgba(255, 243, 230, 0.35);
+  --border-inverse: rgba(56, 25, 50, 0.15);
+
+  --bg-primary: var(--surface-primary);
+  --text-primary: var(--ink-primary);
 }
 
 @theme {
@@ -38,6 +76,9 @@
   --color-lime: #C6F277;
   --color-electric-lime: #C6F277;
 
+  --color-orange: #FF4D1C;
+  --color-international-orange: #FF4D1C;
+
   --font-display: var(--font-syne), "Syne", -apple-system, sans-serif;
   --font-serif: var(--font-serif), "Instrument Serif", Georgia, serif;
   --font-mono: var(--font-mono), "JetBrains Mono", monospace;
@@ -49,14 +90,16 @@
 }
 
 html {
-  background-color: #FFF3E6;
-  color: #381932;
+  background-color: var(--surface-primary);
+  color: var(--ink-primary);
   font-family: var(--font-sans);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
   scroll-padding-top: 5.5rem;
+  transition: background-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Offset for fixed navbar anchor navigation */
@@ -67,16 +110,16 @@ section[id], div[id] {
 body {
   margin: 0;
   padding: 0;
-  background-color: #FFF3E6;
-  color: #381932;
+  background-color: var(--surface-primary);
+  color: var(--ink-primary);
   overflow-x: hidden;
-  selection-background-color: #381932;
-  selection-color: #FFF3E6;
+  transition: background-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 ::selection {
-  background: #381932;
-  color: #FFF3E6;
+  background: var(--ink-primary);
+  color: var(--surface-primary);
 }
 
 /* Subtle architectural hairline grid backgrounds */
@@ -99,10 +142,10 @@ body {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #FFF3E6;
+  background: var(--surface-primary);
 }
 ::-webkit-scrollbar-thumb {
-  background: #381932;
+  background: var(--ink-primary);
 }
 
 /* Reduced motion preference (active when explicitly enabled) */
@@ -181,3 +224,80 @@ html[data-reduced-motion="true"] ::after {
   animation: fadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* ========================================================================= */
+/* THEME POLARITY INVERSION UTILITIES (Dark Plum Theme Overrides)             */
+/* ========================================================================= */
+html[data-theme="plum"] body {
+  background-color: #381932;
+  color: #FFF3E6;
+}
+
+html[data-theme="plum"] ::selection {
+  background: #FFF3E6;
+  color: #381932;
+}
+
+html[data-theme="plum"] ::-webkit-scrollbar-track {
+  background: #381932;
+}
+
+html[data-theme="plum"] ::-webkit-scrollbar-thumb {
+  background: #FFF3E6;
+}
+
+html[data-theme="plum"] .bg-\[\#FFF3E6\] {
+  background-color: #381932 !important;
+}
+
+html[data-theme="plum"] .bg-\[\#FFF3E6\]\/95 {
+  background-color: rgba(56, 25, 50, 0.95) !important;
+}
+
+html[data-theme="plum"] .bg-\[\#FFF3E6\]\/90 {
+  background-color: rgba(56, 25, 50, 0.9) !important;
+}
+
+html[data-theme="plum"] .text-\[\#381932\] {
+  color: #FFF3E6 !important;
+}
+
+html[data-theme="plum"] .text-\[\#381932\]\/85,
+html[data-theme="plum"] .text-\[\#381932\]\/80,
+html[data-theme="plum"] .text-\[\#381932\]\/75,
+html[data-theme="plum"] .text-\[\#381932\]\/70,
+html[data-theme="plum"] .text-\[\#381932\]\/60 {
+  color: rgba(255, 243, 230, 0.8) !important;
+}
+
+html[data-theme="plum"] .text-\[\#381932\]\/50,
+html[data-theme="plum"] .text-\[\#381932\]\/40,
+html[data-theme="plum"] .text-\[\#381932\]\/30 {
+  color: rgba(255, 243, 230, 0.45) !important;
+}
+
+html[data-theme="plum"] .border-\[\#381932\] {
+  border-color: #FFF3E6 !important;
+}
+
+html[data-theme="plum"] .border-\[\#381932\]\/10,
+html[data-theme="plum"] .border-\[\#381932\]\/15,
+html[data-theme="plum"] .border-\[\#381932\]\/20,
+html[data-theme="plum"] .border-\[\#381932\]\/25,
+html[data-theme="plum"] .border-\[\#381932\]\/30,
+html[data-theme="plum"] .border-\[\#381932\]\/40 {
+  border-color: rgba(255, 243, 230, 0.22) !important;
+}
+
+html[data-theme="plum"] .bg-\[\#381932\]\/5 {
+  background-color: rgba(255, 243, 230, 0.08) !important;
+}
+
+html[data-theme="plum"] .bg-\[\#381932\]\/10 {
+  background-color: rgba(255, 243, 230, 0.15) !important;
+}
+
+html[data-theme="plum"] .bg-grid-milk {
+  background-image: 
+    linear-gradient(to right, rgba(255, 243, 230, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 243, 230, 0.06) 1px, transparent 1px) !important;
+}
