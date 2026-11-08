@@ -84,11 +84,19 @@
   box-sizing: border-box;
 }
 
-/* Smooth 650ms Theme Color Transition Across the Entire DOM (No Jarring Inversions) */
-body, section, nav, header, footer, div {
-  transition: background-color 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-              color 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-              border-color 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+/* Remove generic div/section transitions that choke the main thread on theme switch! */
+html, body {
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  transition: background-color 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              color 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Smooth GPU-composited crossfade if browser supports View Transitions API */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.45s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 html {
