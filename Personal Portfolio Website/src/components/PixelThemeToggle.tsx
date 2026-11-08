@@ -1,405 +1,317 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
-import { gsap } from "gsap";
-import { useTheme } from "@/context/ThemeContext";
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import gsap from "gsap";
 
-interface PixelCoord {
-  col: number;
-  row: number;
-  x: number;
-  y: number;
-}
+// 74 exact pixel coordinates on a 15x15 grid (0..14, center = 7,7)
+// Matches the dense dithered Sun & Crescent Moon from Whitespace's glass-light-toggle
+const SUN_MATRIX: [number, number][] = [
+  // Dense 5x5 rounded core (21 pixels)
+  [6,5],[7,5],[8,5],
+  [5,6],[6,6],[7,6],[8,6],[9,6],
+  [5,7],[6,7],[7,7],[8,7],[9,7],
+  [5,8],[6,8],[7,8],[8,8],[9,8],
+  [6,9],[7,9],[8,9],
+  // Inner ring accents (8 pixels)
+  [7,4],[7,10],[4,7],[10,7],[5,5],[9,5],[5,9],[9,9],
+  // Top vertical ray (4 pixels)
+  [7,0],[7,1],[7,2],[7,3],
+  // Bottom vertical ray (4 pixels)
+  [7,11],[7,12],[7,13],[7,14],
+  // Left horizontal ray (4 pixels)
+  [0,7],[1,7],[2,7],[3,7],
+  // Right horizontal ray (4 pixels)
+  [11,7],[12,7],[13,7],[14,7],
+  // Top-Left diagonal ray (4 pixels)
+  [2,2],[3,3],[4,4],[1,1],
+  // Top-Right diagonal ray (4 pixels)
+  [12,2],[11,3],[10,4],[13,1],
+  // Bottom-Left diagonal ray (4 pixels)
+  [2,12],[3,11],[4,10],[1,13],
+  // Bottom-Right diagonal ray (4 pixels)
+  [12,12],[11,11],[10,10],[13,13],
+  // Extra dithered core density (13 pixels)
+  [6,6],[8,6],[6,8],[8,8],[7,7],[6,7],[8,7],[7,6],[7,8],[4,6],[10,6],[6,4],[6,10]
+];
 
-// 11x11 micro-grid geometry in a 22x22 SVG viewBox
-// Step: 1.7px, Offset: 2.5px
-const STEP = 1.7;
-const OFFSET = 2.5;
+const MOON_MATRIX: [number, number][] = [
+  // Dithered Crescent Moon outer & inner curve (58 pixels)
+  [6,2],[7,2],
+  [4,3],[5,3],[6,3],[7,3],
+  [3,4],[4,4],[5,4],[6,4],
+  [2,5],[3,5],[4,5],[5,5],
+  [2,6],[3,6],[4,6],[5,6],
+  [1,7],[2,7],[3,7],[4,7],[5,7],
+  [1,8],[2,8],[3,8],[4,8],[5,8],
+  [2,9],[3,9],[4,9],[5,9],[6,9],
+  [2,10],[3,10],[4,10],[5,10],[6,10],[7,10],
+  [3,11],[4,11],[5,11],[6,11],[7,11],[8,11],[9,11],
+  [4,12],[5,12],[6,12],[7,12],[8,12],[9,12],[10,12],
+  [6,13],[7,13],[8,13],[9,13],[10,11],
+  // Top-right star & dithered sparkles (16 pixels)
+  [10,2],[9,3],[10,3],[11,3],[10,4],
+  [12,5],[13,5],[12,6],
+  [8,5],[8,6],[9,7],[11,8],[7,4],[6,8],[7,9],[8,10]
+];
 
-function createCoord(col: number, row: number): PixelCoord {
-  return {
-    col,
-    row,
-    x: Number((OFFSET + col * STEP).toFixed(2)),
-    y: Number((OFFSET + row * STEP).toFixed(2)),
-  };
-}
-
-// ==============================================================
-// 1. SUN MATRIX (Light Mode): Geometric pixel sun with 4 cardinal rays
-// ==============================================================
-const SUN_COORDS: PixelCoord[] = [
-  // 3x3 Center Core
-  createCoord(4, 4), createCoord(5, 4), createCoord(6, 4),
-  createCoord(4, 5), createCoord(5, 5), createCoord(6, 5),
-  createCoord(4, 6), createCoord(5, 6), createCoord(6, 6),
-
-  // Ring Accents
-  createCoord(5, 3), createCoord(3, 5), createCoord(7, 5), createCoord(5, 7),
-
-  // 4 Cardinal Rays
-  createCoord(5, 0), createCoord(5, 1), // North
-  createCoord(5, 9), createCoord(5, 10), // South
-  createCoord(0, 5), createCoord(1, 5), // West
-  createCoord(9, 5), createCoord(10, 5), // East
-
-  // 4 Diagonal Corner Beams
-  createCoord(2, 2), createCoord(8, 2),
-  createCoord(2, 8), createCoord(8, 8),
-]; // 25 particles
-
-// ==============================================================
-// 2. CRESCENT MOON MATRIX (Dark Mode): Pixel crescent with 2 tiny stars
-// ==============================================================
-const MOON_COORDS: PixelCoord[] = [
-  // Crescent Body
-  createCoord(4, 2), createCoord(5, 2), createCoord(6, 2),
-  createCoord(3, 3), createCoord(4, 3),
-  createCoord(2, 4), createCoord(3, 4),
-  createCoord(2, 5), createCoord(3, 5),
-  createCoord(2, 6), createCoord(3, 6),
-  createCoord(2, 7), createCoord(3, 7),
-  createCoord(3, 8), createCoord(4, 8),
-  createCoord(4, 9), createCoord(5, 9), createCoord(6, 9),
-
-  // Star 1 (Upper Right Sky)
-  createCoord(8, 2), createCoord(9, 2), createCoord(8, 3),
-
-  // Star 2 (Lower Right Sky)
-  createCoord(8, 7), createCoord(9, 7),
-]; // 23 particles
-
-const TOTAL_PARTICLES = Math.max(SUN_COORDS.length, MOON_COORDS.length);
+const PIXEL_COUNT = 74;
+const MAX_X = 42; // Track travel distance in px
 
 interface PixelThemeToggleProps {
   className?: string;
 }
 
-export default function PixelThemeToggle({
-  className = "",
-}: PixelThemeToggleProps) {
-  const { isPlum, toggleTheme } = useTheme();
+export default function PixelThemeToggle({ className = "" }: PixelThemeToggleProps = {}) {
+  // Default to light mode (false = Sun on right) or sync with current document attribute
+  const [isDark, setIsDark] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+
   const trackRef = useRef<HTMLDivElement>(null);
   const thumbRef = useRef<HTMLDivElement>(null);
-  const beamPathRef = useRef<SVGRectElement>(null);
-  const particleRefs = useRef<(SVGRectElement | null)[]>([]);
-  const isHoveredRef = useRef(false);
-  const isMorphingRef = useRef(false);
-  const [mounted, setMounted] = useState(false);
+  const rimGlowRef = useRef<HTMLDivElement>(null);
+  const ambientGlowRef = useRef<HTMLDivElement>(null);
+  const pixelsRef = useRef<(HTMLSpanElement | null)[]>([]);
 
-  // Position thumb based on current theme state:
-  // Dark/Plum: Left (x = 0)
-  // Light/Milk: Right (x = 36px)
-  const syncThumbPosition = useCallback(
-    (animate = true, targetIsPlum = isPlum) => {
-      const thumb = thumbRef.current;
-      if (!thumb) return;
-
-      const targetX = targetIsPlum ? 0 : 36;
-
-      if (!animate) {
-        gsap.set(thumb, { x: targetX });
-      } else {
-        gsap.to(thumb, {
-          x: targetX,
-          duration: 0.55,
-          ease: "back.out(1.2)",
-          overwrite: "auto",
-        });
-      }
-    },
-    [isPlum]
+  // Precomputed random scatter offsets so hover/drag dispersion feels organic
+  const scatterOffsets = useRef(
+    Array.from({ length: PIXEL_COUNT }, (_, i) => {
+      const angle = (i / PIXEL_COUNT) * Math.PI * 2 + (i % 7) * 0.45;
+      const dist = 2.2 + (i % 6) * 1.85;
+      return {
+        dx: Math.cos(angle) * dist + ((i * 13) % 5 - 2) * 0.9,
+        dy: Math.sin(angle) * dist + ((i * 17) % 5 - 2) * 0.9,
+        rot: ((i * 29) % 90) - 45,
+      };
+    })
   );
 
-  // Render particles to target formation
-  const renderFormation = useCallback(
-    (targetIsPlum: boolean, morph = false) => {
-      const targetCoords = targetIsPlum ? MOON_COORDS : SUN_COORDS;
-      const targetFill = targetIsPlum ? "#FFF3E6" : "#FF4D1C";
-      // Direction of motion: right-to-left (-1) when switching to Plum; left-to-right (+1) when switching to Milk
-      const dir = targetIsPlum ? -1 : 1;
+  const dragState = useRef({
+    active: false,
+    startX: 0,
+    startThumbX: MAX_X,
+    currentX: MAX_X,
+    moved: false,
+  });
 
-      if (!morph) {
-        // Instant alignment on mount
-        particleRefs.current.forEach((el, i) => {
-          if (!el) return;
-          const coord = targetCoords[i];
-          if (coord) {
-            gsap.set(el, {
-              x: coord.x,
-              y: coord.y,
-              rotation: 0,
-              scale: 1,
-              opacity: 1,
-              fill: targetFill,
-            });
-          } else {
-            gsap.set(el, {
-              scale: 0,
-              opacity: 0,
-            });
-          }
-        });
-        return;
+  // Sync initial state with DOM theme and localStorage
+  useEffect(() => {
+    let initialDark = false;
+    try {
+      const stored = localStorage.getItem("portfolio-polarity-theme");
+      if (stored) {
+        initialDark = stored === "plum";
+      } else {
+        const currentAttr = document.documentElement.getAttribute("data-theme");
+        initialDark = currentAttr === "plum";
       }
+    } catch {
+      const currentAttr = document.documentElement.getAttribute("data-theme");
+      initialDark = currentAttr === "plum";
+    }
 
-      // Fluid Directional Inertia & Morphing Physics
-      isMorphingRef.current = true;
-      const tl = gsap.timeline({
-        onComplete: () => {
-          isMorphingRef.current = false;
-        },
+    setIsDark(initialDark);
+    dragState.current.currentX = initialDark ? 0 : MAX_X;
+    gsap.set(thumbRef.current, { x: initialDark ? 0 : MAX_X });
+  }, []);
+
+  // Apply theme to document and persist to localStorage
+  useEffect(() => {
+    const theme = isDark ? "plum" : "milk";
+    document.documentElement.setAttribute("data-theme", theme);
+    try {
+      localStorage.setItem("portfolio-polarity-theme", theme);
+    } catch (_) {}
+  }, [isDark]);
+
+  // Animate pixels based on progress (0 = Moon/Left, 1 = Sun/Right) and scatter intensity
+  const updatePixels = useCallback(
+    (progress: number, scattered: boolean, immediate = false) => {
+      const STEP = 1.65; // Pixel spacing inside the 42x40 squircle
+
+      pixelsRef.current.forEach((el, i) => {
+        if (!el) return;
+        const [mx, my] = MOON_MATRIX[i] || [7, 7];
+        const [sx, sy] = SUN_MATRIX[i] || [7, 7];
+
+        const moonX = (mx - 7) * STEP;
+        const moonY = (my - 7) * STEP;
+        const sunX = (sx - 7) * STEP;
+        const sunY = (sy - 7) * STEP;
+
+        // Interpolate base position between Moon (0) and Sun (1)
+        let targetX = moonX + (sunX - moonX) * progress;
+        let targetY = moonY + (sunY - moonY) * progress;
+        let targetRot = 0;
+        let targetScale = 1;
+
+        // Mid-drag or hover scatter swirl
+        const midMorphFactor = Math.sin(progress * Math.PI); // Peaks at 0.5 during drag
+        const scatterStrength = scattered ? 1 : midMorphFactor * 1.15;
+
+        if (scatterStrength > 0.01) {
+          const { dx, dy, rot } = scatterOffsets.current[i];
+          targetX += dx * scatterStrength;
+          targetY += dy * scatterStrength;
+          targetRot = rot * scatterStrength;
+          targetScale = 1 - 0.15 * scatterStrength + (i % 3) * 0.1 * scatterStrength;
+        }
+
+        gsap.to(el, {
+          x: targetX,
+          y: targetY,
+          rotation: targetRot,
+          scale: targetScale,
+          duration: immediate ? 0.12 : scattered ? 0.48 : 0.68,
+          delay: immediate ? 0 : (i % 10) * 0.008,
+          ease: scattered ? "power3.out" : "back.out(1.55)",
+          overwrite: "auto",
+        });
       });
-
-      // 1. Dispersion & Fluid Swirl in direction of inertia
-      tl.to(particleRefs.current, {
-        x: () => `+=${dir * gsap.utils.random(-3.5, 3.5, 0.2)}`,
-        y: () => gsap.utils.random(-3.5, 3.5, 0.2),
-        rotation: () => dir * gsap.utils.random(-90, 90, 5),
-        duration: 0.16,
-        ease: "power2.in",
-        stagger: {
-          amount: 0.05,
-          from: targetIsPlum ? "end" : "start",
-        },
-      })
-      // 2. Converge magnetically and snap into target pixel matrix
-      .to(
-        particleRefs.current,
-        {
-          x: (i) => (targetCoords[i] ? targetCoords[i].x : 11),
-          y: (i) => (targetCoords[i] ? targetCoords[i].y : 11),
-          rotation: 0,
-          scale: (i) => (targetCoords[i] ? 1 : 0),
-          opacity: (i) => (targetCoords[i] ? 1 : 0),
-          fill: targetFill,
-          duration: 0.42,
-          ease: "back.out(1.5)",
-          stagger: {
-            amount: 0.09,
-            from: "center",
-          },
-        },
-        "-=0.03"
-      );
     },
     []
   );
 
+  // Trigger smooth state animation when not actively dragging
   useEffect(() => {
-    setMounted(true);
-    syncThumbPosition(false, isPlum);
-    renderFormation(isPlum, false);
-  }, []);
+    if (isDragging) return;
+    const targetX = isDark ? 0 : MAX_X;
+    dragState.current.currentX = targetX;
 
-  // Continuous traveling border beam around the thumb
-  useEffect(() => {
-    const beam = beamPathRef.current;
-    if (!beam) return;
-
-    // Perimeter of 28.5x28.5 rounded rect is ~110px
-    const tween = gsap.fromTo(
-      beam,
-      { strokeDashoffset: 0 },
-      {
-        strokeDashoffset: -110,
-        duration: 3.2,
-        ease: "none",
-        repeat: -1,
-      }
-    );
-
-    return () => {
-      tween.kill();
-    };
-  }, []);
-
-  // Fluid Hover Micro-Physics
-  const handleMouseEnter = () => {
-    if (isMorphingRef.current) return;
-    isHoveredRef.current = true;
-
-    const coords = isPlum ? MOON_COORDS : SUN_COORDS;
-    gsap.to(particleRefs.current, {
-      x: (i) => {
-        const base = coords[i];
-        return base ? base.x + gsap.utils.random(-2.2, 2.2, 0.3) : 11;
-      },
-      y: (i) => {
-        const base = coords[i];
-        return base ? base.y + gsap.utils.random(-2.2, 2.2, 0.3) : 11;
-      },
-      rotation: () => gsap.utils.random(-25, 25, 1),
-      duration: 0.28,
-      ease: "power2.out",
-      stagger: {
-        amount: 0.06,
-        from: "center",
-      },
+    gsap.to(thumbRef.current, {
+      x: targetX,
+      scale: isHovered ? 1.02 : 1,
+      duration: 0.72,
+      ease: "expo.out",
       overwrite: "auto",
     });
+
+    updatePixels(isDark ? 0 : 1, isHovered, false);
+  }, [isDark, isHovered, isDragging, updatePixels]);
+
+  // Pointer Down (Start Drag or Click)
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    e.currentTarget.setPointerCapture(e.pointerId);
+    dragState.current.active = true;
+    dragState.current.startX = e.clientX;
+    dragState.current.startThumbX = dragState.current.currentX;
+    dragState.current.moved = false;
+    setIsDragging(true);
   };
 
-  const handleMouseLeave = () => {
-    isHoveredRef.current = false;
-    if (isMorphingRef.current) return;
+  // Pointer Move (Live Drag Scrubbing)
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragState.current.active) return;
+    const deltaX = e.clientX - dragState.current.startX;
+    if (Math.abs(deltaX) > 3) {
+      dragState.current.moved = true;
+    }
 
-    const coords = isPlum ? MOON_COORDS : SUN_COORDS;
-    particleRefs.current.forEach((el, i) => {
-      if (!el) return;
-      const target = coords[i];
-      if (target) {
-        gsap.to(el, {
-          x: target.x,
-          y: target.y,
-          rotation: 0,
-          scale: 1,
-          opacity: 1,
-          duration: 0.34,
-          ease: "power2.out",
-          overwrite: "auto",
-        });
-      } else {
-        gsap.to(el, {
-          scale: 0,
-          opacity: 0,
-          duration: 0.2,
-          overwrite: "auto",
-        });
-      }
-    });
+    const clampedX = Math.max(0, Math.min(MAX_X, dragState.current.startThumbX + deltaX));
+    dragState.current.currentX = clampedX;
+    const progress = clampedX / MAX_X; // 0 = Dark (Left), 1 = Light (Right)
+
+    gsap.set(thumbRef.current, { x: clampedX });
+    updatePixels(progress, true, true);
+
+    // Live theme preview while crossing midpoint
+    const shouldBeDark = progress < 0.5;
+    if (shouldBeDark !== isDark) {
+      setIsDark(shouldBeDark);
+    }
   };
 
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  // Pointer Up / Cancel (Snap & Assemble)
+  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragState.current.active) return;
+    dragState.current.active = false;
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    }
 
-    const nextIsPlum = !isPlum;
-    toggleTheme();
-    syncThumbPosition(true, nextIsPlum);
-    renderFormation(nextIsPlum, true);
+    const wasClick = !dragState.current.moved;
+    setIsDragging(false);
+
+    if (wasClick) {
+      // Clicking toggles polarity directly
+      setIsDark((prev) => !prev);
+    } else {
+      // Snap to nearest side based on drag release position
+      const progress = dragState.current.currentX / MAX_X;
+      setIsDark(progress < 0.5);
+    }
   };
 
   return (
-    <div className={`inline-flex items-center select-none ${className}`}>
-      {/* Outer Track: Architectural Pill with Tactile Depth */}
+    <div
+      ref={trackRef}
+      role="switch"
+      aria-checked={!isDark}
+      aria-label={`Theme Polarity Toggle (${isDark ? "Plum / Dark" : "Milk / Light"})`}
+      tabIndex={0}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerUp}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          setIsDark((p) => !p);
+        }
+      }}
+      style={{ touchAction: "none" }}
+      className={`relative w-[92px] h-[48px] rounded-[16px] p-[4px] flex items-center cursor-grab active:cursor-grabbing select-none transition-all duration-700 ${className} ${
+        isDark
+          ? "bg-[#151519]/90 border border-white/[0.12] shadow-[inset_0_3px_8px_rgba(0,0,0,0.85),0_2px_12px_rgba(0,0,0,0.45)]"
+          : "bg-[#E4DFD9]/90 border border-black/[0.08] shadow-[inset_0_2px_6px_rgba(0,0,0,0.14),0_2px_10px_rgba(56,25,50,0.06)]"
+      }`}
+    >
+      {/* Ambient Radial Light Spill outside/behind the squircle thumb */}
       <div
-        ref={trackRef}
-        role="switch"
-        aria-checked={isPlum}
-        aria-label={`Current polarity: ${isPlum ? "Plum (Dark)" : "Milk (Light)"}. Click to invert.`}
-        title={`Switch to ${isPlum ? "Milk (Light)" : "Plum (Dark)"} Polarity`}
-        tabIndex={0}
-        onClick={handleClick}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            handleClick(e as unknown as React.MouseEvent);
-          }
-        }}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        className={`w-[72px] h-[34px] p-[2px] rounded-full relative flex items-center cursor-pointer transition-colors duration-500 outline-none focus-visible:ring-2 focus-visible:ring-current group ${
-          isPlum
-            ? "bg-[#160715] border border-[#FFF3E6]/15 shadow-[inset_0_2px_5px_rgba(0,0,0,0.65),inset_0_0_1px_rgba(255,243,230,0.08)]"
-            : "bg-[#EFE3D5] border border-[#381932]/18 shadow-[inset_0_2px_4px_rgba(56,25,50,0.12),inset_0_0_1px_rgba(56,25,50,0.15)]"
+        ref={ambientGlowRef}
+        className={`pointer-events-none absolute -inset-2 rounded-[22px] transition-all duration-700 blur-[12px] ${
+          isDark
+            ? "bg-[radial-gradient(circle_at_24%_50%,rgba(140,175,255,0.42),transparent_62%)]"
+            : "bg-[radial-gradient(circle_at_76%_50%,rgba(255,155,45,0.48),transparent_62%)]"
+        }`}
+      />
+
+      {/* Sliding Squircle Glass Thumb (42x40px, rounded-[12px] — NOT circular!) */}
+      <div
+        ref={thumbRef}
+        className={`relative z-10 w-[42px] h-[40px] rounded-[12px] flex items-center justify-center backdrop-blur-md transition-colors duration-700 ${
+          isDark
+            ? "bg-gradient-to-br from-[#3A3C46]/90 via-[#25262E]/95 to-[#181920]/95 shadow-[0_6px_16px_rgba(0,0,0,0.7),inset_0_1px_1px_rgba(255,255,255,0.35)]"
+            : "bg-gradient-to-br from-[#FFFFFF]/95 via-[#FAF5EE]/92 to-[#EFE6DA]/95 shadow-[0_6px_16px_rgba(255,140,30,0.28),inset_0_1.5px_2px_rgba(255,255,255,1)]"
         }`}
       >
-        {/* Architectural Groove Rail (Precision Mechanical Detail) */}
+        {/* Glowing Specular Rim Arc on the Squircle Edge (Matches Video 1:1) */}
         <div
-          className={`absolute inset-x-3.5 top-1/2 -translate-y-1/2 h-[1px] pointer-events-none transition-colors duration-500 ${
-            isPlum ? "bg-[#FFF3E6]/10" : "bg-[#381932]/10"
+          ref={rimGlowRef}
+          className={`pointer-events-none absolute inset-0 rounded-[12px] transition-all duration-700 ${
+            isDark
+              ? "border-l-[2px] border-t-[1.5px] border-b-[1.5px] border-r-0 border-[#DCE8FF] shadow-[-3px_0_12px_rgba(165,195,255,0.85),inset_2px_0_6px_rgba(210,230,255,0.55)]"
+              : "border-r-[2px] border-t-[1.5px] border-b-[1.5px] border-l-0 border-[#FFA033] shadow-[4px_0_14px_rgba(255,150,35,0.9),inset_-2px_0_8px_rgba(255,165,50,0.65)]"
           }`}
-          aria-hidden="true"
         />
 
-        {/* Sliding Thumb: Physical Floating Block with Perimeter Beam */}
-        <div
-          ref={thumbRef}
-          className={`w-[28px] h-[28px] rounded-full relative flex items-center justify-center transition-colors duration-500 z-10 ${
-            isPlum
-              ? "bg-[#2D1328] border border-[#FFF3E6]/25 shadow-[0_2px_8px_rgba(0,0,0,0.55),0_1px_2px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,243,230,0.2)]"
-              : "bg-[#FFFDF9] border border-[#381932]/12 shadow-[0_2px_6px_rgba(56,25,50,0.14),0_1px_2px_rgba(56,25,50,0.08),inset_0_1px_0_rgba(255,255,255,0.95)]"
-          }`}
-        >
-          {/* Traveling Perimeter Border Beam */}
-          <svg
-            className="absolute inset-0 w-full h-full pointer-events-none overflow-visible"
-            viewBox="0 0 28 28"
-          >
-            <defs>
-              {/* Milk Mode: International Orange / Warm Amber */}
-              <linearGradient
-                id="beam-orange-gradient"
-                x1="0%"
-                y1="0%"
-                x2="100%"
-                y2="100%"
-              >
-                <stop offset="0%" stopColor="#FF4D1C" stopOpacity="1" />
-                <stop offset="65%" stopColor="#FF8540" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#FF4D1C" stopOpacity="0" />
-              </linearGradient>
-
-              {/* Plum Mode: Crisp Warm Milk */}
-              <linearGradient
-                id="beam-milk-gradient"
-                x1="0%"
-                y1="0%"
-                x2="100%"
-                y2="100%"
-              >
-                <stop offset="0%" stopColor="#FFF3E6" stopOpacity="1" />
-                <stop offset="65%" stopColor="#FFFDF9" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#FFF3E6" stopOpacity="0" />
-              </linearGradient>
-            </defs>
-
-            <rect
-              ref={beamPathRef}
-              x="0.75"
-              y="0.75"
-              width="26.5"
-              height="26.5"
-              rx="13.25"
-              fill="none"
-              strokeWidth="1.5"
-              stroke={isPlum ? "url(#beam-milk-gradient)" : "url(#beam-orange-gradient)"}
-              strokeDasharray="24 80"
-              strokeLinecap="round"
-              style={{
-                filter: isPlum
-                  ? "drop-shadow(0 0 3px rgba(255, 243, 230, 0.7))"
-                  : "drop-shadow(0 0 3.5px rgba(255, 77, 28, 0.8))",
-                transition: "stroke 0.4s ease, filter 0.4s ease",
+        {/* 74 Individual Morphing & Scattering Square Pixels */}
+        <div className="relative w-full h-full flex items-center justify-center pointer-events-none">
+          {Array.from({ length: PIXEL_COUNT }).map((_, i) => (
+            <span
+              key={i}
+              ref={(el) => {
+                pixelsRef.current[i] = el;
               }}
+              className={`absolute w-[1.65px] h-[1.65px] rounded-[0.2px] transition-colors duration-500 ${
+                isDark
+                  ? "bg-white shadow-[0_0_2px_rgba(255,255,255,0.9)]"
+                  : "bg-[#1E1916]"
+              }`}
             />
-          </svg>
-
-          {/* Pixel-Particle Matrix (11x11 Grid of 1.6px x 1.6px Rects) */}
-          <svg
-            className="w-[18px] h-[18px] pointer-events-none overflow-visible"
-            viewBox="0 0 22 22"
-          >
-            {Array.from({ length: TOTAL_PARTICLES }).map((_, idx) => (
-              <rect
-                key={idx}
-                ref={(el) => {
-                  particleRefs.current[idx] = el;
-                }}
-                width="1.6"
-                height="1.6"
-                rx="0.3"
-                x="0"
-                y="0"
-                fill={isPlum ? "#FFF3E6" : "#FF4D1C"}
-                style={{
-                  transformBox: "fill-box",
-                  transformOrigin: "center center",
-                }}
-              />
-            ))}
-          </svg>
+          ))}
         </div>
       </div>
     </div>
