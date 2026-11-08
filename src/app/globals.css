@@ -1,86 +1,75 @@
 @import "tailwindcss";
 
-:root, [data-theme="milk"] {
-  --plum: #381932;
-  --plum-dark: #240f20;
-  --plum-deep: #1b0a18;
-  --plum-surface: #421e3b;
-  --plum-border: rgba(56, 25, 50, 0.15);
-
-  --milk: #FFF3E6;
-  --milk-pure: #FFFDF9;
-  --milk-muted: #F4E5D4;
-  --milk-surface: #F8ECE0;
-  --milk-border: rgba(255, 243, 230, 0.2);
-
-  --lime: #C6F277;
-  --electric-lime: #C6F277;
-  --lime-dim: rgba(198, 242, 119, 0.2);
-  --lime-glow: rgba(198, 242, 119, 0.4);
-
-  --orange: #FF4D1C;
-  --international-orange: #FF4D1C;
-
-  /* Curated Light Mode (Milk) Design Tokens */
-  --bg-primary: #FFF3E6;
-  --bg-elevated: #F5E6D6;
-  --text-primary: #381932;
-  --text-muted: rgba(56, 25, 50, 0.62);
-  --border-subtle: rgba(56, 25, 50, 0.14);
-
-  --surface-primary: var(--bg-primary);
-  --surface-secondary: var(--bg-elevated);
-  --surface-elevated: #FFFDF9;
-  --surface-inverse: #220E1F;
-
-  --ink-primary: var(--text-primary);
-  --ink-secondary: var(--text-muted);
+:root,
+[data-theme="milk"] {
+  --bg-canvas: #FFF3E6;
+  --bg-surface: #F5E6D6;
+  --bg-elevated: #FFFFFF;
+  --ink-primary: #381932;
+  --ink-secondary: rgba(56, 25, 50, 0.72);
   --ink-muted: rgba(56, 25, 50, 0.45);
-  --ink-inverse: #FFF3E6;
+  --grid-line: rgba(56, 25, 50, 0.08);
+  --border-hairline: rgba(56, 25, 50, 0.16);
+  --accent-lime: #D4FF33;
+  --accent-orange: #FF4D1C;
+  --watermark-fill: rgba(56, 25, 50, 0.055);
+  --watermark-stroke: transparent;
 
-  --border-hairline: var(--border-subtle);
-  --border-medium: rgba(56, 25, 50, 0.28);
-  --border-inverse: rgba(255, 243, 230, 0.2);
+  /* Backward Compatible Aliases */
+  --bg-primary: var(--bg-canvas);
+  --surface-primary: var(--bg-canvas);
+  --surface-secondary: var(--bg-surface);
+  --surface-elevated: var(--bg-elevated);
+  --surface-inverse: #2B1126;
+  --text-primary: var(--ink-primary);
+  --text-muted: var(--ink-muted);
+  --border-subtle: var(--border-hairline);
+  --plum: #381932;
+  --milk: #FFF3E6;
+  --lime: #D4FF33;
+  --orange: #FF4D1C;
 }
 
-/* Curated Dark Mode (Plum) Design Tokens */
 [data-theme="plum"] {
-  --bg-primary: #220E1F; /* Deeper, richer nocturnal plum so dark mode feels distinct and luxurious */
-  --bg-elevated: #381932;
-  --text-primary: #FFF3E6;
-  --text-muted: rgba(255, 243, 230, 0.62);
-  --border-subtle: rgba(255, 243, 230, 0.14);
+  /* Rich Deep Plum Canvas — NOT muddy black */
+  --bg-canvas: #2B1126;
+  --bg-surface: #381932;
+  --bg-elevated: #472140;
+  --ink-primary: #FFF3E6;
+  --ink-secondary: rgba(255, 243, 230, 0.78);
+  --ink-muted: rgba(255, 243, 230, 0.48);
+  --grid-line: rgba(255, 243, 230, 0.065);
+  --border-hairline: rgba(255, 243, 230, 0.18);
+  --accent-lime: #D4FF33;
+  --accent-orange: #FF4D1C;
+  /* In Dark Mode, giant background words become architectural wireframe outlines! */
+  --watermark-fill: rgba(255, 243, 230, 0.015);
+  --watermark-stroke: rgba(255, 243, 230, 0.085);
 
-  --surface-primary: var(--bg-primary);
-  --surface-secondary: #190917;
+  /* Backward Compatible Aliases */
+  --bg-primary: var(--bg-canvas);
+  --surface-primary: var(--bg-canvas);
+  --surface-secondary: var(--bg-surface);
   --surface-elevated: var(--bg-elevated);
   --surface-inverse: #FFF3E6;
-
-  --ink-primary: var(--text-primary);
-  --ink-secondary: var(--text-muted);
-  --ink-muted: rgba(255, 243, 230, 0.45);
-  --ink-inverse: #220E1F;
-
-  --border-hairline: var(--border-subtle);
-  --border-medium: rgba(255, 243, 230, 0.28);
-  --border-inverse: rgba(56, 25, 50, 0.14);
+  --text-primary: var(--ink-primary);
+  --text-muted: var(--ink-muted);
+  --border-subtle: var(--border-hairline);
 }
 
 @theme {
   --color-plum: #381932;
-  --color-plum-dark: #240f20;
-  --color-plum-deep: #1b0a18;
-  --color-plum-surface: #421e3b;
-  --color-plum-border: rgba(56, 25, 50, 0.15);
+  --color-plum-canvas: #2B1126;
+  --color-plum-surface: #381932;
+  --color-plum-elevated: #472140;
 
   --color-milk: #FFF3E6;
   --color-milk-pure: #FFFDF9;
   --color-milk-muted: #F4E5D4;
   --color-milk-surface: #F8ECE0;
-  --color-milk-border: rgba(255, 243, 230, 0.2);
 
-  --color-lime: #C6F277;
-  --color-electric-lime: #C6F277;
+  --color-lime: #D4FF33;
+  --color-electric-lime: #D4FF33;
 
   --color-orange: #FF4D1C;
   --color-international-orange: #FF4D1C;
@@ -103,8 +92,8 @@ body, section, nav, header, footer, div {
 }
 
 html {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
   font-family: var(--font-sans);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -121,28 +110,28 @@ section[id], div[id] {
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
   overflow-x: hidden;
 }
 
 ::selection {
-  background: var(--text-primary);
-  color: var(--bg-primary);
+  background: var(--ink-primary);
+  color: var(--bg-canvas);
 }
 
-/* Subtle architectural hairline grid backgrounds */
+/* Architectural Hairline Grid Texture */
 .bg-grid-milk {
   background-image: 
-    linear-gradient(to right, rgba(56, 25, 50, 0.07) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(56, 25, 50, 0.07) 1px, transparent 1px);
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
   background-size: 64px 64px;
 }
 
 .bg-grid-plum {
   background-image: 
-    linear-gradient(to right, rgba(255, 243, 230, 0.07) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 243, 230, 0.07) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 243, 230, 0.065) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 243, 230, 0.065) 1px, transparent 1px);
   background-size: 64px 64px;
 }
 
@@ -151,10 +140,11 @@ body {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-primary);
+  background: var(--bg-canvas);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--text-primary);
+  background: var(--border-hairline);
+  border-radius: 3px;
 }
 
 /* Reduced motion preference (active when explicitly enabled) */
@@ -308,58 +298,125 @@ html[data-theme="plum"] .glitch-wrapper[data-glitching="true"] .glitch-slice-ora
 }
 
 /* ========================================================================= */
-/* THEME POLARITY INVERSION UTILITIES (Dark Nocturnal Plum Theme Overrides)   */
+/* ARCHITECTURAL WIREFRAME OUTLINES (Word Wall Typography)                   */
+/* ========================================================================= */
+.hero-watermark-row {
+  color: var(--watermark-fill);
+  -webkit-text-fill-color: var(--watermark-fill);
+  -webkit-text-stroke: 1.5px var(--watermark-stroke);
+  transition: color 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              -webkit-text-fill-color 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              -webkit-text-stroke-color 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-theme="milk"] .interactive-word:hover {
+  color: #381932;
+  -webkit-text-fill-color: #381932;
+  -webkit-text-stroke: transparent;
+}
+
+[data-theme="plum"] .interactive-word:hover {
+  color: #D4FF33;
+  -webkit-text-fill-color: rgba(212, 255, 51, 0.15);
+  -webkit-text-stroke: 1.5px #D4FF33;
+  text-shadow: 0 0 20px rgba(212, 255, 51, 0.4);
+}
+
+/* ========================================================================= */
+/* LUXURY NOCTURNAL PLUM & WIREFRAME ARCHITECTURE (Dark Mode Overrides)      */
 /* ========================================================================= */
 html[data-theme="plum"] body {
-  background-color: #220E1F;
-  color: #FFF3E6;
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
 }
 
 html[data-theme="plum"] ::selection {
-  background: #FFF3E6;
-  color: #220E1F;
+  background: var(--ink-primary);
+  color: var(--bg-canvas);
 }
 
 html[data-theme="plum"] ::-webkit-scrollbar-track {
-  background: #220E1F;
+  background: var(--bg-canvas);
 }
 
 html[data-theme="plum"] ::-webkit-scrollbar-thumb {
-  background: #FFF3E6;
+  background: rgba(255, 243, 230, 0.25);
 }
 
+/* Level 0: Primary Canvas Inversions */
 html[data-theme="plum"] .bg-\[\#FFF3E6\] {
-  background-color: #220E1F !important;
+  background-color: var(--bg-canvas) !important;
 }
 
 html[data-theme="plum"] .bg-\[\#FFF3E6\]\/95 {
-  background-color: rgba(34, 14, 31, 0.95) !important;
+  background-color: rgba(43, 17, 38, 0.95) !important;
 }
 
 html[data-theme="plum"] .bg-\[\#FFF3E6\]\/90 {
-  background-color: rgba(34, 14, 31, 0.9) !important;
+  background-color: rgba(43, 17, 38, 0.90) !important;
 }
 
+html[data-theme="plum"] .bg-\[\#FFF3E6\]\/60 {
+  background-color: rgba(71, 33, 64, 0.60) !important;
+}
+
+/* Level 1: Surface Elevation & Cards */
+html[data-theme="plum"] .bg-\[\#381932\] {
+  background-color: var(--bg-surface) !important;
+}
+
+html[data-theme="plum"] .bg-\[\#381932\]\/5 {
+  background-color: rgba(255, 243, 230, 0.05) !important;
+}
+
+html[data-theme="plum"] .bg-\[\#381932\]\/10 {
+  background-color: rgba(255, 243, 230, 0.09) !important;
+}
+
+html[data-theme="plum"] .bg-\[\#381932\]\/15 {
+  background-color: rgba(255, 243, 230, 0.13) !important;
+}
+
+html[data-theme="plum"] .bg-\[\#381932\]\/20 {
+  background-color: rgba(255, 243, 230, 0.18) !important;
+}
+
+html[data-theme="plum"] .bg-\[\#381932\]\/85 {
+  background-color: rgba(56, 25, 50, 0.85) !important;
+}
+
+/* Level 2: Elevated Interactive Elements on Hover */
+html[data-theme="plum"] .hover\:bg-\[\#381932\]:hover {
+  background-color: var(--bg-elevated) !important;
+  color: var(--ink-primary) !important;
+}
+
+html[data-theme="plum"] .hover\:bg-\[\#250d21\]:hover {
+  background-color: var(--bg-elevated) !important;
+}
+
+/* Typography Hierarchy in Dark Mode */
 html[data-theme="plum"] .text-\[\#381932\] {
-  color: #FFF3E6 !important;
+  color: var(--ink-primary) !important;
 }
 
 html[data-theme="plum"] .text-\[\#381932\]\/85,
 html[data-theme="plum"] .text-\[\#381932\]\/80,
 html[data-theme="plum"] .text-\[\#381932\]\/75,
-html[data-theme="plum"] .text-\[\#381932\]\/70,
-html[data-theme="plum"] .text-\[\#381932\]\/60 {
-  color: rgba(255, 243, 230, 0.8) !important;
+html[data-theme="plum"] .text-\[\#381932\]\/70 {
+  color: var(--ink-secondary) !important;
 }
 
+html[data-theme="plum"] .text-\[\#381932\]\/60,
 html[data-theme="plum"] .text-\[\#381932\]\/50,
 html[data-theme="plum"] .text-\[\#381932\]\/40,
 html[data-theme="plum"] .text-\[\#381932\]\/30 {
-  color: rgba(255, 243, 230, 0.45) !important;
+  color: var(--ink-muted) !important;
 }
 
+/* Hairline Wireframe Borders */
 html[data-theme="plum"] .border-\[\#381932\] {
-  border-color: rgba(255, 243, 230, 0.22) !important;
+  border-color: var(--border-hairline) !important;
 }
 
 html[data-theme="plum"] .border-\[\#381932\]\/10,
@@ -368,19 +425,14 @@ html[data-theme="plum"] .border-\[\#381932\]\/20,
 html[data-theme="plum"] .border-\[\#381932\]\/25,
 html[data-theme="plum"] .border-\[\#381932\]\/30,
 html[data-theme="plum"] .border-\[\#381932\]\/40 {
-  border-color: rgba(255, 243, 230, 0.22) !important;
+  border-color: var(--border-hairline) !important;
 }
 
-html[data-theme="plum"] .bg-\[\#381932\]\/5 {
-  background-color: rgba(255, 243, 230, 0.08) !important;
-}
-
-html[data-theme="plum"] .bg-\[\#381932\]\/10 {
-  background-color: rgba(255, 243, 230, 0.15) !important;
-}
-
-html[data-theme="plum"] .bg-grid-milk {
-  background-image: 
-    linear-gradient(to right, rgba(255, 243, 230, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 243, 230, 0.05) 1px, transparent 1px) !important;
+html[data-theme="plum"] .border-\[\#FFF3E6\]\/10,
+html[data-theme="plum"] .border-\[\#FFF3E6\]\/15,
+html[data-theme="plum"] .border-\[\#FFF3E6\]\/20,
+html[data-theme="plum"] .border-\[\#FFF3E6\]\/25,
+html[data-theme="plum"] .border-\[\#FFF3E6\]\/30,
+html[data-theme="plum"] .border-\[\#FFF3E6\]\/35 {
+  border-color: var(--border-hairline) !important;
 }

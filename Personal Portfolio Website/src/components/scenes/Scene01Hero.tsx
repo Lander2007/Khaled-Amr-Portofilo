@@ -390,7 +390,7 @@ export default function Scene01Hero({
       {/* ============================================================== */}
       <div
         ref={wordWallRef}
-        className="absolute inset-0 overflow-hidden pointer-events-auto select-none flex flex-col justify-around py-8 opacity-[0.06] sm:opacity-[0.075] z-0"
+        className="absolute inset-0 overflow-hidden pointer-events-auto select-none flex flex-col justify-around py-8 z-0"
         aria-hidden="false"
         role="region"
         aria-label="Interactive Kinetic Word Wall"
@@ -398,7 +398,7 @@ export default function Scene01Hero({
         {/* Row 1: Leftward Glide */}
         <div
           ref={wordRow1Ref}
-          className="font-display text-[clamp(4.5rem,10.5vw,11.5rem)] font-black uppercase tracking-tight text-current whitespace-nowrap will-change-transform leading-none"
+          className="hero-watermark-row font-display text-[clamp(4.5rem,10.5vw,11.5rem)] font-black uppercase tracking-tight whitespace-nowrap will-change-transform leading-none"
         >
           {ROW1_WORDS.map((word, idx) => {
             if (word === "•") {
@@ -450,7 +450,7 @@ export default function Scene01Hero({
         {/* Row 2: Rightward Glide */}
         <div
           ref={wordRow2Ref}
-          className="font-display text-[clamp(4.5rem,10.5vw,11.5rem)] font-black uppercase tracking-tight text-current whitespace-nowrap will-change-transform leading-none ml-[-20%]"
+          className="hero-watermark-row font-display text-[clamp(4.5rem,10.5vw,11.5rem)] font-black uppercase tracking-tight whitespace-nowrap will-change-transform leading-none ml-[-20%]"
         >
           {ROW2_WORDS.map((word, idx) => {
             if (word === "•") {
@@ -474,7 +474,7 @@ export default function Scene01Hero({
         {/* Row 3: Leftward Glide */}
         <div
           ref={wordRow3Ref}
-          className="font-display text-[clamp(4.5rem,10.5vw,11.5rem)] font-black uppercase tracking-tight text-current whitespace-nowrap will-change-transform leading-none"
+          className="hero-watermark-row font-display text-[clamp(4.5rem,10.5vw,11.5rem)] font-black uppercase tracking-tight whitespace-nowrap will-change-transform leading-none"
         >
           {ROW3_WORDS.map((word, idx) => {
             if (word === "•") {
@@ -601,17 +601,17 @@ export default function Scene01Hero({
             <MagneticButton strength={0.3} maxOffset={8}>
               <a
                 href="#work"
-                className="px-7 py-4 bg-current text-[var(--bg-primary)] font-bold uppercase tracking-widest flex items-center gap-2.5 hover:opacity-90 transition-opacity shadow-sm cursor-pointer group"
+                className="px-7 py-4 bg-[var(--ink-primary)] text-[var(--bg-canvas)] font-bold uppercase tracking-widest flex items-center gap-2.5 hover:bg-[#D4FF33] hover:text-[#2B1126] transition-colors shadow-sm cursor-pointer group"
               >
                 <span>EXPLORE MY WORK</span>
-                <ArrowDown className="w-3.5 h-3.5 text-[#D4FF33] group-hover:translate-y-0.5 transition-transform" />
+                <ArrowDown className="w-3.5 h-3.5 text-[#FF4D1C] group-hover:translate-y-0.5 transition-transform" />
               </a>
             </MagneticButton>
 
             <MagneticButton strength={0.25} maxOffset={6}>
               <a
                 href="#contact"
-                className="px-7 py-4 border border-current text-current font-bold uppercase tracking-widest flex items-center gap-2 hover:bg-current hover:text-[var(--bg-primary)] transition-colors cursor-pointer"
+                className="px-7 py-4 border border-[var(--border-hairline)] text-[var(--ink-primary)] font-bold uppercase tracking-widest flex items-center gap-2 hover:bg-[var(--bg-elevated)] transition-colors cursor-pointer"
               >
                 <span>CONTACT ME</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />

@@ -457,7 +457,7 @@ export default function HeroCenterRevealTransition() {
   // Reduced motion: Clean immediate sequential flow without pinning or clipping
   if (prefersReducedMotion) {
     return (
-      <div className="relative w-full bg-[var(--surface-primary)] transition-colors duration-500">
+      <div className="relative w-full bg-[var(--bg-canvas)] transition-colors duration-500">
         <Scene01Hero />
         <Scene02Transform />
       </div>
@@ -468,7 +468,7 @@ export default function HeroCenterRevealTransition() {
     <div
       ref={containerRef}
       id="hero-portal-boundary"
-      className="relative w-full bg-[var(--surface-primary)] transition-colors duration-500"
+      className="relative w-full bg-[var(--bg-canvas)] transition-colors duration-500"
     >
       {/* Pinned Viewport Container */}
       <div
