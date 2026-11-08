@@ -222,13 +222,13 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-9 sm:top-10 left-0 right-0 z-40 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? "bg-[var(--surface-primary)]/95 backdrop-blur-md border-b border-current/10 py-2.5 shadow-xs"
-            : "bg-transparent py-3 sm:py-4"
+            ? "bg-[var(--surface-primary)]/95 backdrop-blur-md border-b border-current/10 py-3.5 shadow-xs"
+            : "bg-transparent py-5"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 sm:px-10 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
           {/* Brand Wordmark & Logo (Primary Home Controller) */}
           <Link
             href="/#hero"
@@ -353,7 +353,7 @@ export default function Navbar() {
 
       {/* Mobile Drawer Menu */}
       <div
-        className={`fixed inset-0 z-40 bg-[var(--surface-primary)] pt-24 px-8 pb-12 flex flex-col justify-between md:hidden border-b border-current/20 transition-all duration-300 ease-in-out ${
+        className={`fixed inset-0 z-40 bg-[var(--surface-primary)] pt-20 px-8 pb-12 flex flex-col justify-between md:hidden border-b border-current/20 transition-all duration-300 ease-in-out ${
           mobileMenuOpen
             ? "opacity-100 pointer-events-auto translate-y-0"
             : "opacity-0 pointer-events-none -translate-y-4"

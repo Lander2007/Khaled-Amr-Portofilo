@@ -504,7 +504,7 @@ export default function Scene01Hero({
       {/* ============================================================== */}
       <div
         ref={heroContentRef}
-        className="absolute inset-0 w-full h-full flex flex-col justify-center px-6 sm:px-12 md:px-16 lg:px-20 pt-20 pb-16 z-10 pointer-events-none"
+        className="absolute inset-0 w-full h-full flex flex-col justify-center px-6 sm:px-12 md:px-16 lg:px-20 pt-12 sm:pt-14 pb-8 z-10 pointer-events-none"
       >
         <div className="w-full max-w-5xl mx-auto space-y-6 sm:space-y-8 pointer-events-none">
           {/* Expressive Typographic Name Treatment with Architectural Slice & Chromatic Glitch */}

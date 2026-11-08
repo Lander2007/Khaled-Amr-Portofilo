@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Syne, Instrument_Serif, JetBrains_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
-import ArchitecturalFrame from "@/components/ArchitecturalFrame";
 import PageTransitionProvider from "@/components/motion/PageTransitionProvider";
 import DeveloperTerminal from "@/components/ui/DeveloperTerminal";
 
@@ -103,7 +102,6 @@ export default function RootLayout({
       <body className="min-h-screen bg-[var(--surface-primary)] text-[var(--ink-primary)] antialiased selection:bg-[var(--ink-primary)] selection:text-[var(--surface-primary)]">
         <ThemeProvider>
           <PageTransitionProvider>
-            <ArchitecturalFrame />
             {children}
             <DeveloperTerminal />
           </PageTransitionProvider>
