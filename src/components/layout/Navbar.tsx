@@ -7,7 +7,7 @@ import { ArrowUpRight, Menu, X } from "lucide-react";
 import { gsap } from "gsap";
 import MagneticButton from "@/components/motion/MagneticButton";
 import BrandLogo from "@/components/ui/BrandLogo";
-import PixelThemeToggle from "@/components/PixelThemeToggle";
+import ThemeToggle from "@/components/ThemeToggle";
 import { usePrefersReducedMotion, setMotionPreference } from "@/hooks/usePrefersReducedMotion";
 
 interface NavItem {
@@ -31,6 +31,36 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
   const [hoveredSection, setHoveredSection] = useState<string | null>(null);
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    let initialDark = false;
+    try {
+      const stored = localStorage.getItem("portfolio-polarity-theme");
+      if (stored) {
+        initialDark = stored === "plum";
+      } else {
+        const currentAttr = document.documentElement.getAttribute("data-theme");
+        initialDark = currentAttr === "plum";
+      }
+    } catch {
+      const currentAttr =
+        typeof document !== "undefined" ? document.documentElement.getAttribute("data-theme") : null;
+      initialDark = currentAttr === "plum";
+    }
+    setIsDark(initialDark);
+  }, []);
+
+  const handleThemeToggle = useCallback((nextDark: boolean) => {
+    setIsDark(nextDark);
+    const theme = nextDark ? "plum" : "milk";
+    if (typeof document !== "undefined") {
+      document.documentElement.setAttribute("data-theme", theme);
+    }
+    try {
+      localStorage.setItem("portfolio-polarity-theme", theme);
+    } catch (_) {}
+  }, []);
 
   const scrolledRef = useRef(false);
   const navRef = useRef<HTMLElement>(null);
@@ -301,9 +331,9 @@ export default function Navbar() {
             {/* Hairline Separator */}
             <div className="h-4 w-[1px] bg-current/15 mx-0.5 pointer-events-none" aria-hidden="true" />
 
-            {/* Directly Integrated Pixel-Particle Theme Polarity Toggle */}
-            <div className="flex items-center py-0.5">
-              <PixelThemeToggle />
+            {/* Directly Integrated Theme Polarity Toggle (Outer optical glow allowed to bleed naturally) */}
+            <div className="flex items-center py-0.5 overflow-visible">
+              <ThemeToggle isDark={isDark} onToggle={handleThemeToggle} size={44} />
             </div>
 
             {/* Hairline Separator */}
@@ -395,9 +425,9 @@ export default function Navbar() {
 
         <div className="border-t border-current/15 pt-6 space-y-3 font-mono text-xs text-current/80">
           {/* Mobile Theme Polarity Toggle */}
-          <div className="flex items-center justify-between px-3 py-2 border border-current/20 bg-current/5 rounded-xs">
+          <div className="flex items-center justify-between px-3 py-2 border border-current/20 bg-current/5 rounded-xs overflow-visible">
             <span className="font-semibold text-[11px]">THEME POLARITY</span>
-            <PixelThemeToggle />
+            <ThemeToggle isDark={isDark} onToggle={handleThemeToggle} size={40} />
           </div>
 
           {/* Mobile Motion Toggle */}
