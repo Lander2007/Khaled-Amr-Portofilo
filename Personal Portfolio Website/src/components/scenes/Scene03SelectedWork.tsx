@@ -13,13 +13,9 @@ import {
   SlidersHorizontal,
   Layers,
 } from "lucide-react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PROJECTS } from "@/data/projectsData";
 import MagneticButton from "@/components/motion/MagneticButton";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function Scene03SelectedWork() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
@@ -30,9 +26,8 @@ export default function Scene03SelectedWork() {
 
   const prefersReducedMotion = usePrefersReducedMotion();
 
-  // Living Project Preview Interactive Tilt & Dynamic Image Shift (Direct GPU DOM transforms, zero React re-renders)
+  // Subtle interactive perspective tilt (Gentle GPU DOM transforms, zero layout shifts)
   const cardInnerRef = useRef<HTMLDivElement>(null);
-  const imgInnerRef = useRef<HTMLDivElement>(null);
   const tiltRafRef = useRef<number | null>(null);
 
   const handleImagePointerMove = useCallback(
@@ -44,20 +39,15 @@ export default function Scene03SelectedWork() {
       const normX = (e.clientX - rect.left) / rect.width;
       const normY = (e.clientY - rect.top) / rect.height;
 
-      const rotX = (0.5 - normY) * 4;
-      const rotY = (normX - 0.5) * 4;
-      const shiftX = (normX - 0.5) * -10;
-      const shiftY = (normY - 0.5) * -10;
+      // Restrained micro-angles (max ±1.8deg)
+      const rotX = (0.5 - normY) * 1.8;
+      const rotY = (normX - 0.5) * 1.8;
 
       if (tiltRafRef.current) cancelAnimationFrame(tiltRafRef.current);
       tiltRafRef.current = requestAnimationFrame(() => {
         if (cardInnerRef.current) {
           cardInnerRef.current.style.transform = `perspective(1000px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg)`;
-          cardInnerRef.current.style.transition = "transform 0.1s ease-out";
-        }
-        if (imgInnerRef.current) {
-          imgInnerRef.current.style.transform = `translate3d(${shiftX.toFixed(1)}px, ${shiftY.toFixed(1)}px, 0) scale(1.03)`;
-          imgInnerRef.current.style.transition = "transform 0.1s ease-out";
+          cardInnerRef.current.style.transition = "transform 0.12s ease-out";
         }
       });
     },
@@ -69,10 +59,6 @@ export default function Scene03SelectedWork() {
     if (cardInnerRef.current) {
       cardInnerRef.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg)";
       cardInnerRef.current.style.transition = "transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)";
-    }
-    if (imgInnerRef.current) {
-      imgInnerRef.current.style.transform = "translate3d(0, 0, 0) scale(1)";
-      imgInnerRef.current.style.transition = "transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)";
     }
   }, []);
 
@@ -186,57 +172,30 @@ export default function Scene03SelectedWork() {
     ];
   }, []);
 
-  // GSAP subtle parallax on the curated strip below the main explorer
-  useEffect(() => {
-    if (!sectionRef.current) return;
-
-    const ctx = gsap.context(() => {
-      const cards = sectionRef.current?.querySelectorAll(".curated-card-inner");
-      cards?.forEach((card) => {
-        gsap.fromTo(
-          card,
-          { yPercent: -4 },
-          {
-            yPercent: 4,
-            ease: "none",
-            scrollTrigger: {
-              trigger: card,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 0.5,
-            },
-          }
-        );
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
     <section
       ref={sectionRef}
       id="work"
-      className="relative w-full bg-[#FFF3E6] text-[#381932] overflow-hidden select-none border-t border-[#381932]/10"
+      className="relative w-full bg-[var(--bg-canvas)] text-[var(--ink-primary)] overflow-hidden select-none border-t border-[var(--border-hairline)]"
     >
       {/* Subtle Hairline Grid Texture */}
-      <div className="absolute inset-0 pointer-events-none bg-grid-milk opacity-25 z-0" />
+      <div className="absolute inset-0 pointer-events-none bg-grid-milk opacity-20 z-0" />
 
-      <div className="relative z-10 max-w-7xl mx-auto pt-24 sm:pt-32 pb-24 px-5 sm:px-8 md:px-12 space-y-16 sm:space-y-20">
+      <div className="relative z-10 max-w-7xl mx-auto py-16 md:py-24 px-6 md:px-16 space-y-16 md:space-y-24">
         
         {/* ============================================================== */}
         {/* 01. EDITORIAL HEADER & OBSERVATORY MANIFESTO                    */}
         {/* ============================================================== */}
-        <header className="border-b border-[#381932]/15 pb-10 sm:pb-12 space-y-8">
+        <header className="border-b border-[var(--border-hairline)] pb-8 md:pb-12 space-y-6 md:space-y-8">
           {/* Top Metadata Strip */}
-          <div className="flex flex-wrap items-center justify-between gap-4 font-mono text-xs tracking-widest text-[#381932]/70 uppercase border-b border-[#381932]/10 pb-4">
+          <div className="flex flex-wrap items-center justify-between gap-4 font-mono text-xs tracking-widest text-[var(--ink-muted)] uppercase border-b border-[var(--border-hairline)] pb-4">
             <div className="flex items-center gap-3">
-              <span className="w-2.5 h-2.5 bg-[#381932] inline-block" />
-              <span className="font-bold text-[#381932]">THE PROJECT OBSERVATORY</span>
-              <span className="text-[#381932]/30">&bull;</span>
+              <span className="w-2 h-2 bg-[var(--ink-primary)] inline-block" />
+              <span className="font-bold text-[var(--ink-primary)]">THE PROJECT OBSERVATORY</span>
+              <span className="opacity-30">&bull;</span>
               <span>15 AUDITED CODEBASES</span>
             </div>
-            <div className="hidden md:flex items-center gap-4 text-[11px] text-[#381932]/60">
+            <div className="hidden md:flex items-center gap-4 text-[11px] text-[var(--ink-muted)]">
               <span>ALEXANDRIA, EG (31.2001° N)</span>
               <span>&bull;</span>
               <span>TWO-COLUMN INTERACTIVE APERTURE</span>
@@ -244,13 +203,13 @@ export default function Scene03SelectedWork() {
           </div>
 
           {/* Monumental Headline */}
-          <div className="space-y-3">
-            <span className="font-mono text-xs tracking-[0.25em] text-[#381932]/60 uppercase block">
+          <div className="space-y-2 md:space-y-3">
+            <span className="font-mono text-xs tracking-[0.25em] text-[var(--ink-muted)] uppercase block">
               {"// ARCHITECTURAL EXPLORATION CONSOLE"}
             </span>
-            <h2 className="font-display text-[clamp(2.4rem,7vw,6.5rem)] font-extrabold uppercase leading-[0.9] tracking-tighter text-[#381932]">
-              THE PROJECT
-              <span className="font-serif italic font-normal lowercase block text-[clamp(2.1rem,6.2vw,6rem)] text-[#381932]/90 ml-1 sm:ml-2">
+            <h2 className="font-display text-[clamp(2.4rem,5.5vw,5rem)] font-extrabold uppercase leading-[0.95] tracking-tight text-[var(--ink-primary)]">
+              THE PROJECT{" "}
+              <span className="font-serif italic font-normal lowercase inline-block text-[clamp(2.2rem,5vw,4.5rem)] text-[var(--ink-secondary)] ml-1 sm:ml-2">
                 Observatory.
               </span>
             </h2>
@@ -258,35 +217,35 @@ export default function Scene03SelectedWork() {
 
           {/* Editorial Description & Category Filters */}
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pt-2">
-            <p className="font-serif italic text-lg sm:text-xl text-[#381932]/85 max-w-2xl leading-snug">
+            <p className="font-serif italic text-lg sm:text-xl text-[var(--ink-secondary)] max-w-2xl leading-relaxed">
               A minimalist editorial instrument designed to inspect 15 production web architectures, bilingual RTL e-commerce storefronts, 3D web experiments, and color science engines.
             </p>
 
-            <div className="font-mono text-xs text-[#381932]/60 hidden sm:flex items-center gap-2 shrink-0">
-              <Compass className="w-3.5 h-3.5 text-[#381932]" />
+            <div className="font-mono text-xs text-[var(--ink-muted)] hidden sm:flex items-center gap-2 shrink-0">
+              <Compass className="w-3.5 h-3.5 text-[var(--ink-primary)]" />
               <span>CLICK TO SELECT • EXPLORE CASE STUDY</span>
             </div>
           </div>
 
           {/* Filter Pills */}
           <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none pt-2" role="tablist">
-            <SlidersHorizontal className="w-3.5 h-3.5 text-[#381932]/50 mr-1 shrink-0 hidden sm:inline" />
+            <SlidersHorizontal className="w-3.5 h-3.5 text-[var(--ink-muted)] mr-1 shrink-0 hidden sm:inline" />
             {categories.map((cat) => {
               const isActive = activeCategory === cat.id;
               return (
                 <button
                   key={cat.id}
                   onClick={() => handleCategorySelect(cat.id)}
-                  className={`px-3.5 py-1.5 font-mono text-xs whitespace-nowrap uppercase tracking-wider transition-all duration-200 cursor-pointer border flex items-center gap-1.5 ${
+                  className={`px-3.5 py-1.5 font-mono text-xs whitespace-nowrap uppercase tracking-wider transition-colors duration-350 ease-out cursor-pointer border flex items-center gap-2 ${
                     isActive
-                      ? "bg-[#381932] text-[#FFF3E6] border-[#381932] font-bold shadow-sm"
-                      : "bg-[#FFFDF9]/60 text-[#381932]/75 border-[#381932]/15 hover:border-[#381932]/40 hover:text-[#381932]"
+                      ? "bg-[var(--ink-primary)] text-[var(--bg-canvas)] border-[var(--ink-primary)] font-bold"
+                      : "bg-[var(--bg-surface)] text-[var(--ink-muted)] border-[var(--border-hairline)] hover:border-[var(--ink-muted)] hover:text-[var(--ink-primary)]"
                   }`}
                   role="tab"
                   aria-selected={isActive}
                 >
                   {isActive && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#C6F277] shadow-[0_0_6px_rgba(198,242,119,0.8)]" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#D4FF33]" />
                   )}
                   <span>{cat.label}</span>
                 </button>
@@ -304,90 +263,58 @@ export default function Scene03SelectedWork() {
           onKeyDown={handleKeyDown}
         >
           {/* ============================================================ */}
-          {/* LARGER COLUMN: SUBSTANTIAL OBSERVATORY PREVIEW STAGE (7/12)   */}
+          {/* OBSERVATORY PREVIEW STAGE (7/12)                             */}
           {/* ============================================================ */}
-          <div className="lg:col-span-7 xl:col-span-8 lg:sticky lg:top-24 space-y-6">
-            <div className="border border-[#381932]/20 bg-[#FFFDF9] shadow-sm p-5 sm:p-7 md:p-8 space-y-6">
+          <div className="lg:col-span-7 xl:col-span-7 lg:sticky lg:top-24 space-y-6 z-10">
+            <div className="border border-[var(--border-hairline)] bg-[var(--bg-surface)] p-5 sm:p-7 md:p-8 space-y-6 transition-colors duration-350 ease-out">
               
               {/* Telemetry Header Bar */}
-              <div className="flex flex-wrap items-center justify-between gap-3 font-mono text-xs border-b border-[#381932]/10 pb-4">
+              <div className="flex flex-wrap items-center justify-between gap-3 font-mono text-xs border-b border-[var(--border-hairline)] pb-4">
                 <div className="flex items-center gap-3">
-                  <span className="w-2 h-2 rounded-full bg-[#C6F277] shadow-[0_0_8px_rgba(198,242,119,0.8)] animate-pulse" />
-                  <span className="font-bold text-[#381932]">
-                    VIEWPORT // [ {activeProject.num} / 15 ]
+                  <span className="w-2 h-2 rounded-full bg-[#D4FF33]" />
+                  <span className="font-bold text-[var(--ink-primary)]">
+                    VIEWPORT // [ {activeProject.num} / {PROJECTS.length} ]
                   </span>
-                  <span className="text-[#381932]/30">&bull;</span>
-                  <span className="text-[#381932]/80 uppercase font-semibold">
+                  <span className="text-[var(--ink-muted)] opacity-40">&bull;</span>
+                  <span className="text-[var(--ink-secondary)] uppercase font-semibold">
                     {activeProject.category}
                   </span>
                 </div>
 
-                <div className="flex items-center gap-3 font-mono text-[11px] text-[#381932]/65">
+                <div className="flex items-center gap-3 font-mono text-[11px] text-[var(--ink-muted)]">
                   <span>{activeProject.year}</span>
                   <span>&bull;</span>
-                  <span className="inline-flex items-center gap-1.5 font-bold uppercase text-[#381932]">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#C6F277]" />
+                  <span className="inline-flex items-center gap-1.5 font-bold uppercase text-[var(--ink-primary)]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#D4FF33]" />
                     {activeProject.status}
                   </span>
                 </div>
               </div>
 
-              {/* Main Substantial Image Viewport with Living Project Preview & Cursor Spotlight */}
+              {/* Pristine Image Viewport (Zero clashing badges or distracting glows) */}
               <Link
                 href={`/work/${activeProject.slug}`}
                 onPointerMove={handleImagePointerMove}
                 onPointerLeave={handleImagePointerLeave}
-                className="group relative block w-full aspect-[16/10] sm:aspect-[16/9] overflow-hidden bg-[#240f20] border border-[#381932]/20 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#381932]"
+                className="group relative block w-full aspect-[16/10] overflow-hidden bg-[var(--bg-canvas)] border border-[var(--border-hairline)] cursor-pointer focus:outline-none focus:ring-1 focus:ring-[var(--ink-primary)]"
                 style={{
-                  perspective: "1200px",
+                  perspective: "1000px",
                 }}
                 aria-label={`Open case study for ${activeProject.title}`}
               >
-                {/* Keyed container with 3D perspective tilt & instant smooth reveal animation */}
                 <div
                   key={activeProject.slug}
                   ref={cardInnerRef}
                   className="relative w-full h-full animate-observatory-reveal will-change-transform"
-                  style={{
-                    transformStyle: "preserve-3d",
-                  }}
                 >
-                  {/* Internal Image Plane with Counter-Parallax Shift */}
-                  <div
-                    ref={imgInnerRef}
-                    className="relative w-full h-full will-change-transform"
-                  >
-                    <Image
-                      src={activeProject.coverImage}
-                      alt={activeProject.title}
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 65vw"
-                      priority
-                      className="object-cover object-top"
-                    />
-                  </div>
-
-                  {/* Architectural Blueprint Hover Lens Accent */}
-                  {!prefersReducedMotion && (
-                    <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="absolute inset-0 bg-[#381932]/20" />
-                      <div className="absolute inset-0 bg-grid-plum opacity-20" />
-                      <div className="absolute top-3 right-3 font-mono text-[9px] sm:text-[10px] text-[#381932] bg-[#C6F277] px-2 py-0.5 font-bold uppercase tracking-wider select-none shadow-sm flex items-center gap-1.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#381932] animate-pulse" />
-                        <span>INSPECTION LENS // ACTIVE</span>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Minimal Architectural Frame Corner Accents */}
-                  <div className="absolute top-3 left-3 font-mono text-[10px] tracking-widest text-[#FFF3E6] bg-[#381932]/85 px-2.5 py-1 uppercase backdrop-blur-xs select-none">
-                    EXHIBIT_{activeProject.num}
-                  </div>
-
-                  <div className="absolute bottom-3 right-3 font-mono text-[11px] tracking-wider text-[#FFF3E6] bg-[#381932] px-3 py-1.5 uppercase flex items-center gap-1.5 opacity-90 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all shadow-md">
-                    <span>EXPLORE ARCHITECTURE</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-[#C6F277]" />
-                  </div>
+                  <Image
+                    src={activeProject.coverImage}
+                    alt={activeProject.title}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 55vw"
+                    priority
+                    className="object-cover object-top transition-opacity duration-350 ease-out group-hover:opacity-95"
+                  />
                 </div>
               </Link>
 
@@ -395,20 +322,20 @@ export default function Scene03SelectedWork() {
               <div key={`meta-${activeProject.slug}`} className="space-y-4 animate-observatory-reveal">
                 <div className="space-y-1.5">
                   <div className="flex items-baseline justify-between gap-4 flex-wrap">
-                    <h3 className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-[#381932]">
+                    <h3 className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-[var(--ink-primary)]">
                       {activeProject.title}
                     </h3>
-                    <span className="font-mono text-xs text-[#381932]/60 uppercase">
+                    <span className="font-mono text-xs text-[var(--ink-muted)] uppercase">
                       ROLE: {activeProject.role}
                     </span>
                   </div>
 
-                  <p className="font-serif italic text-lg sm:text-xl text-[#381932]/85 leading-snug">
+                  <p className="font-serif italic text-lg sm:text-xl text-[var(--ink-secondary)] leading-snug">
                     {activeProject.subtitle}
                   </p>
                 </div>
 
-                <p className="font-sans text-sm sm:text-base text-[#381932]/80 leading-relaxed max-w-3xl">
+                <p className="font-sans text-sm sm:text-base text-[var(--ink-muted)] leading-relaxed max-w-3xl">
                   {activeProject.overview}
                 </p>
 
@@ -418,9 +345,9 @@ export default function Scene03SelectedWork() {
                     {activeProject.verifiableMetrics.map((metric, idx) => (
                       <div
                         key={idx}
-                        className="p-2.5 border border-[#381932]/10 bg-[#FFF3E6]/60 flex items-start gap-2 text-xs font-mono text-[#381932]"
+                        className="p-2.5 border border-[var(--border-hairline)] bg-[var(--bg-canvas)] flex items-start gap-2 text-xs font-mono text-[var(--ink-primary)]"
                       >
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#381932] shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#D4FF33] shrink-0 mt-0.5" />
                         <span className="leading-tight font-medium">{metric}</span>
                       </div>
                     ))}
@@ -429,13 +356,13 @@ export default function Scene03SelectedWork() {
 
                 {/* Tech Stack Pills */}
                 <div className="flex flex-wrap items-center gap-1.5 pt-2">
-                  <span className="font-mono text-[11px] text-[#381932]/50 mr-1 uppercase">
+                  <span className="font-mono text-[11px] text-[var(--ink-muted)] mr-1 uppercase">
                     ENGINEERING STACK:
                   </span>
                   {activeProject.techStack.map((tech) => (
                     <span
                       key={tech}
-                      className="px-2.5 py-1 border border-[#381932]/15 bg-[#FFFDF9] font-mono text-[11px] text-[#381932]/85"
+                      className="px-2.5 py-1 border border-[var(--border-hairline)] bg-[var(--bg-canvas)] font-mono text-[11px] text-[var(--ink-muted)]"
                     >
                       {tech}
                     </span>
@@ -443,15 +370,15 @@ export default function Scene03SelectedWork() {
                 </div>
 
                 {/* Action Links & Stepper Bar */}
-                <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-[#381932]/10">
+                <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-[var(--border-hairline)]">
                   <div className="flex flex-wrap items-center gap-3 font-mono text-xs">
                     <MagneticButton strength={0.2} maxOffset={5}>
                       <Link
                         href={`/work/${activeProject.slug}`}
-                        className="px-6 py-3.5 bg-[#381932] text-[#FFF3E6] font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-[#250d21] transition-colors shadow-sm"
+                        className="px-6 py-3.5 bg-[var(--ink-primary)] text-[var(--bg-canvas)] font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-[#D4FF33] hover:text-[#0B0A0E] transition-colors duration-350 ease-out"
                       >
                         <span>VIEW CASE STUDY</span>
-                        <ArrowRight className="w-3.5 h-3.5 text-[#C6F277]" />
+                        <ArrowRight className="w-3.5 h-3.5 text-[#FF4D1C]" />
                       </Link>
                     </MagneticButton>
 
@@ -461,7 +388,7 @@ export default function Scene03SelectedWork() {
                           href={activeProject.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-5 py-3.5 border border-[#381932] text-[#381932] font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-[#381932] hover:text-[#FFF3E6] transition-colors"
+                          className="px-5 py-3.5 border border-[var(--border-hairline)] text-[var(--ink-primary)] font-bold uppercase tracking-wider flex items-center gap-2 hover:border-[var(--ink-primary)] hover:bg-[var(--bg-elevated)] transition-colors duration-350 ease-out"
                         >
                           <span>LIVE PLATFORM</span>
                           <ArrowUpRight className="w-3.5 h-3.5" />
@@ -474,7 +401,7 @@ export default function Scene03SelectedWork() {
                         href={activeProject.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-3.5 py-3.5 text-[#381932]/70 hover:text-[#381932] font-mono text-xs font-semibold uppercase tracking-wider flex items-center gap-1 transition-colors"
+                        className="px-3.5 py-3.5 text-[var(--ink-muted)] hover:text-[var(--ink-primary)] font-mono text-xs font-semibold uppercase tracking-wider flex items-center gap-1 transition-colors duration-350 ease-out"
                       >
                         <span>SOURCE CODE</span>
                         <ArrowUpRight className="w-3 h-3" />
@@ -487,17 +414,17 @@ export default function Scene03SelectedWork() {
                     <button
                       onClick={handlePrevProject}
                       aria-label="Previous project exhibit"
-                      className="p-2.5 border border-[#381932]/20 hover:border-[#381932] hover:bg-[#381932] hover:text-[#FFF3E6] transition-colors cursor-pointer"
+                      className="p-2.5 border border-[var(--border-hairline)] text-[var(--ink-primary)] hover:border-[var(--ink-primary)] hover:bg-[var(--bg-elevated)] transition-colors duration-350 ease-out cursor-pointer"
                     >
                       <ChevronLeft className="w-4 h-4" />
                     </button>
-                    <span className="px-3 py-2 text-[#381932]/70 font-bold select-none">
+                    <span className="px-3 py-2 text-[var(--ink-muted)] font-bold select-none">
                       {String(activeIndex + 1).padStart(2, "0")} / {String(filteredProjects.length).padStart(2, "0")}
                     </span>
                     <button
                       onClick={handleNextProject}
                       aria-label="Next project exhibit"
-                      className="p-2.5 border border-[#381932]/20 hover:border-[#381932] hover:bg-[#381932] hover:text-[#FFF3E6] transition-colors cursor-pointer"
+                      className="p-2.5 border border-[var(--border-hairline)] text-[var(--ink-primary)] hover:border-[var(--ink-primary)] hover:bg-[var(--bg-elevated)] transition-colors duration-350 ease-out cursor-pointer"
                     >
                       <ChevronRight className="w-4 h-4" />
                     </button>
@@ -508,16 +435,16 @@ export default function Scene03SelectedWork() {
           </div>
 
           {/* ============================================================ */}
-          {/* SMALLER COLUMN: COMPACT VERTICALLY ORGANIZED INDEX (5/12)     */}
+          {/* COMPACT VERTICALLY ORGANIZED INDEX (5/12)                     */}
           {/* ============================================================ */}
-          <div className="lg:col-span-5 xl:col-span-4 space-y-4">
+          <div className="lg:col-span-5 xl:col-span-5 space-y-4">
             {/* Index Header */}
-            <div className="flex items-center justify-between border-b border-[#381932]/15 pb-3 font-mono text-xs uppercase tracking-widest text-[#381932]">
+            <div className="flex items-center justify-between border-b border-[var(--border-hairline)] pb-3 font-mono text-xs uppercase tracking-widest text-[var(--ink-primary)]">
               <div className="flex items-center gap-2">
-                <Layers className="w-3.5 h-3.5 text-[#381932]" />
+                <Layers className="w-3.5 h-3.5 text-[var(--ink-primary)]" />
                 <span className="font-bold">SYSTEM INDEX // {filteredProjects.length} ENTRIES</span>
               </div>
-              <span className="text-[11px] text-[#381932]/50 hidden sm:inline">
+              <span className="text-[11px] text-[var(--ink-muted)] hidden sm:inline">
                 NAV: &uarr; &darr;
               </span>
             </div>
@@ -525,7 +452,7 @@ export default function Scene03SelectedWork() {
             {/* Vertically Organized Compact Index List */}
             <div
               ref={indexContainerRef}
-              className="border border-[#381932]/20 bg-[#FFFDF9] divide-y divide-[#381932]/10 shadow-sm overflow-hidden"
+              className="border border-[var(--border-hairline)] bg-[var(--bg-surface)] divide-y divide-[var(--border-hairline)] max-h-[640px] overflow-y-auto"
               role="tablist"
               aria-label="Project Observatory Directory"
             >
@@ -539,17 +466,17 @@ export default function Scene03SelectedWork() {
                     role="tab"
                     aria-selected={isSelected}
                     tabIndex={0}
-                    className={`w-full text-left p-3.5 sm:p-4 flex items-center justify-between gap-3 transition-colors duration-150 cursor-pointer group focus:outline-none focus:ring-1 focus:ring-inset focus:ring-[#381932] ${
+                    className={`w-full text-left p-3.5 sm:p-4 flex items-center justify-between gap-3 transition-colors duration-350 ease-out cursor-pointer group focus:outline-none focus:ring-1 focus:ring-inset focus:ring-[var(--ink-primary)] ${
                       isSelected
-                        ? "bg-[#381932] text-[#FFF3E6] border-l-4 border-l-[#C6F277]"
-                        : "border-l-4 border-l-transparent bg-transparent text-[#381932] hover:bg-[#381932]/5"
+                        ? "bg-[var(--ink-primary)] text-[var(--bg-canvas)] border-l-4 border-l-[#D4FF33]"
+                        : "border-l-4 border-l-transparent bg-transparent text-[var(--ink-primary)] hover:bg-[var(--ink-primary)]/5"
                     }`}
                   >
                     {/* Index Number & Title */}
                     <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                       <span
-                        className={`font-mono text-xs shrink-0 font-bold ${
-                          isSelected ? "text-[#C6F277]" : "text-[#381932]/45 group-hover:text-[#381932]"
+                        className={`font-mono text-xs shrink-0 font-bold transition-colors duration-350 ease-out ${
+                          isSelected ? "text-[#D4FF33]" : "text-[var(--ink-muted)] group-hover:text-[var(--ink-primary)]"
                         }`}
                       >
                         {project.num}
@@ -560,8 +487,8 @@ export default function Scene03SelectedWork() {
                           {project.title}
                         </div>
                         <div
-                          className={`font-mono text-[11px] uppercase tracking-wider truncate mt-0.5 ${
-                            isSelected ? "text-[#FFF3E6]/70" : "text-[#381932]/60"
+                          className={`font-mono text-[11px] uppercase tracking-wider truncate mt-0.5 transition-colors duration-350 ease-out ${
+                            isSelected ? "text-[var(--bg-canvas)]/70" : "text-[var(--ink-muted)]"
                           }`}
                         >
                           {project.category}
@@ -572,17 +499,17 @@ export default function Scene03SelectedWork() {
                     {/* Right Year & Selection Indicator */}
                     <div className="flex items-center gap-3 shrink-0 font-mono text-xs">
                       <span
-                        className={`hidden sm:inline text-[11px] ${
-                          isSelected ? "text-[#FFF3E6]/60" : "text-[#381932]/40"
+                        className={`hidden sm:inline text-[11px] transition-colors duration-350 ease-out ${
+                          isSelected ? "text-[var(--bg-canvas)]/60" : "text-[var(--ink-muted)]"
                         }`}
                       >
                         {project.year}
                       </span>
                       <div
-                        className={`w-7 h-7 flex items-center justify-center border transition-all ${
+                        className={`w-7 h-7 flex items-center justify-center border transition-colors duration-350 ease-out ${
                           isSelected
-                            ? "bg-[#C6F277] text-[#381932] border-[#C6F277] font-bold shadow-[0_0_8px_rgba(198,242,119,0.35)]"
-                            : "border-[#381932]/20 text-[#381932]/60 group-hover:border-[#381932] group-hover:text-[#381932]"
+                            ? "bg-[#D4FF33] text-[#0B0A0E] border-[#D4FF33] font-bold"
+                            : "border-[var(--border-hairline)] text-[var(--ink-muted)] group-hover:border-[var(--ink-primary)] group-hover:text-[var(--ink-primary)]"
                         }`}
                       >
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -593,11 +520,11 @@ export default function Scene03SelectedWork() {
               })}
             </div>
 
-            <div className="p-3.5 border border-[#381932]/10 bg-[#FFFDF9]/60 font-mono text-[11px] text-[#381932]/70 flex items-center justify-between">
-              <span>ACTIVE APERTURE: {activeProject.num} OF 15</span>
+            <div className="p-3.5 border border-[var(--border-hairline)] bg-[var(--bg-surface)] font-mono text-[11px] text-[var(--ink-muted)] flex items-center justify-between">
+              <span>ACTIVE APERTURE: {activeProject.num} OF {PROJECTS.length}</span>
               <Link
                 href={`/work/${activeProject.slug}`}
-                className="font-bold underline text-[#381932] hover:opacity-80"
+                className="font-bold underline text-[var(--ink-primary)] hover:text-[#D4FF33] transition-colors duration-350 ease-out"
               >
                 OPEN CASE STUDY &rarr;
               </Link>
@@ -608,17 +535,17 @@ export default function Scene03SelectedWork() {
         {/* ============================================================== */}
         {/* 03. COMPACT EDITORIAL STRIP: 3 CURATED FLAGSHIPS BELOW STAGE    */}
         {/* ============================================================== */}
-        <div className="pt-12 sm:pt-16 border-t border-[#381932]/15 space-y-8">
+        <div className="pt-12 sm:pt-16 border-t border-[var(--border-hairline)] space-y-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div className="space-y-1.5">
-              <span className="font-mono text-xs tracking-widest text-[#381932]/60 uppercase block">
+              <span className="font-mono text-xs tracking-widest text-[var(--ink-muted)] uppercase block">
                 {"// COMPACT CURATED APERTURES"}
               </span>
-              <h3 className="font-display text-2xl sm:text-3xl font-extrabold uppercase tracking-tight text-[#381932]">
+              <h3 className="font-display text-2xl sm:text-3xl font-extrabold uppercase tracking-tight text-[var(--ink-primary)]">
                 FLAGSHIP HIGHLIGHTS
               </h3>
             </div>
-            <p className="font-serif italic text-base sm:text-lg text-[#381932]/80 max-w-md">
+            <p className="font-serif italic text-base sm:text-lg text-[var(--ink-secondary)] max-w-md">
               Three benchmark production systems engineered for extreme performance, bilingual layout rigor, and procedural color science.
             </p>
           </div>
@@ -627,48 +554,46 @@ export default function Scene03SelectedWork() {
             {curatedHighlights.map((highlight, index) => (
               <article
                 key={highlight.slug}
-                className="group border border-[#381932]/20 bg-[#FFFDF9] shadow-sm flex flex-col justify-between overflow-hidden"
+                className="group border border-[var(--border-hairline)] bg-[var(--bg-surface)] flex flex-col justify-between overflow-hidden transition-colors duration-350 ease-out hover:border-[var(--ink-muted)]"
               >
                 <div className="p-5 sm:p-6 space-y-4">
                   {/* Category & Number Header */}
-                  <div className="flex items-center justify-between font-mono text-xs text-[#381932]/70 border-b border-[#381932]/10 pb-3">
-                    <span className="font-bold text-[#381932]">FLAGSHIP // 0{index + 1}</span>
+                  <div className="flex items-center justify-between font-mono text-xs text-[var(--ink-muted)] border-b border-[var(--border-hairline)] pb-3">
+                    <span className="font-bold text-[var(--ink-primary)]">FLAGSHIP // 0{index + 1}</span>
                     <span className="uppercase text-[11px]">{highlight.category}</span>
                   </div>
 
                   {/* Thumbnail Image Viewport */}
                   <Link
                     href={`/work/${highlight.slug}`}
-                    className="relative block w-full aspect-[16/10] overflow-hidden bg-[#240f20] border border-[#381932]/15"
+                    className="relative block w-full aspect-[16/10] overflow-hidden bg-[var(--bg-canvas)] border border-[var(--border-hairline)]"
                   >
-                    <div className="curated-card-inner relative w-full h-[108%] -top-[4%]">
-                      <Image
-                        src={highlight.coverImage}
-                        alt={highlight.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                        className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
-                      />
-                    </div>
+                    <Image
+                      src={highlight.coverImage}
+                      alt={highlight.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover object-top transition-opacity duration-350 ease-out group-hover:opacity-90"
+                    />
                   </Link>
 
                   {/* Title and Short Overview */}
                   <div className="space-y-1.5">
-                    <h4 className="font-display text-xl font-bold uppercase tracking-tight text-[#381932]">
+                    <h4 className="font-display text-xl font-bold uppercase tracking-tight text-[var(--ink-primary)]">
                       {highlight.title}
                     </h4>
-                    <p className="font-serif italic text-sm sm:text-base text-[#381932]/80 line-clamp-2">
+                    <p className="font-serif italic text-sm sm:text-base text-[var(--ink-secondary)] line-clamp-2">
                       {highlight.subtitle}
                     </p>
                   </div>
                 </div>
 
                 {/* Footer Action */}
-                <div className="p-5 sm:p-6 pt-0 border-t border-[#381932]/10 mt-auto flex items-center justify-between font-mono text-xs">
-                  <span className="text-[#381932]/60 text-[11px]">{highlight.year} • {highlight.status}</span>
+                <div className="p-5 sm:p-6 pt-0 border-t border-[var(--border-hairline)] mt-auto flex items-center justify-between font-mono text-xs">
+                  <span className="text-[var(--ink-muted)] text-[11px]">{highlight.year} • {highlight.status}</span>
                   <Link
                     href={`/work/${highlight.slug}`}
-                    className="font-bold text-[#381932] flex items-center gap-1.5 hover:translate-x-1 transition-transform"
+                    className="font-bold text-[var(--ink-primary)] flex items-center gap-1.5 hover:text-[#D4FF33] transition-colors duration-350 ease-out"
                   >
                     <span>READ CASE</span>
                     <ArrowRight className="w-3.5 h-3.5" />

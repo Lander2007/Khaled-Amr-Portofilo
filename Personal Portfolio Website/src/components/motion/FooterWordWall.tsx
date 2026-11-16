@@ -153,14 +153,14 @@ export default function FooterWordWall() {
         <div className="flex flex-col lg:flex-row lg:items-baseline justify-between gap-4 overflow-visible">
           {/* Dominant Oversized Word: SHIFT (Deliberately cropped on right) */}
           <div className="group cursor-default">
-            <span className="font-display font-black text-[clamp(5.5rem,19vw,15.5rem)] uppercase leading-[0.82] tracking-tighter text-[#FFF3E6] group-hover:text-[#C6F277] transition-colors duration-300 inline-block -ml-2 sm:-ml-4">
+            <span className="font-display font-black text-[clamp(5.5rem,19vw,15.5rem)] uppercase leading-[0.82] tracking-tighter text-[#FFF3E6] group-hover:text-[#D4FF33] transition-colors duration-350 ease-out inline-block -ml-2 sm:-ml-4">
               SHIFT
             </span>
           </div>
 
           {/* Secondary Counterweight: /interactive. (Instrument Serif Italic in Electric Lime) */}
           <div className="group cursor-default lg:-mt-10 lg:mr-2 self-start lg:self-end">
-            <span className="font-serif italic font-normal text-[clamp(3rem,8.5vw,7.8rem)] lowercase leading-none tracking-tight text-[#C6F277] group-hover:scale-[1.03] transition-transform duration-300 inline-block drop-shadow-[0_0_25px_rgba(198,242,119,0.3)]">
+            <span className="font-serif italic font-normal text-[clamp(3rem,8.5vw,7.8rem)] lowercase leading-none tracking-tight text-[#D4FF33] transition-colors duration-350 ease-out inline-block">
               /interactive.
             </span>
           </div>
@@ -178,32 +178,32 @@ export default function FooterWordWall() {
           {/* Left Anchor: FORM & BUILD */}
           <div className="md:col-span-5 space-y-3">
             <div className="flex items-baseline gap-4 sm:gap-6 flex-wrap">
-              <span className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-[#FFF3E6]/90 hover:text-[#C6F277] hover:scale-[1.03] transition-all duration-300 cursor-default inline-block">
+              <span className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-[#FFF3E6]/90 hover:text-[#D4FF33] transition-colors duration-350 ease-out cursor-default inline-block">
                 FORM
               </span>
-              <span className="font-mono text-xs sm:text-sm tracking-[0.3em] uppercase text-[#FFF3E6]/45 hover:text-[#C6F277] transition-colors duration-200 cursor-default">
+              <span className="font-mono text-xs sm:text-sm tracking-[0.3em] uppercase text-[#FFF3E6]/45 hover:text-[#D4FF33] transition-colors duration-350 ease-out cursor-default">
                 [ BUILD ]
               </span>
             </div>
             <div className="font-mono text-[10px] tracking-widest text-[#FFF3E6]/35 uppercase flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#C6F277]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#D4FF33]" />
               <span>SYNTAX // MOTION DYNAMICS</span>
             </div>
           </div>
 
           {/* Center Expressive Flourish: create */}
           <div className="md:col-span-3 flex justify-start md:justify-center">
-            <span className="font-serif italic text-3xl sm:text-5xl md:text-6xl text-[#FFF3E6]/75 hover:text-[#C6F277] hover:scale-[1.04] transition-all duration-300 cursor-default inline-block">
+            <span className="font-serif italic text-3xl sm:text-5xl md:text-6xl text-[#FFF3E6]/75 hover:text-[#D4FF33] transition-colors duration-350 ease-out cursor-default inline-block">
               create
             </span>
           </div>
 
           {/* Right Editorial Cluster: DIGITAL & EXPLORE */}
           <div className="md:col-span-4 flex flex-col md:items-end space-y-2">
-            <span className="font-display text-3xl sm:text-5xl md:text-6xl font-extrabold uppercase tracking-widest text-[#FFF3E6]/40 hover:text-[#FFF3E6] transition-colors duration-300 cursor-default">
+            <span className="font-display text-3xl sm:text-5xl md:text-6xl font-extrabold uppercase tracking-widest text-[#FFF3E6]/40 hover:text-[#FFF3E6] transition-colors duration-350 ease-out cursor-default">
               DIGITAL
             </span>
-            <span className="font-mono text-xs sm:text-sm tracking-[0.35em] uppercase text-[#C6F277]/80 hover:text-[#C6F277] transition-colors duration-200 cursor-default">
+            <span className="font-mono text-xs sm:text-sm tracking-[0.35em] uppercase text-[#D4FF33]/80 hover:text-[#D4FF33] transition-colors duration-350 ease-out cursor-default">
               &rarr; EXPLORE
             </span>
           </div>
@@ -222,31 +222,31 @@ export default function FooterWordWall() {
           <button
             type="button"
             onClick={handleEggClick}
-            className="group text-left cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C6F277] py-1 transition-all"
+            className="group text-left cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#D4FF33] py-1 transition-all"
             aria-label="Interactive Typographic Experiment"
           >
             <div className="flex items-center gap-2 mb-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#C6F277] group-hover:scale-125 transition-transform shadow-[0_0_8px_rgba(198,242,119,0.8)]" />
-              <span className="font-mono text-[10px] tracking-[0.25em] text-[#C6F277] uppercase">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#D4FF33]" />
+              <span className="font-mono text-[10px] tracking-[0.25em] text-[#D4FF33] uppercase">
                 {eggActive ? "[ CRAFT // DISCOVERED ]" : "[ CLICK TO PROBE ]"}
               </span>
             </div>
-            <div className="font-display text-2xl sm:text-4xl font-black uppercase tracking-tight text-[#FFF3E6] group-hover:text-[#C6F277] transition-colors duration-200">
+            <div className="font-display text-2xl sm:text-4xl font-black uppercase tracking-tight text-[#FFF3E6] group-hover:text-[#D4FF33] transition-colors duration-350 ease-out">
               {eggText}
             </div>
           </button>
 
           {/* Accompanying Editorial Pair: MOTION & IDEAS */}
           <div className="flex items-center gap-8 sm:gap-12 font-mono">
-            <div className="group cursor-default flex items-center gap-2 text-[#FFF3E6]/80 hover:text-[#C6F277] transition-colors duration-200">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#C6F277] animate-pulse" />
+            <div className="group cursor-default flex items-center gap-2 text-[#FFF3E6]/80 hover:text-[#D4FF33] transition-colors duration-350 ease-out">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#D4FF33]" />
               <span className="font-display text-lg sm:text-2xl font-bold uppercase tracking-wider">
                 MOTION
               </span>
             </div>
 
             <div className="group cursor-default">
-              <span className="font-serif italic text-2xl sm:text-3xl text-[#FFF3E6]/70 group-hover:text-[#FFF3E6] transition-colors duration-200 lowercase">
+              <span className="font-serif italic text-2xl sm:text-3xl text-[#FFF3E6]/70 group-hover:text-[#FFF3E6] transition-colors duration-350 ease-out lowercase">
                 ideas.
               </span>
             </div>

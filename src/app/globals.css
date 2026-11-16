@@ -2,22 +2,22 @@
 
 :root,
 [data-theme="milk"] {
-  --bg-canvas: #FFF3E6;
-  --bg-surface: #F5E6D6;
+  --bg-canvas: #FAF6F0;
+  --bg-surface: #FFFDF9;
   --bg-elevated: #FFFFFF;
-  --ink-primary: #381932;
-  --ink-secondary: rgba(56, 25, 50, 0.72);
-  --ink-muted: rgba(56, 25, 50, 0.45);
-  --grid-line: rgba(56, 25, 50, 0.08);
-  --border-hairline: rgba(56, 25, 50, 0.16);
+  --ink-primary: #2B1626;
+  --ink-secondary: rgba(43, 22, 38, 0.72);
+  --ink-muted: rgba(43, 22, 38, 0.55);
+  --grid-line: rgba(43, 22, 38, 0.045);
+  --border-hairline: rgba(43, 22, 38, 0.08);
   --accent-lime: #D4FF33;
   --accent-orange: #FF4D1C;
-  --watermark-fill: rgba(56, 25, 50, 0.045);
+  --watermark-fill: rgba(43, 22, 38, 0.035);
   --watermark-stroke: transparent;
 
   /* Editorial AMR Tilt Badge Variables (Light Mode: Solid Deep Plum bg, Crisp Acid Lime text) */
-  --amr-badge-bg: #381932;
-  --amr-badge-border: #381932;
+  --amr-badge-bg: #2B1626;
+  --amr-badge-border: #2B1626;
   --amr-badge-ink: #D4FF33;
 
   /* Backward Compatible Aliases */
@@ -25,58 +25,62 @@
   --surface-primary: var(--bg-canvas);
   --surface-secondary: var(--bg-surface);
   --surface-elevated: var(--bg-elevated);
-  --surface-inverse: #2B1126;
+  --surface-inverse: #0B0A0E;
   --text-primary: var(--ink-primary);
   --text-muted: var(--ink-muted);
   --border-subtle: var(--border-hairline);
-  --plum: #381932;
-  --milk: #FFF3E6;
+  --plum: #2B1626;
+  --milk: #FAF6F0;
   --lime: #D4FF33;
   --orange: #FF4D1C;
 }
 
 [data-theme="plum"] {
-  /* Luxury Nocturnal Monolith Canvas — Pure Deep Charcoal / Obsidian Black */
-  --bg-canvas: #121014;
-  --bg-surface: #1A181C;
-  --bg-elevated: #242226;
+  /* Strict Nocturnal Swiss Minimalist Palette — Pure Deep Obsidian Black */
+  --bg-canvas: #0B0A0E;
+  --bg-surface: #151419;
+  --bg-elevated: #1F1D24;
   --ink-primary: #FFF3E6;
-  --ink-secondary: rgba(255, 243, 230, 0.78);
-  --ink-muted: rgba(255, 243, 230, 0.45);
-  --grid-line: rgba(255, 243, 230, 0.05);
-  --border-hairline: rgba(255, 243, 230, 0.12);
+  --ink-secondary: rgba(255, 243, 230, 0.75);
+  --ink-muted: rgba(255, 243, 230, 0.55);
+  --grid-line: rgba(255, 243, 230, 0.035);
+  --border-hairline: rgba(255, 243, 230, 0.08);
   --accent-lime: #D4FF33;
   --accent-orange: #FF4D1C;
   /* Monolith architectural wireframe outline */
   --watermark-fill: transparent;
-  --watermark-stroke: rgba(255, 243, 230, 0.05);
+  --watermark-stroke: rgba(255, 243, 230, 0.035);
 
-  /* Editorial AMR Tilt Badge Variables (Dark Mode: Solid Acid Lime bg, Bold Deep Charcoal text) */
+  /* Editorial AMR Tilt Badge Variables (Dark Mode: Solid Acid Lime bg, Bold Deep Obsidian text) */
   --amr-badge-bg: #D4FF33;
   --amr-badge-border: #D4FF33;
-  --amr-badge-ink: #121014;
+  --amr-badge-ink: #0B0A0E;
 
   /* Backward Compatible Aliases */
   --bg-primary: var(--bg-canvas);
   --surface-primary: var(--bg-canvas);
   --surface-secondary: var(--bg-surface);
   --surface-elevated: var(--bg-elevated);
-  --surface-inverse: #FFF3E6;
+  --surface-inverse: #FAF6F0;
   --text-primary: var(--ink-primary);
   --text-muted: var(--ink-muted);
   --border-subtle: var(--border-hairline);
+  --plum: #0B0A0E;
+  --milk: #FFF3E6;
+  --lime: #D4FF33;
+  --orange: #FF4D1C;
 }
 
 @theme {
-  --color-plum: #381932;
-  --color-plum-canvas: #121014;
-  --color-plum-surface: #1A181C;
-  --color-plum-elevated: #242226;
+  --color-plum: #2B1626;
+  --color-plum-canvas: #0B0A0E;
+  --color-plum-surface: #151419;
+  --color-plum-elevated: #1F1D24;
 
-  --color-milk: #FFF3E6;
+  --color-milk: #FAF6F0;
   --color-milk-pure: #FFFDF9;
-  --color-milk-muted: #F4E5D4;
-  --color-milk-surface: #F8ECE0;
+  --color-milk-muted: #F0EAE1;
+  --color-milk-surface: #FFFDF9;
 
   --color-lime: #D4FF33;
   --color-electric-lime: #D4FF33;
@@ -356,13 +360,13 @@ html[data-theme="plum"] .glitch-wrapper[data-glitching="true"] .glitch-slice-ora
 html[data-theme="plum"] .hero-watermark-row {
   color: transparent !important;
   -webkit-text-fill-color: transparent !important;
-  -webkit-text-stroke: 1px rgba(255, 243, 230, 0.05) !important;
+  -webkit-text-stroke: 1px rgba(255, 243, 230, 0.035) !important;
 }
 
 html[data-theme="milk"] .hero-watermark-row,
 :root .hero-watermark-row {
-  color: rgba(56, 25, 50, 0.045) !important;
-  -webkit-text-fill-color: rgba(56, 25, 50, 0.045) !important;
+  color: rgba(43, 22, 38, 0.035) !important;
+  -webkit-text-fill-color: rgba(43, 22, 38, 0.035) !important;
   -webkit-text-stroke: 0px transparent !important;
 }
 
@@ -380,17 +384,17 @@ html[data-theme="milk"] .hero-watermark-row,
 html[data-theme="plum"] .hero-amr-badge {
   background-color: #D4FF33 !important;
   border: 2px solid #D4FF33 !important;
-  color: #121014 !important;
+  color: #0B0A0E !important;
 }
 
 html[data-theme="plum"] .hero-amr-badge span {
-  color: #121014 !important;
+  color: #0B0A0E !important;
 }
 
 html[data-theme="milk"] .hero-amr-badge,
 :root .hero-amr-badge {
-  background-color: #381932 !important;
-  border: 2px solid #381932 !important;
+  background-color: #2B1626 !important;
+  border: 2px solid #2B1626 !important;
   color: #D4FF33 !important;
 }
 
@@ -400,7 +404,7 @@ html[data-theme="milk"] .hero-amr-badge span,
 }
 
 /* ========================================================================= */
-/* LUXURY NOCTURNAL MONOLITH ARCHITECTURE (Dark Mode Overrides)              */
+/* STRICT NOCTURNAL SWISS MINIMALIST OVERRIDES (Dark Mode)                   */
 /* ========================================================================= */
 html[data-theme="plum"] body {
   background-color: var(--bg-canvas);
@@ -417,82 +421,111 @@ html[data-theme="plum"] ::-webkit-scrollbar-track {
 }
 
 html[data-theme="plum"] ::-webkit-scrollbar-thumb {
-  background: rgba(255, 243, 230, 0.20);
+  background: rgba(255, 243, 230, 0.12);
 }
 
 /* Level 0: Primary Canvas Inversions */
-html[data-theme="plum"] .bg-\[\#FFF3E6\] {
+html[data-theme="plum"] .bg-\[\#FFF3E6\],
+html[data-theme="plum"] .bg-\[\#FAF6F0\] {
   background-color: var(--bg-canvas) !important;
 }
 
-html[data-theme="plum"] .bg-\[\#FFF3E6\]\/95 {
-  background-color: rgba(18, 16, 20, 0.95) !important;
-}
-
-html[data-theme="plum"] .bg-\[\#FFF3E6\]\/90 {
-  background-color: rgba(18, 16, 20, 0.90) !important;
-}
-
-html[data-theme="plum"] .bg-\[\#FFF3E6\]\/60 {
-  background-color: rgba(26, 24, 28, 0.60) !important;
-}
-
-/* Level 1: Surface Elevation & Cards */
-html[data-theme="plum"] .bg-\[\#381932\] {
+html[data-theme="plum"] .bg-\[\#FFFDF9\] {
   background-color: var(--bg-surface) !important;
 }
 
-html[data-theme="plum"] .bg-\[\#381932\]\/5 {
+html[data-theme="plum"] .bg-\[\#FFFDF9\]\/60 {
+  background-color: rgba(21, 20, 25, 0.60) !important;
+}
+
+html[data-theme="plum"] .bg-\[\#FFF3E6\]\/95 {
+  background-color: rgba(11, 10, 14, 0.95) !important;
+}
+
+html[data-theme="plum"] .bg-\[\#FFF3E6\]\/90 {
+  background-color: rgba(11, 10, 14, 0.90) !important;
+}
+
+html[data-theme="plum"] .bg-\[\#FFF3E6\]\/60 {
+  background-color: rgba(21, 20, 25, 0.60) !important;
+}
+
+/* Level 1: Surface Elevation & Cards */
+html[data-theme="plum"] .bg-\[\#381932\],
+html[data-theme="plum"] .bg-\[\#2B1626\] {
+  background-color: var(--bg-surface) !important;
+}
+
+html[data-theme="plum"] .bg-\[\#240f20\] {
+  background-color: #0E0D11 !important;
+}
+
+html[data-theme="plum"] .bg-\[\#381932\]\/5,
+html[data-theme="plum"] .bg-\[\#2B1626\]\/5 {
   background-color: rgba(255, 243, 230, 0.04) !important;
 }
 
-html[data-theme="plum"] .bg-\[\#381932\]\/10 {
-  background-color: rgba(255, 243, 230, 0.07) !important;
+html[data-theme="plum"] .bg-\[\#381932\]\/10,
+html[data-theme="plum"] .bg-\[\#2B1626\]\/10 {
+  background-color: rgba(255, 243, 230, 0.06) !important;
 }
 
-html[data-theme="plum"] .bg-\[\#381932\]\/15 {
+html[data-theme="plum"] .bg-\[\#381932\]\/15,
+html[data-theme="plum"] .bg-\[\#2B1626\]\/15 {
+  background-color: rgba(255, 243, 230, 0.08) !important;
+}
+
+html[data-theme="plum"] .bg-\[\#381932\]\/20,
+html[data-theme="plum"] .bg-\[\#2B1626\]\/20 {
   background-color: rgba(255, 243, 230, 0.10) !important;
 }
 
-html[data-theme="plum"] .bg-\[\#381932\]\/20 {
-  background-color: rgba(255, 243, 230, 0.14) !important;
-}
-
-html[data-theme="plum"] .bg-\[\#381932\]\/85 {
-  background-color: rgba(26, 24, 28, 0.85) !important;
+html[data-theme="plum"] .bg-\[\#381932\]\/85,
+html[data-theme="plum"] .bg-\[\#2B1626\]\/85 {
+  background-color: rgba(21, 20, 25, 0.85) !important;
 }
 
 /* Level 2: Elevated Interactive Elements on Hover */
-html[data-theme="plum"] .hover\:bg-\[\#381932\]:hover {
+html[data-theme="plum"] .hover\:bg-\[\#381932\]:hover,
+html[data-theme="plum"] .hover\:bg-\[\#2B1626\]:hover,
+html[data-theme="plum"] .hover\:bg-\[\#250d21\]:hover {
   background-color: var(--bg-elevated) !important;
   color: var(--ink-primary) !important;
 }
 
-html[data-theme="plum"] .hover\:bg-\[\#250d21\]:hover {
-  background-color: var(--bg-elevated) !important;
-}
-
 /* Typography Hierarchy in Dark Mode */
-html[data-theme="plum"] .text-\[\#381932\] {
+html[data-theme="plum"] .text-\[\#381932\],
+html[data-theme="plum"] .text-\[\#2B1626\] {
   color: var(--ink-primary) !important;
 }
 
 html[data-theme="plum"] .text-\[\#381932\]\/85,
 html[data-theme="plum"] .text-\[\#381932\]\/80,
 html[data-theme="plum"] .text-\[\#381932\]\/75,
-html[data-theme="plum"] .text-\[\#381932\]\/70 {
+html[data-theme="plum"] .text-\[\#381932\]\/70,
+html[data-theme="plum"] .text-\[\#2B1626\]\/85,
+html[data-theme="plum"] .text-\[\#2B1626\]\/80,
+html[data-theme="plum"] .text-\[\#2B1626\]\/75,
+html[data-theme="plum"] .text-\[\#2B1626\]\/70 {
   color: var(--ink-secondary) !important;
 }
 
 html[data-theme="plum"] .text-\[\#381932\]\/60,
 html[data-theme="plum"] .text-\[\#381932\]\/50,
+html[data-theme="plum"] .text-\[\#381932\]\/45,
 html[data-theme="plum"] .text-\[\#381932\]\/40,
-html[data-theme="plum"] .text-\[\#381932\]\/30 {
+html[data-theme="plum"] .text-\[\#381932\]\/30,
+html[data-theme="plum"] .text-\[\#2B1626\]\/60,
+html[data-theme="plum"] .text-\[\#2B1626\]\/50,
+html[data-theme="plum"] .text-\[\#2B1626\]\/45,
+html[data-theme="plum"] .text-\[\#2B1626\]\/40,
+html[data-theme="plum"] .text-\[\#2B1626\]\/30 {
   color: var(--ink-muted) !important;
 }
 
 /* Hairline Wireframe Borders */
-html[data-theme="plum"] .border-\[\#381932\] {
+html[data-theme="plum"] .border-\[\#381932\],
+html[data-theme="plum"] .border-\[\#2B1626\] {
   border-color: var(--border-hairline) !important;
 }
 
@@ -501,7 +534,13 @@ html[data-theme="plum"] .border-\[\#381932\]\/15,
 html[data-theme="plum"] .border-\[\#381932\]\/20,
 html[data-theme="plum"] .border-\[\#381932\]\/25,
 html[data-theme="plum"] .border-\[\#381932\]\/30,
-html[data-theme="plum"] .border-\[\#381932\]\/40 {
+html[data-theme="plum"] .border-\[\#381932\]\/40,
+html[data-theme="plum"] .border-\[\#2B1626\]\/10,
+html[data-theme="plum"] .border-\[\#2B1626\]\/15,
+html[data-theme="plum"] .border-\[\#2B1626\]\/20,
+html[data-theme="plum"] .border-\[\#2B1626\]\/25,
+html[data-theme="plum"] .border-\[\#2B1626\]\/30,
+html[data-theme="plum"] .border-\[\#2B1626\]\/40 {
   border-color: var(--border-hairline) !important;
 }
 

@@ -102,8 +102,8 @@ export default function Scene05Contact() {
           {/* Left Column: Monumental Editorial Statement & Contact Info */}
           <div className="lg:col-span-6 space-y-8 relative z-10">
             {/* Eyebrow */}
-            <div className="flex items-center gap-2 font-mono text-xs tracking-widest text-[#C6F277] uppercase font-bold">
-              <span className="w-2 h-2 rounded-full bg-[#C6F277] shadow-[0_0_8px_rgba(198,242,119,0.8)] animate-pulse" />
+            <div className="flex items-center gap-2 font-mono text-xs tracking-widest text-[#D4FF33] uppercase font-bold">
+              <span className="w-2 h-2 rounded-full bg-[#D4FF33]" />
               <span>{"GET IN TOUCH // LET'S CONNECT"}</span>
             </div>
 
@@ -111,7 +111,7 @@ export default function Scene05Contact() {
             <h2 className="font-display text-[clamp(2.4rem,4.4vw,4.5rem)] font-black uppercase tracking-tight leading-[0.94] text-[#FFF3E6] break-words">
               HAVE A PROJECT
               <br />
-              <span className="font-serif italic font-normal lowercase tracking-normal text-[#C6F277] drop-shadow-[0_0_20px_rgba(198,242,119,0.3)] block mt-1">
+              <span className="font-serif italic font-normal lowercase tracking-normal text-[#D4FF33] block mt-1">
                 in mind?
               </span>
             </h2>
@@ -131,18 +131,18 @@ export default function Scene05Contact() {
                 {/* Email */}
                 <a
                   href={`mailto:${PERSONAL_DETAILS.email}`}
-                  className="group flex items-center justify-between p-3.5 border border-[#FFF3E6]/10 bg-[#240f20]/40 hover:border-[#C6F277]/50 hover:bg-[#240f20]/90 transition-all duration-300 cursor-pointer"
+                  className="group flex items-center justify-between p-3.5 border border-[#FFF3E6]/10 bg-[#240f20]/40 hover:border-[#D4FF33]/50 hover:bg-[#240f20]/90 transition-all duration-350 ease-out cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#C6F277] group-hover:scale-125 transition-transform duration-200" />
-                    <span className="text-[#FFF3E6]/50 group-hover:text-[#FFF3E6] font-mono text-xs transition-colors duration-200">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#D4FF33]" />
+                    <span className="text-[#FFF3E6]/50 group-hover:text-[#FFF3E6] font-mono text-xs transition-colors duration-350 ease-out">
                       EMAIL:
                     </span>
-                    <span className="font-bold text-[#FFF3E6] group-hover:text-[#C6F277] font-mono text-xs transition-colors duration-200">
+                    <span className="font-bold text-[#FFF3E6] group-hover:text-[#D4FF33] font-mono text-xs transition-colors duration-350 ease-out">
                       {PERSONAL_DETAILS.email}
                     </span>
                   </div>
-                  <ArrowUpRight className="w-4 h-4 text-[#C6F277] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200" />
+                  <ArrowUpRight className="w-4 h-4 text-[#D4FF33] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-350 ease-out" />
                 </a>
 
                 {/* GitHub */}
@@ -150,18 +150,18 @@ export default function Scene05Contact() {
                   href={PERSONAL_DETAILS.github}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="group flex items-center justify-between p-3.5 border border-[#FFF3E6]/10 bg-[#240f20]/40 hover:border-[#C6F277]/50 hover:bg-[#240f20]/90 transition-all duration-300 cursor-pointer"
+                  className="group flex items-center justify-between p-3.5 border border-[#FFF3E6]/10 bg-[#240f20]/40 hover:border-[#D4FF33]/50 hover:bg-[#240f20]/90 transition-all duration-350 ease-out cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#C6F277] group-hover:scale-125 transition-transform duration-200" />
-                    <span className="text-[#FFF3E6]/50 group-hover:text-[#FFF3E6] font-mono text-xs transition-colors duration-200">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#D4FF33]" />
+                    <span className="text-[#FFF3E6]/50 group-hover:text-[#FFF3E6] font-mono text-xs transition-colors duration-350 ease-out">
                       GITHUB:
                     </span>
-                    <span className="font-bold text-[#FFF3E6] group-hover:text-[#C6F277] font-mono text-xs transition-colors duration-200">
+                    <span className="font-bold text-[#FFF3E6] group-hover:text-[#D4FF33] font-mono text-xs transition-colors duration-350 ease-out">
                       github.com/Lander2007
                     </span>
                   </div>
-                  <ArrowUpRight className="w-4 h-4 text-[#C6F277] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200" />
+                  <ArrowUpRight className="w-4 h-4 text-[#D4FF33] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-350 ease-out" />
                 </a>
 
                 {/* LinkedIn */}
@@ -169,18 +169,18 @@ export default function Scene05Contact() {
                   href={PERSONAL_DETAILS.linkedin}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="group flex items-center justify-between p-3.5 border border-[#FFF3E6]/10 bg-[#240f20]/40 hover:border-[#C6F277]/50 hover:bg-[#240f20]/90 transition-all duration-300 cursor-pointer"
+                  className="group flex items-center justify-between p-3.5 border border-[#FFF3E6]/10 bg-[#240f20]/40 hover:border-[#D4FF33]/50 hover:bg-[#240f20]/90 transition-all duration-350 ease-out cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#C6F277] group-hover:scale-125 transition-transform duration-200" />
-                    <span className="text-[#FFF3E6]/50 group-hover:text-[#FFF3E6] font-mono text-xs transition-colors duration-200">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#D4FF33]" />
+                    <span className="text-[#FFF3E6]/50 group-hover:text-[#FFF3E6] font-mono text-xs transition-colors duration-350 ease-out">
                       LINKEDIN:
                     </span>
-                    <span className="font-bold text-[#FFF3E6] group-hover:text-[#C6F277] font-mono text-xs transition-colors duration-200">
+                    <span className="font-bold text-[#FFF3E6] group-hover:text-[#D4FF33] font-mono text-xs transition-colors duration-350 ease-out">
                       linkedin.com/in/khaled-amr
                     </span>
                   </div>
-                  <ArrowUpRight className="w-4 h-4 text-[#C6F277] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200" />
+                  <ArrowUpRight className="w-4 h-4 text-[#D4FF33] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-350 ease-out" />
                 </a>
               </div>
             </div>
@@ -206,23 +206,23 @@ export default function Scene05Contact() {
               className="group flex flex-col md:flex-row md:items-center justify-between py-6 sm:py-8 px-4 hover:bg-[#FFF3E6] transition-all duration-300 overflow-hidden"
             >
               <div className="flex items-baseline gap-4 sm:gap-8">
-                <span className="font-mono text-xs sm:text-sm text-[#C6F277] group-hover:text-[#381932]/60 font-bold transition-colors">
+                <span className="font-mono text-xs sm:text-sm text-[#D4FF33] group-hover:text-[#381932]/60 font-bold transition-colors duration-350 ease-out">
                   [{ch.num}]
                 </span>
-                <span className="font-display text-base sm:text-xl font-bold uppercase tracking-tight text-[#FFF3E6] group-hover:text-[#381932] transition-colors">
+                <span className="font-display text-base sm:text-xl font-bold uppercase tracking-tight text-[#FFF3E6] group-hover:text-[#381932] transition-colors duration-350 ease-out">
                   {ch.label}
                 </span>
               </div>
 
               <div className="flex items-center justify-between md:justify-end gap-6 sm:gap-10 mt-3 md:mt-0 font-mono text-xs sm:text-sm">
-                <span className="text-[#FFF3E6]/70 group-hover:text-[#381932]/80 transition-colors">
+                <span className="text-[#FFF3E6]/70 group-hover:text-[#381932]/80 transition-colors duration-350 ease-out">
                   {ch.value}
                 </span>
-                <div className="flex items-center gap-2 font-bold text-[#FFF3E6] group-hover:text-[#381932] transition-colors">
-                  <span className="hidden sm:inline text-xs tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="flex items-center gap-2 font-bold text-[#FFF3E6] group-hover:text-[#381932] transition-colors duration-350 ease-out">
+                  <span className="hidden sm:inline text-xs tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-350 ease-out">
                     {ch.actionText}
                   </span>
-                  <ArrowUpRight className="w-4 h-4 text-[#C6F277] group-hover:text-[#381932] transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                  <ArrowUpRight className="w-4 h-4 text-[#D4FF33] group-hover:text-[#381932] transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-350 ease-out" />
                 </div>
               </div>
             </a>
@@ -230,10 +230,10 @@ export default function Scene05Contact() {
         </div>
 
         {/* Rapid One-Click Intake Box with TiltCard & MagneticButton */}
-        <TiltCard maxTilt={3} className="border border-[#FFF3E6]/30 bg-[#240f20] p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 hover:border-[#C6F277]/40 transition-colors">
+        <TiltCard maxTilt={3} className="border border-[#FFF3E6]/30 bg-[#240f20] p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 hover:border-[#D4FF33]/40 transition-colors duration-350 ease-out">
           <div className="space-y-1">
             <div className="flex items-center gap-2 font-mono text-xs text-[#FFF3E6]/70 uppercase">
-              <span className="w-2 h-2 rounded-full bg-[#C6F277] shadow-[0_0_8px_rgba(198,242,119,0.8)] animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-[#D4FF33]" />
               <span>DIRECT CLIPBOARD DISPATCH</span>
             </div>
             <div className="font-mono text-base sm:text-lg font-bold text-[#FFF3E6]">
@@ -244,7 +244,7 @@ export default function Scene05Contact() {
           <MagneticButton strength={0.3} maxOffset={8}>
             <button
               onClick={copyEmail}
-              className="px-5 py-3 bg-[#FFF3E6] text-[#381932] font-mono text-xs font-bold uppercase tracking-widest hover:bg-[#C6F277] hover:text-[#381932] transition-colors flex items-center gap-2 cursor-pointer shadow-sm"
+              className="px-5 py-3 bg-[#FFF3E6] text-[#381932] font-mono text-xs font-bold uppercase tracking-widest hover:bg-[#D4FF33] hover:text-[#0B0A0E] transition-colors duration-350 ease-out flex items-center gap-2 cursor-pointer shadow-sm"
             >
               {copied ? (
                 <>
