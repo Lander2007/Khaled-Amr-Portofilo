@@ -42,89 +42,6 @@ export default function Scene01Hero({
   const wordRow2Ref = useRef<HTMLDivElement>(null);
   const wordRow3Ref = useRef<HTMLDivElement>(null);
 
-  // Easter Egg 3 — Interactive Word Wall state & refs
-  const [isLimeRevealed, setIsLimeRevealed] = useState(false);
-  const limeRevealTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Easter Egg 3 — SHIFT Click Ripple Trigger
-  const handleShiftTrigger = useCallback((targetEl: HTMLElement) => {
-    setIsLimeRevealed(true);
-    if (limeRevealTimerRef.current) clearTimeout(limeRevealTimerRef.current);
-    limeRevealTimerRef.current = setTimeout(() => {
-      setIsLimeRevealed(false);
-    }, 2400);
-
-    const prefersReducedMotion =
-      typeof document !== "undefined" &&
-      document.documentElement.getAttribute("data-reduced-motion") === "true";
-
-    if (prefersReducedMotion) return;
-
-    const targetRect = targetEl.getBoundingClientRect();
-    const originX = targetRect.left + targetRect.width / 2;
-    const originY = targetRect.top + targetRect.height / 2;
-
-    const words = wordWallRef.current?.querySelectorAll<HTMLElement>(".interactive-word");
-    if (!words || words.length === 0) return;
-
-    words.forEach((el) => {
-      const rect = el.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const dist = Math.hypot(centerX - originX, centerY - originY);
-      const delay = Math.min(dist / 1200, 0.42);
-
-      el.dataset.inRipple = "true";
-
-      gsap.killTweensOf(el);
-      gsap.timeline({
-        onComplete: () => {
-          el.dataset.inRipple = "false";
-          el.style.transform = "";
-          el.style.color = "";
-          el.style.opacity = "";
-        },
-      })
-      .to(el, {
-        y: -14,
-        scale: 1.1,
-        skewX: -8,
-        color: el === targetEl ? "#D4FF33" : undefined,
-        opacity: 0.65,
-        duration: 0.26,
-        ease: "power2.out",
-        delay,
-      })
-      .to(el, {
-        y: 0,
-        scale: 1,
-        skewX: 0,
-        color: "inherit",
-        opacity: 0.08,
-        duration: 0.42,
-        ease: "power2.inOut",
-      });
-    });
-  }, []);
-
-  const handleShiftClick = useCallback((e: React.MouseEvent<HTMLElement>) => {
-    handleShiftTrigger(e.currentTarget);
-  }, [handleShiftTrigger]);
-
-  const handleShiftKeyDown = useCallback((e: React.KeyboardEvent<HTMLElement>) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      handleShiftTrigger(e.currentTarget);
-    }
-  }, [handleShiftTrigger]);
-
-  // Cleanup all timers on unmount
-  useEffect(() => {
-    return () => {
-      if (limeRevealTimerRef.current) clearTimeout(limeRevealTimerRef.current);
-    };
-  }, []);
-
   useEffect(() => {
     if (onRegisterScrollElements) {
       onRegisterScrollElements({
@@ -238,109 +155,43 @@ export default function Scene01Hero({
       {/* ============================================================== */}
       <div
         ref={wordWallRef}
-        className="absolute inset-0 overflow-hidden pointer-events-auto select-none flex flex-col justify-around py-8 z-0"
-        aria-hidden="false"
-        role="region"
-        aria-label="Interactive Kinetic Word Wall"
+        className="absolute inset-0 overflow-hidden pointer-events-none select-none flex flex-col justify-around py-8 z-0"
+        aria-hidden="true"
       >
         {/* Row 1: Leftward Glide */}
         <div
           ref={wordRow1Ref}
-          className="hero-watermark-row font-display text-[clamp(4.5rem,10.5vw,11.5rem)] font-black uppercase tracking-tight whitespace-nowrap will-change-transform leading-none"
+          className="hero-watermark-row font-display text-[clamp(4.5rem,10.5vw,11.5rem)] font-black uppercase tracking-tight whitespace-nowrap will-change-transform leading-none pointer-events-none"
         >
-          {ROW1_WORDS.map((word, idx) => {
-            if (word === "•") {
-              return (
-                <span key={idx} className="inline-block opacity-40 px-3 select-none">
-                  &bull;
-                </span>
-              );
-            }
-            if (word === "SHIFT") {
-              return (
-                <span key={idx} className="inline-flex items-center">
-                  <span
-                    role="button"
-                    tabIndex={0}
-                    aria-label="Shift — Trigger kinetic wave"
-                    onClick={handleShiftClick}
-                    onKeyDown={handleShiftKeyDown}
-                    className="interactive-word inline-block cursor-pointer transition-colors duration-200 hover:text-[#D4FF33] hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4FF33]"
-                  >
-                    SHIFT
-                  </span>
-                  {idx === 2 && (
-                    <span
-                      aria-hidden={!isLimeRevealed}
-                      className={`inline-block px-3 py-1 mx-3 font-mono text-[0.34em] tracking-wider font-bold transition-all duration-300 rounded-xs select-none ${
-                        isLimeRevealed
-                          ? "bg-[#D4FF33] text-[#381932] opacity-100 scale-100 shadow-[0_0_18px_rgba(212,255,51,0.8)]"
-                          : "opacity-0 scale-75 pointer-events-none w-0 p-0 m-0 overflow-hidden"
-                      }`}
-                    >
-                      {"[DISCOVERED // 01]"}
-                    </span>
-                  )}
-                </span>
-              );
-            }
-            return (
-              <span
-                key={idx}
-                className="interactive-word inline-block transition-transform duration-200 hover:text-[#FF4D1C]"
-              >
-                {word}
-              </span>
-            );
-          })}
+          {ROW1_WORDS.map((word, idx) => (
+            <span key={idx} className="inline-block px-2">
+              {word}
+            </span>
+          ))}
         </div>
 
         {/* Row 2: Rightward Glide */}
         <div
           ref={wordRow2Ref}
-          className="hero-watermark-row font-display text-[clamp(4.5rem,10.5vw,11.5rem)] font-black uppercase tracking-tight whitespace-nowrap will-change-transform leading-none ml-[-20%]"
+          className="hero-watermark-row font-display text-[clamp(4.5rem,10.5vw,11.5rem)] font-black uppercase tracking-tight whitespace-nowrap will-change-transform leading-none ml-[-20%] pointer-events-none"
         >
-          {ROW2_WORDS.map((word, idx) => {
-            if (word === "•") {
-              return (
-                <span key={idx} className="inline-block opacity-40 px-3 select-none">
-                  &bull;
-                </span>
-              );
-            }
-            return (
-              <span
-                key={idx}
-                className="interactive-word inline-block transition-transform duration-200"
-              >
-                {word}
-              </span>
-            );
-          })}
+          {ROW2_WORDS.map((word, idx) => (
+            <span key={idx} className="inline-block px-2">
+              {word}
+            </span>
+          ))}
         </div>
 
         {/* Row 3: Leftward Glide */}
         <div
           ref={wordRow3Ref}
-          className="hero-watermark-row font-display text-[clamp(4.5rem,10.5vw,11.5rem)] font-black uppercase tracking-tight whitespace-nowrap will-change-transform leading-none"
+          className="hero-watermark-row font-display text-[clamp(4.5rem,10.5vw,11.5rem)] font-black uppercase tracking-tight whitespace-nowrap will-change-transform leading-none pointer-events-none"
         >
-          {ROW3_WORDS.map((word, idx) => {
-            if (word === "•") {
-              return (
-                <span key={idx} className="inline-block opacity-40 px-3 select-none">
-                  &bull;
-                </span>
-              );
-            }
-            return (
-              <span
-                key={idx}
-                className="interactive-word inline-block transition-transform duration-200"
-              >
-                {word}
-              </span>
-            );
-          })}
+          {ROW3_WORDS.map((word, idx) => (
+            <span key={idx} className="inline-block px-2">
+              {word}
+            </span>
+          ))}
         </div>
       </div>
 
@@ -352,9 +203,9 @@ export default function Scene01Hero({
       {/* ============================================================== */}
       <div
         ref={heroContentRef}
-        className="absolute inset-0 w-full h-full flex flex-col justify-center px-6 sm:px-12 md:px-16 lg:px-20 pt-12 sm:pt-14 pb-8 z-10 pointer-events-none"
+        className="absolute inset-0 w-full h-full flex flex-col justify-center pt-20 sm:pt-24 pb-12 z-10 pointer-events-none"
       >
-        <div className="w-full max-w-5xl mx-auto space-y-6 sm:space-y-8 pointer-events-none">
+        <div className="w-full max-w-7xl mx-auto px-6 md:px-12 space-y-6 sm:space-y-8 pointer-events-none">
           {/* High-Impact 5-Slice Destructive Glitch & Character Scramble Engine */}
           <div className="pointer-events-auto">
             <HeroGlitchLockup />

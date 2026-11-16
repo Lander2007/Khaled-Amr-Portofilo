@@ -12,13 +12,13 @@
   --border-hairline: rgba(56, 25, 50, 0.16);
   --accent-lime: #D4FF33;
   --accent-orange: #FF4D1C;
-  --watermark-fill: rgba(56, 25, 50, 0.055);
+  --watermark-fill: rgba(56, 25, 50, 0.045);
   --watermark-stroke: transparent;
 
-  /* Editorial AMR Tilt Badge Variables (Light Mode: Solid Lime, Plum Border & Text) */
-  --amr-badge-bg: #D4FF33;
+  /* Editorial AMR Tilt Badge Variables (Light Mode: Solid Deep Plum bg, Crisp Acid Lime text) */
+  --amr-badge-bg: #381932;
   --amr-badge-border: #381932;
-  --amr-badge-ink: #381932;
+  --amr-badge-ink: #D4FF33;
 
   /* Backward Compatible Aliases */
   --bg-primary: var(--bg-canvas);
@@ -48,13 +48,13 @@
   --accent-lime: #D4FF33;
   --accent-orange: #FF4D1C;
   /* In Dark Mode, giant background words become architectural wireframe outlines! */
-  --watermark-fill: rgba(255, 243, 230, 0.015);
-  --watermark-stroke: rgba(255, 243, 230, 0.085);
+  --watermark-fill: transparent;
+  --watermark-stroke: rgba(255, 243, 230, 0.07);
 
-  /* Editorial AMR Tilt Badge Variables (Dark Mode: Solid Plum, Lime Border & Text) */
-  --amr-badge-bg: #381932;
+  /* Editorial AMR Tilt Badge Variables (Dark Mode: Solid Acid Lime bg, Bold Deep Plum text) */
+  --amr-badge-bg: #D4FF33;
   --amr-badge-border: #D4FF33;
-  --amr-badge-ink: #D4FF33;
+  --amr-badge-ink: #381932;
 
   /* Backward Compatible Aliases */
   --bg-primary: var(--bg-canvas);
@@ -321,23 +321,9 @@ html[data-theme="plum"] .glitch-wrapper[data-glitching="true"] .glitch-slice-ora
 .hero-watermark-row {
   color: var(--watermark-fill);
   -webkit-text-fill-color: var(--watermark-fill);
-  -webkit-text-stroke: 1.5px var(--watermark-stroke);
-  transition: color 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-              -webkit-text-fill-color 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-              -webkit-text-stroke-color 0.65s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-[data-theme="milk"] .interactive-word:hover {
-  color: #381932;
-  -webkit-text-fill-color: #381932;
-  -webkit-text-stroke: transparent;
-}
-
-[data-theme="plum"] .interactive-word:hover {
-  color: #D4FF33;
-  -webkit-text-fill-color: rgba(212, 255, 51, 0.15);
-  -webkit-text-stroke: 1.5px #D4FF33;
-  text-shadow: 0 0 20px rgba(212, 255, 51, 0.4);
+  -webkit-text-stroke: 1px var(--watermark-stroke);
+  pointer-events: none;
+  user-select: none;
 }
 
 /* ========================================================================= */

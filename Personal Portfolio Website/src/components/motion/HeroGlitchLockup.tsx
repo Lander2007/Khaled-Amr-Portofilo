@@ -181,7 +181,7 @@ export function HeroGlitchLockup() {
       {/* MAIN KHALED LOCKUP */}
       <div className="relative inline-block overflow-visible">
         {/* 1. Always-Solid Base Layer */}
-        <h1 className="font-display text-[clamp(4.2rem,13.5vw,14rem)] font-black leading-[0.88] tracking-tighter uppercase text-[var(--ink-primary)] select-none">
+        <h1 className="font-display text-[clamp(3.8rem,11.5vw,12.5rem)] font-black leading-[0.88] tracking-tighter uppercase text-[var(--ink-primary)] select-none">
           KHALED
         </h1>
 
@@ -189,7 +189,7 @@ export function HeroGlitchLockup() {
         <div
           ref={limeGhostRef}
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 font-display text-[clamp(4.2rem,13.5vw,14rem)] font-black leading-[0.88] tracking-tighter uppercase text-[#D4FF33] mix-blend-difference opacity-0 z-10"
+          className="pointer-events-none absolute inset-0 font-display text-[clamp(3.8rem,11.5vw,12.5rem)] font-black leading-[0.88] tracking-tighter uppercase text-[#D4FF33] mix-blend-difference opacity-0 z-10"
         >
           KHALED
         </div>
@@ -198,7 +198,7 @@ export function HeroGlitchLockup() {
         <div
           ref={orangeGhostRef}
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 font-display text-[clamp(4.2rem,13.5vw,14rem)] font-black leading-[0.88] tracking-tighter uppercase text-[#FF4D1C] opacity-0 z-10"
+          className="pointer-events-none absolute inset-0 font-display text-[clamp(3.8rem,11.5vw,12.5rem)] font-black leading-[0.88] tracking-tighter uppercase text-[#FF4D1C] opacity-0 z-10"
         >
           KHALED
         </div>
@@ -216,7 +216,7 @@ export function HeroGlitchLockup() {
                 sliceRefs.current[idx] = el;
               }}
               style={{ clipPath: clip }}
-              className="absolute inset-0 font-display text-[clamp(4.2rem,13.5vw,14rem)] font-black leading-[0.88] tracking-tighter uppercase text-[var(--ink-primary)]"
+              className="absolute inset-0 font-display text-[clamp(3.8rem,11.5vw,12.5rem)] font-black leading-[0.88] tracking-tighter uppercase text-[var(--ink-primary)]"
             >
               KHALED
             </div>

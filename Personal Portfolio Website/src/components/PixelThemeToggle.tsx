@@ -179,15 +179,15 @@ export function PixelThemeToggle({ className = "" }: PixelThemeToggleProps) {
       style={{ touchAction: "none" }}
       className={`relative w-[90px] h-[46px] rounded-[16px] p-[4px] flex items-center select-none cursor-grab active:cursor-grabbing transition-colors duration-500 overflow-hidden ${className} ${
         isDark
-          ? "bg-[#131317]/90 border border-white/[0.12] shadow-[inset_0_2px_6px_rgba(0,0,0,0.7),0_1px_3px_rgba(0,0,0,0.4)]"
-          : "bg-[#E6DFD5]/80 border border-black/[0.08] shadow-[inset_0_2px_5px_rgba(0,0,0,0.14),0_1px_2px_rgba(56,25,50,0.04)]"
+          ? "bg-[#240C20]/95 border border-[rgba(255,243,230,0.15)] shadow-[inset_0_2px_6px_rgba(0,0,0,0.7),0_1px_3px_rgba(43,17,38,0.5)]"
+          : "bg-[#E6DFD5]/80 border border-black/[0.08] shadow-[inset_0_2px_5px_rgba(56,25,50,0.12),0_1px_2px_rgba(56,25,50,0.04)]"
       }`}
     >
       {/* Ambient Radial Light Spill outside/behind the squircle thumb */}
       <div
         className={`pointer-events-none absolute -inset-2 rounded-[22px] transition-opacity duration-500 blur-[10px] ${
           isDark
-            ? "bg-[radial-gradient(circle_at_25%_50%,rgba(140,180,255,0.4),transparent_65%)] opacity-95"
+            ? "bg-[radial-gradient(circle_at_25%_50%,rgba(140,180,255,0.35),transparent_65%)] opacity-95"
             : "bg-[radial-gradient(circle_at_75%_50%,rgba(255,160,50,0.45),transparent_65%)] opacity-95"
         }`}
       />
@@ -197,7 +197,7 @@ export function PixelThemeToggle({ className = "" }: PixelThemeToggleProps) {
         ref={thumbRef}
         className={`relative z-10 w-[40px] h-[38px] rounded-[11px] flex items-center justify-center backdrop-blur-md transition-colors duration-500 ${
           isDark
-            ? "bg-gradient-to-b from-[#383A44]/90 via-[#23242B]/95 to-[#16171D]/95 shadow-[0_4px_14px_rgba(0,0,0,0.65),inset_0_1px_1px_rgba(255,255,255,0.25)]"
+            ? "bg-gradient-to-b from-[#4A1E43]/90 via-[#381932]/95 to-[#2B1126]/95 shadow-[0_4px_14px_rgba(0,0,0,0.7),inset_0_1px_1px_rgba(255,243,230,0.22)]"
             : "bg-gradient-to-b from-white/95 via-[#FAF6F0]/92 to-[#EBE2D5]/92 shadow-[0_4px_12px_rgba(255,150,40,0.22),inset_0_1.5px_1.5px_rgba(255,255,255,1)]"
         }`}
       >
@@ -216,13 +216,13 @@ export function PixelThemeToggle({ className = "" }: PixelThemeToggleProps) {
           <div
             style={{
               opacity: isDark ? 0 : 1,
-              transform: isDark ? "rotate(-90deg) scale(0.4)" : "rotate(0deg) scale(1)",
+              transform: isDark ? "rotate(-90deg) scale(0.35)" : "rotate(0deg) scale(1)",
               transition: "opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1), transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
             }}
-            className="absolute text-[#1E1B18]"
+            className="absolute text-[#381932]"
           >
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" className="stroke-current">
-              <circle cx="12" cy="12" r="4.2" fill="#1E1B18" stroke="none" />
+              <circle cx="12" cy="12" r="4.2" fill="#381932" stroke="none" />
               <path
                 d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.28 5.28l1.56 1.56M17.16 17.16l1.56 1.56M5.28 18.72l1.56-1.56M17.16 6.84l1.56-1.56"
                 strokeWidth="2"
@@ -235,15 +235,15 @@ export function PixelThemeToggle({ className = "" }: PixelThemeToggleProps) {
           <div
             style={{
               opacity: isDark ? 1 : 0,
-              transform: isDark ? "rotate(0deg) scale(1)" : "rotate(90deg) scale(0.4)",
+              transform: isDark ? "rotate(0deg) scale(1)" : "rotate(90deg) scale(0.35)",
               transition: "opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1), transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
             }}
-            className="absolute text-white drop-shadow-[0_0_4px_rgba(220,232,255,0.85)]"
+            className="absolute text-[#FFF3E6] drop-shadow-[0_0_4px_rgba(220,232,255,0.85)]"
           >
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none">
               <path
                 d="M13.2 3.5a8.5 8.5 0 1 0 7.3 7.3 6.8 6.8 0 0 1-7.3-7.3z"
-                fill="#FFFFFF"
+                fill="#FFF3E6"
               />
               {/* 4-point twinkling micro-star */}
               <path
