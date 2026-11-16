@@ -36,18 +36,18 @@
 }
 
 [data-theme="plum"] {
-  /* Rich Deep Plum Canvas — NOT muddy black */
+  /* Rich Deep Nocturnal Plum Canvas — NOT muddy black */
   --bg-canvas: #2B1126;
   --bg-surface: #381932;
   --bg-elevated: #472140;
   --ink-primary: #FFF3E6;
   --ink-secondary: rgba(255, 243, 230, 0.78);
   --ink-muted: rgba(255, 243, 230, 0.48);
-  --grid-line: rgba(255, 243, 230, 0.065);
-  --border-hairline: rgba(255, 243, 230, 0.18);
+  --grid-line: rgba(255, 243, 230, 0.05);
+  --border-hairline: rgba(255, 243, 230, 0.16);
   --accent-lime: #D4FF33;
   --accent-orange: #FF4D1C;
-  /* In Dark Mode, giant background words become architectural wireframe outlines! */
+  /* In Dark Mode, giant background words become crisp architectural wireframe outlines */
   --watermark-fill: transparent;
   --watermark-stroke: rgba(255, 243, 230, 0.07);
 
@@ -94,19 +94,47 @@
   box-sizing: border-box;
 }
 
-/* Remove generic div/section transitions that choke the main thread on theme switch! */
-html, body {
+/* ========================================================================= */
+/* FLUID THEME CROSSFADE TRANSITION (120FPS DOM COMPOSITOR ACCELERATED)      */
+/* ========================================================================= */
+html,
+body {
   background-color: var(--bg-canvas);
   color: var(--ink-primary);
-  transition: background-color 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-              color 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: background-color 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              color 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Smooth GPU-composited crossfade if browser supports View Transitions API */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 0.45s;
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+header,
+nav,
+section,
+main,
+footer,
+article,
+aside,
+div[id],
+section[id],
+.theme-crossfade {
+  transition: background-color 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              color 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+h1, h2, h3, h4, h5, h6, p, a, button, input, textarea {
+  transition: color 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              background-color 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Exclude active motion / canvas / glitch elements from slow theme transitions */
+.glitch-wrapper,
+.glitch-slice,
+.will-change-transform,
+canvas,
+[role="switch"],
+[role="switch"] *,
+.no-theme-transition {
+  transition: none !important;
 }
 
 html {
@@ -319,24 +347,56 @@ html[data-theme="plum"] .glitch-wrapper[data-glitching="true"] .glitch-slice-ora
 /* ARCHITECTURAL WIREFRAME OUTLINES (Word Wall Typography)                   */
 /* ========================================================================= */
 .hero-watermark-row {
-  color: var(--watermark-fill);
-  -webkit-text-fill-color: var(--watermark-fill);
-  -webkit-text-stroke: 1px var(--watermark-stroke);
   pointer-events: none;
   user-select: none;
+  transition: color 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              -webkit-text-stroke-color 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html[data-theme="plum"] .hero-watermark-row {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  -webkit-text-stroke: 1px rgba(255, 243, 230, 0.07) !important;
+}
+
+html[data-theme="milk"] .hero-watermark-row,
+:root .hero-watermark-row {
+  color: rgba(56, 25, 50, 0.045) !important;
+  -webkit-text-fill-color: rgba(56, 25, 50, 0.045) !important;
+  -webkit-text-stroke: 0px transparent !important;
 }
 
 /* ========================================================================= */
 /* EDITORIAL AMR BADGE (Strict Polarity Specifications)                     */
 /* ========================================================================= */
 .hero-amr-badge {
-  background-color: var(--amr-badge-bg);
-  border: 2px solid var(--amr-badge-border);
-  color: var(--amr-badge-ink);
-  box-shadow: 4px 4px 0px #FF4D1C;
-  transition: background-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-              border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-              color 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 4px 4px 0px #FF4D1C !important;
+  transition: background-color 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              color 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.15s ease-out !important;
+}
+
+html[data-theme="plum"] .hero-amr-badge {
+  background-color: #D4FF33 !important;
+  border: 2px solid #D4FF33 !important;
+  color: #381932 !important;
+}
+
+html[data-theme="plum"] .hero-amr-badge span {
+  color: #381932 !important;
+}
+
+html[data-theme="milk"] .hero-amr-badge,
+:root .hero-amr-badge {
+  background-color: #381932 !important;
+  border: 2px solid #381932 !important;
+  color: #D4FF33 !important;
+}
+
+html[data-theme="milk"] .hero-amr-badge span,
+:root .hero-amr-badge span {
+  color: #D4FF33 !important;
 }
 
 /* ========================================================================= */

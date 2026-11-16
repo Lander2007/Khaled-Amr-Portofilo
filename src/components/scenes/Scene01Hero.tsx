@@ -196,7 +196,7 @@ export default function Scene01Hero({
       </div>
 
       {/* Subtle Hairline Grid Layer for Architectural Texture */}
-      <div className="absolute inset-0 pointer-events-none bg-grid-milk opacity-25 z-0" />
+      <div className="absolute inset-0 pointer-events-none bg-grid-milk z-0" />
 
       {/* ============================================================== */}
       {/* 02. BASE LAYER: EDITORIAL HERO COMPOSITION WITH GLITCH ENGINE   */}
