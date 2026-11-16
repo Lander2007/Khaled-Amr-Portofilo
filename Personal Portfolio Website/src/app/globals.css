@@ -3,13 +3,13 @@
 :root,
 [data-theme="milk"] {
   --bg-canvas: #FAF6F0;
-  --bg-surface: #FFFDF9;
-  --bg-elevated: #FFFFFF;
+  --bg-surface: #FFFFFF;
+  --bg-elevated: #F3ECE1;
   --ink-primary: #2B1626;
   --ink-secondary: rgba(43, 22, 38, 0.72);
   --ink-muted: rgba(43, 22, 38, 0.55);
   --grid-line: rgba(43, 22, 38, 0.045);
-  --border-hairline: rgba(43, 22, 38, 0.08);
+  --border-hairline: rgba(56, 25, 50, 0.12);
   --accent-lime: #D4FF33;
   --accent-orange: #FF4D1C;
   --watermark-fill: rgba(43, 22, 38, 0.035);
@@ -38,13 +38,13 @@
 [data-theme="plum"] {
   /* Strict Nocturnal Swiss Minimalist Palette — Pure Deep Obsidian Black */
   --bg-canvas: #0B0A0E;
-  --bg-surface: #151419;
-  --bg-elevated: #1F1D24;
+  --bg-surface: #141318;
+  --bg-elevated: #1E1C24;
   --ink-primary: #FFF3E6;
   --ink-secondary: rgba(255, 243, 230, 0.75);
   --ink-muted: rgba(255, 243, 230, 0.55);
   --grid-line: rgba(255, 243, 230, 0.035);
-  --border-hairline: rgba(255, 243, 230, 0.08);
+  --border-hairline: rgba(255, 243, 230, 0.12);
   --accent-lime: #D4FF33;
   --accent-orange: #FF4D1C;
   /* Monolith architectural wireframe outline */
@@ -74,13 +74,13 @@
 @theme {
   --color-plum: #2B1626;
   --color-plum-canvas: #0B0A0E;
-  --color-plum-surface: #151419;
-  --color-plum-elevated: #1F1D24;
+  --color-plum-surface: #141318;
+  --color-plum-elevated: #1E1C24;
 
   --color-milk: #FAF6F0;
-  --color-milk-pure: #FFFDF9;
+  --color-milk-pure: #FFFFFF;
   --color-milk-muted: #F0EAE1;
-  --color-milk-surface: #FFFDF9;
+  --color-milk-surface: #FFFFFF;
 
   --color-lime: #D4FF33;
   --color-electric-lime: #D4FF33;

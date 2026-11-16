@@ -236,10 +236,10 @@ export default function Scene03SelectedWork() {
                 <button
                   key={cat.id}
                   onClick={() => handleCategorySelect(cat.id)}
-                  className={`px-3.5 py-1.5 font-mono text-xs whitespace-nowrap uppercase tracking-wider transition-colors duration-350 ease-out cursor-pointer border flex items-center gap-2 ${
+                  className={`px-3.5 py-1.5 font-mono text-xs whitespace-nowrap uppercase tracking-wider transition-all duration-200 cursor-pointer border flex items-center gap-2 ${
                     isActive
                       ? "bg-[var(--ink-primary)] text-[var(--bg-canvas)] border-[var(--ink-primary)] font-bold"
-                      : "bg-[var(--bg-surface)] text-[var(--ink-muted)] border-[var(--border-hairline)] hover:border-[var(--ink-muted)] hover:text-[var(--ink-primary)]"
+                      : "bg-[var(--bg-surface)] text-[var(--ink-secondary)] border-[var(--border-hairline)] hover:border-[var(--ink-primary)] hover:text-[var(--ink-primary)]"
                   }`}
                   role="tab"
                   aria-selected={isActive}
@@ -345,7 +345,7 @@ export default function Scene03SelectedWork() {
                     {activeProject.verifiableMetrics.map((metric, idx) => (
                       <div
                         key={idx}
-                        className="p-2.5 border border-[var(--border-hairline)] bg-[var(--bg-canvas)] flex items-start gap-2 text-xs font-mono text-[var(--ink-primary)]"
+                        className="p-2.5 border border-[var(--border-hairline)] bg-[var(--bg-elevated)] flex items-start gap-2 text-xs font-mono text-[var(--ink-primary)]"
                       >
                         <CheckCircle2 className="w-3.5 h-3.5 text-[#D4FF33] shrink-0 mt-0.5" />
                         <span className="leading-tight font-medium">{metric}</span>
@@ -362,7 +362,7 @@ export default function Scene03SelectedWork() {
                   {activeProject.techStack.map((tech) => (
                     <span
                       key={tech}
-                      className="px-2.5 py-1 border border-[var(--border-hairline)] bg-[var(--bg-canvas)] font-mono text-[11px] text-[var(--ink-muted)]"
+                      className="px-2.5 py-1 border border-[var(--border-hairline)] bg-[var(--bg-elevated)] font-mono text-[11px] text-[var(--ink-secondary)] font-medium"
                     >
                       {tech}
                     </span>
@@ -375,10 +375,12 @@ export default function Scene03SelectedWork() {
                     <MagneticButton strength={0.2} maxOffset={5}>
                       <Link
                         href={`/work/${activeProject.slug}`}
-                        className="px-6 py-3.5 bg-[var(--ink-primary)] text-[var(--bg-canvas)] font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-[#D4FF33] hover:text-[#0B0A0E] transition-colors duration-350 ease-out"
+                        className="group relative px-6 py-3.5 bg-[var(--ink-primary)] text-[var(--bg-canvas)] border border-transparent hover:bg-[#D4FF33] hover:text-[#0B0A0E] hover:border-[#D4FF33] font-bold uppercase tracking-wider flex items-center transition-all duration-200"
                       >
-                        <span>VIEW CASE STUDY</span>
-                        <ArrowRight className="w-3.5 h-3.5 text-[#FF4D1C]" />
+                        <span className="relative z-10 flex items-center gap-2">
+                          <span>VIEW CASE STUDY</span>
+                          <ArrowRight className="w-3.5 h-3.5 text-[#FF4D1C] group-hover:translate-x-0.5 transition-transform" />
+                        </span>
                       </Link>
                     </MagneticButton>
 
@@ -388,10 +390,12 @@ export default function Scene03SelectedWork() {
                           href={activeProject.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-5 py-3.5 border border-[var(--border-hairline)] text-[var(--ink-primary)] font-bold uppercase tracking-wider flex items-center gap-2 hover:border-[var(--ink-primary)] hover:bg-[var(--bg-elevated)] transition-colors duration-350 ease-out"
+                          className="group relative px-5 py-3.5 border border-[var(--ink-primary)]/35 text-[var(--ink-primary)] bg-transparent hover:bg-[var(--ink-primary)] hover:text-[var(--bg-canvas)] hover:border-[var(--ink-primary)] font-bold uppercase tracking-wider flex items-center transition-all duration-200"
                         >
-                          <span>LIVE PLATFORM</span>
-                          <ArrowUpRight className="w-3.5 h-3.5" />
+                          <span className="relative z-10 flex items-center gap-2">
+                            <span>LIVE PLATFORM</span>
+                            <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                          </span>
                         </a>
                       </MagneticButton>
                     )}
@@ -401,10 +405,12 @@ export default function Scene03SelectedWork() {
                         href={activeProject.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-3.5 py-3.5 text-[var(--ink-muted)] hover:text-[var(--ink-primary)] font-mono text-xs font-semibold uppercase tracking-wider flex items-center gap-1 transition-colors duration-350 ease-out"
+                        className="group relative px-3.5 py-3.5 border border-[var(--ink-primary)]/20 text-[var(--ink-secondary)] bg-transparent hover:bg-[var(--ink-primary)] hover:text-[var(--bg-canvas)] hover:border-[var(--ink-primary)] font-mono text-xs font-semibold uppercase tracking-wider flex items-center transition-all duration-200"
                       >
-                        <span>SOURCE CODE</span>
-                        <ArrowUpRight className="w-3 h-3" />
+                        <span className="relative z-10 flex items-center gap-1">
+                          <span>SOURCE CODE</span>
+                          <ArrowUpRight className="w-3 h-3 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                        </span>
                       </a>
                     )}
                   </div>
@@ -414,17 +420,17 @@ export default function Scene03SelectedWork() {
                     <button
                       onClick={handlePrevProject}
                       aria-label="Previous project exhibit"
-                      className="p-2.5 border border-[var(--border-hairline)] text-[var(--ink-primary)] hover:border-[var(--ink-primary)] hover:bg-[var(--bg-elevated)] transition-colors duration-350 ease-out cursor-pointer"
+                      className="p-2.5 border border-[var(--ink-primary)]/35 text-[var(--ink-primary)] bg-transparent hover:bg-[var(--ink-primary)] hover:text-[var(--bg-canvas)] hover:border-[var(--ink-primary)] transition-all duration-200 cursor-pointer"
                     >
                       <ChevronLeft className="w-4 h-4" />
                     </button>
-                    <span className="px-3 py-2 text-[var(--ink-muted)] font-bold select-none">
+                    <span className="px-3 py-2 text-[var(--ink-primary)] font-bold select-none">
                       {String(activeIndex + 1).padStart(2, "0")} / {String(filteredProjects.length).padStart(2, "0")}
                     </span>
                     <button
                       onClick={handleNextProject}
                       aria-label="Next project exhibit"
-                      className="p-2.5 border border-[var(--border-hairline)] text-[var(--ink-primary)] hover:border-[var(--ink-primary)] hover:bg-[var(--bg-elevated)] transition-colors duration-350 ease-out cursor-pointer"
+                      className="p-2.5 border border-[var(--ink-primary)]/35 text-[var(--ink-primary)] bg-transparent hover:bg-[var(--ink-primary)] hover:text-[var(--bg-canvas)] hover:border-[var(--ink-primary)] transition-all duration-200 cursor-pointer"
                     >
                       <ChevronRight className="w-4 h-4" />
                     </button>
@@ -466,16 +472,16 @@ export default function Scene03SelectedWork() {
                     role="tab"
                     aria-selected={isSelected}
                     tabIndex={0}
-                    className={`w-full text-left p-3.5 sm:p-4 flex items-center justify-between gap-3 transition-colors duration-350 ease-out cursor-pointer group focus:outline-none focus:ring-1 focus:ring-inset focus:ring-[var(--ink-primary)] ${
+                    className={`w-full text-left p-3.5 sm:p-4 flex items-center justify-between gap-3 transition-colors duration-200 cursor-pointer group focus:outline-none focus:ring-1 focus:ring-inset focus:ring-[var(--ink-primary)] ${
                       isSelected
                         ? "bg-[var(--ink-primary)] text-[var(--bg-canvas)] border-l-4 border-l-[#D4FF33]"
-                        : "border-l-4 border-l-transparent bg-transparent text-[var(--ink-primary)] hover:bg-[var(--ink-primary)]/5"
+                        : "border-l-4 border-l-transparent bg-transparent text-[var(--ink-primary)] hover:bg-[var(--bg-elevated)] hover:border-l-[var(--ink-primary)]/40"
                     }`}
                   >
                     {/* Index Number & Title */}
                     <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                       <span
-                        className={`font-mono text-xs shrink-0 font-bold transition-colors duration-350 ease-out ${
+                        className={`font-mono text-xs shrink-0 font-bold transition-colors duration-200 ${
                           isSelected ? "text-[#D4FF33]" : "text-[var(--ink-muted)] group-hover:text-[var(--ink-primary)]"
                         }`}
                       >
@@ -487,7 +493,7 @@ export default function Scene03SelectedWork() {
                           {project.title}
                         </div>
                         <div
-                          className={`font-mono text-[11px] uppercase tracking-wider truncate mt-0.5 transition-colors duration-350 ease-out ${
+                          className={`font-mono text-[11px] uppercase tracking-wider truncate mt-0.5 transition-colors duration-200 ${
                             isSelected ? "text-[var(--bg-canvas)]/70" : "text-[var(--ink-muted)]"
                           }`}
                         >
@@ -499,17 +505,17 @@ export default function Scene03SelectedWork() {
                     {/* Right Year & Selection Indicator */}
                     <div className="flex items-center gap-3 shrink-0 font-mono text-xs">
                       <span
-                        className={`hidden sm:inline text-[11px] transition-colors duration-350 ease-out ${
+                        className={`hidden sm:inline text-[11px] transition-colors duration-200 ${
                           isSelected ? "text-[var(--bg-canvas)]/60" : "text-[var(--ink-muted)]"
                         }`}
                       >
                         {project.year}
                       </span>
                       <div
-                        className={`w-7 h-7 flex items-center justify-center border transition-colors duration-350 ease-out ${
+                        className={`w-7 h-7 flex items-center justify-center border transition-all duration-200 ${
                           isSelected
                             ? "bg-[#D4FF33] text-[#0B0A0E] border-[#D4FF33] font-bold"
-                            : "border-[var(--border-hairline)] text-[var(--ink-muted)] group-hover:border-[var(--ink-primary)] group-hover:text-[var(--ink-primary)]"
+                            : "border-[var(--border-hairline)] text-[var(--ink-muted)] group-hover:border-[var(--ink-primary)] group-hover:text-[var(--ink-primary)] group-hover:bg-[var(--ink-primary)]/10"
                         }`}
                       >
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -554,13 +560,13 @@ export default function Scene03SelectedWork() {
             {curatedHighlights.map((highlight, index) => (
               <article
                 key={highlight.slug}
-                className="group border border-[var(--border-hairline)] bg-[var(--bg-surface)] flex flex-col justify-between overflow-hidden transition-colors duration-350 ease-out hover:border-[var(--ink-muted)]"
+                className="group border border-[var(--border-hairline)] bg-[var(--bg-surface)] flex flex-col justify-between overflow-hidden hover:border-[var(--ink-primary)]/50 transition-colors duration-200"
               >
                 <div className="p-5 sm:p-6 space-y-4">
                   {/* Category & Number Header */}
                   <div className="flex items-center justify-between font-mono text-xs text-[var(--ink-muted)] border-b border-[var(--border-hairline)] pb-3">
                     <span className="font-bold text-[var(--ink-primary)]">FLAGSHIP // 0{index + 1}</span>
-                    <span className="uppercase text-[11px]">{highlight.category}</span>
+                    <span className="uppercase text-[11px] font-semibold">{highlight.category}</span>
                   </div>
 
                   {/* Thumbnail Image Viewport */}
@@ -593,10 +599,12 @@ export default function Scene03SelectedWork() {
                   <span className="text-[var(--ink-muted)] text-[11px]">{highlight.year} • {highlight.status}</span>
                   <Link
                     href={`/work/${highlight.slug}`}
-                    className="font-bold text-[var(--ink-primary)] flex items-center gap-1.5 hover:text-[#D4FF33] transition-colors duration-350 ease-out"
+                    className="group/link relative px-3 py-1.5 border border-[var(--ink-primary)]/30 text-[var(--ink-primary)] bg-transparent hover:bg-[var(--ink-primary)] hover:text-[var(--bg-canvas)] hover:border-[var(--ink-primary)] font-bold text-xs uppercase tracking-wider flex items-center transition-all duration-200 rounded-xs"
                   >
-                    <span>READ CASE</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <span className="relative z-10 flex items-center gap-1.5">
+                      <span>READ CASE</span>
+                      <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/link:translate-x-0.5" />
+                    </span>
                   </Link>
                 </div>
               </article>

@@ -343,12 +343,12 @@ export default function Navbar() {
             <MagneticButton strength={0.2} maxOffset={5}>
               <a
                 href="mailto:kaled.amr0210@gmail.com"
-                className="px-4 py-2 border border-current text-current hover:bg-current hover:text-[var(--bg-primary)] transition-all duration-200 flex items-center gap-1.5 text-xs font-bold tracking-wider cursor-pointer group outline-none focus-visible:ring-2 focus-visible:ring-current rounded-xs"
+                className="group relative px-4 py-2 bg-transparent text-[var(--ink-primary)] border border-[var(--ink-primary)]/40 hover:bg-[var(--ink-primary)] hover:text-[var(--bg-canvas)] hover:border-[var(--ink-primary)] transition-all duration-200 flex items-center text-xs font-bold tracking-wider cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[var(--ink-primary)] rounded-xs"
               >
-                <span className="transition-transform duration-200 group-hover:-translate-y-0.5">
-                  Get in Touch
+                <span className="relative z-10 flex items-center gap-2">
+                  <span>Get in Touch</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </span>
-                <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             </MagneticButton>
 
@@ -356,12 +356,16 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => window.dispatchEvent(new CustomEvent("open-developer-terminal"))}
-              className="px-2.5 py-2 border border-current/25 text-current/80 hover:text-current hover:border-current hover:bg-current/5 transition-colors rounded-xs flex items-center gap-1.5 text-xs font-mono cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-current"
+              className="group relative px-2.5 py-2 bg-transparent text-[var(--ink-primary)] border border-[var(--ink-primary)]/35 hover:bg-[var(--ink-primary)] hover:text-[var(--bg-canvas)] hover:border-[var(--ink-primary)] transition-all duration-200 rounded-xs flex items-center text-xs font-mono cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[var(--ink-primary)]"
               title="Open Developer Console (Ctrl + K / Cmd + K)"
               aria-label="Open Developer Terminal"
             >
-              <span className="font-bold">&gt;_</span>
-              <kbd className="hidden lg:inline text-[10px] bg-current/10 px-1 py-0.5 rounded font-mono">⌘K</kbd>
+              <span className="relative z-10 flex items-center gap-1.5">
+                <span className="font-bold">&gt;_</span>
+                <kbd className="hidden lg:inline text-[10px] bg-[var(--ink-primary)]/10 text-current group-hover:bg-[var(--bg-canvas)]/20 px-1 py-0.5 rounded font-mono transition-colors duration-200">
+                  ⌘K
+                </kbd>
+              </span>
             </button>
           </nav>
 
@@ -436,13 +440,13 @@ export default function Navbar() {
             <button
               type="button"
               onClick={toggleMotion}
-              className={`px-2.5 py-1 text-[11px] font-bold border rounded-xs flex items-center gap-1.5 ${
+              className={`px-2.5 py-1 text-[11px] font-bold border rounded-xs flex items-center gap-1.5 transition-colors duration-200 ${
                 prefersReduced
-                  ? "border-current/30 text-current/60"
-                  : "border-current bg-current text-[var(--bg-primary)]"
+                  ? "border-[var(--ink-primary)]/30 text-[var(--ink-muted)] bg-transparent"
+                  : "border-[var(--ink-primary)] bg-[var(--ink-primary)] text-[var(--bg-canvas)]"
               }`}
             >
-              <span className={`w-1.5 h-1.5 rounded-full ${prefersReduced ? "bg-current/40" : "bg-[#C6F277]"}`} />
+              <span className={`w-1.5 h-1.5 rounded-full ${prefersReduced ? "bg-current/40" : "bg-[#D4FF33]"}`} />
               <span>{prefersReduced ? "OFF" : "ON"}</span>
             </button>
           </div>
@@ -454,10 +458,10 @@ export default function Navbar() {
               setMobileMenuOpen(false);
               window.dispatchEvent(new CustomEvent("open-developer-terminal"));
             }}
-            className="w-full flex items-center justify-between px-3 py-2.5 border border-current/30 hover:bg-current hover:text-[var(--bg-primary)] transition-colors cursor-pointer group rounded-xs"
+            className="w-full flex items-center justify-between px-3 py-2.5 border border-[var(--ink-primary)]/35 text-[var(--ink-primary)] bg-transparent hover:bg-[var(--ink-primary)] hover:text-[var(--bg-canvas)] hover:border-[var(--ink-primary)] transition-all duration-200 cursor-pointer group rounded-xs"
           >
             <span className="flex items-center gap-2">
-              <span className="text-[#C6F277] bg-[#381932] px-1.5 py-0.5 font-bold rounded-xs">&gt;_</span>
+              <span className="text-[#0B0A0E] bg-[#D4FF33] px-1.5 py-0.5 font-bold rounded-xs">&gt;_</span>
               <span className="font-bold">DEVELOPER TERMINAL</span>
             </span>
             <span className="text-[10px] opacity-70 group-hover:opacity-100">[LAUNCH]</span>
@@ -465,7 +469,7 @@ export default function Navbar() {
 
           <div className="flex items-center justify-between pt-1">
             <span>LOCATION: ALEXANDRIA, EGYPT</span>
-            <span className="text-[#C6F277] bg-[#381932] px-2 py-0.5 font-bold text-[10px] rounded-xs">ACTIVE</span>
+            <span className="text-[#0B0A0E] bg-[#D4FF33] px-2 py-0.5 font-bold text-[10px] rounded-xs">ACTIVE</span>
           </div>
           <div>STATUS: AVAILABLE FOR 2026 ENGAGEMENTS</div>
           <a

@@ -221,20 +221,24 @@ export default function Scene01Hero({
             <MagneticButton strength={0.3} maxOffset={8}>
               <a
                 href="#work"
-                className="px-7 py-4 bg-[var(--ink-primary)] text-[var(--bg-canvas)] font-bold uppercase tracking-widest flex items-center gap-2.5 hover:bg-[#D4FF33] hover:text-[#2B1126] transition-colors shadow-sm cursor-pointer group"
+                className="group relative px-7 py-4 bg-[var(--ink-primary)] text-[var(--bg-canvas)] border border-transparent hover:bg-[#D4FF33] hover:text-[#0B0A0E] hover:border-[#D4FF33] font-bold uppercase tracking-widest flex items-center transition-all duration-200 shadow-sm cursor-pointer"
               >
-                <span>EXPLORE MY WORK</span>
-                <ArrowDown className="w-3.5 h-3.5 text-[#FF4D1C] group-hover:translate-y-0.5 transition-transform" />
+                <span className="relative z-10 flex items-center gap-2.5">
+                  <span>EXPLORE MY WORK</span>
+                  <ArrowDown className="w-3.5 h-3.5 text-[#FF4D1C] group-hover:translate-y-0.5 transition-transform" />
+                </span>
               </a>
             </MagneticButton>
 
             <MagneticButton strength={0.25} maxOffset={6}>
               <a
                 href="#contact"
-                className="px-7 py-4 border border-[var(--border-hairline)] text-[var(--ink-primary)] font-bold uppercase tracking-widest flex items-center gap-2 hover:bg-[var(--bg-elevated)] transition-colors cursor-pointer"
+                className="group relative px-7 py-4 border border-[var(--ink-primary)]/35 text-[var(--ink-primary)] bg-transparent hover:bg-[var(--ink-primary)] hover:text-[var(--bg-canvas)] hover:border-[var(--ink-primary)] font-bold uppercase tracking-widest flex items-center transition-all duration-200 cursor-pointer"
               >
-                <span>CONTACT ME</span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
+                <span className="relative z-10 flex items-center gap-2">
+                  <span>CONTACT ME</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </span>
               </a>
             </MagneticButton>
           </div>
