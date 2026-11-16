@@ -36,25 +36,25 @@
 }
 
 [data-theme="plum"] {
-  /* Rich Deep Nocturnal Plum Canvas — NOT muddy black */
-  --bg-canvas: #2B1126;
-  --bg-surface: #381932;
-  --bg-elevated: #472140;
+  /* Luxury Nocturnal Monolith Canvas — Pure Deep Charcoal / Obsidian Black */
+  --bg-canvas: #121014;
+  --bg-surface: #1A181C;
+  --bg-elevated: #242226;
   --ink-primary: #FFF3E6;
   --ink-secondary: rgba(255, 243, 230, 0.78);
-  --ink-muted: rgba(255, 243, 230, 0.48);
+  --ink-muted: rgba(255, 243, 230, 0.45);
   --grid-line: rgba(255, 243, 230, 0.05);
-  --border-hairline: rgba(255, 243, 230, 0.16);
+  --border-hairline: rgba(255, 243, 230, 0.12);
   --accent-lime: #D4FF33;
   --accent-orange: #FF4D1C;
-  /* In Dark Mode, giant background words become crisp architectural wireframe outlines */
+  /* Monolith architectural wireframe outline */
   --watermark-fill: transparent;
-  --watermark-stroke: rgba(255, 243, 230, 0.07);
+  --watermark-stroke: rgba(255, 243, 230, 0.05);
 
-  /* Editorial AMR Tilt Badge Variables (Dark Mode: Solid Acid Lime bg, Bold Deep Plum text) */
+  /* Editorial AMR Tilt Badge Variables (Dark Mode: Solid Acid Lime bg, Bold Deep Charcoal text) */
   --amr-badge-bg: #D4FF33;
   --amr-badge-border: #D4FF33;
-  --amr-badge-ink: #381932;
+  --amr-badge-ink: #121014;
 
   /* Backward Compatible Aliases */
   --bg-primary: var(--bg-canvas);
@@ -69,9 +69,9 @@
 
 @theme {
   --color-plum: #381932;
-  --color-plum-canvas: #2B1126;
-  --color-plum-surface: #381932;
-  --color-plum-elevated: #472140;
+  --color-plum-canvas: #121014;
+  --color-plum-surface: #1A181C;
+  --color-plum-elevated: #242226;
 
   --color-milk: #FFF3E6;
   --color-milk-pure: #FFFDF9;
@@ -356,7 +356,7 @@ html[data-theme="plum"] .glitch-wrapper[data-glitching="true"] .glitch-slice-ora
 html[data-theme="plum"] .hero-watermark-row {
   color: transparent !important;
   -webkit-text-fill-color: transparent !important;
-  -webkit-text-stroke: 1px rgba(255, 243, 230, 0.07) !important;
+  -webkit-text-stroke: 1px rgba(255, 243, 230, 0.05) !important;
 }
 
 html[data-theme="milk"] .hero-watermark-row,
@@ -380,11 +380,11 @@ html[data-theme="milk"] .hero-watermark-row,
 html[data-theme="plum"] .hero-amr-badge {
   background-color: #D4FF33 !important;
   border: 2px solid #D4FF33 !important;
-  color: #381932 !important;
+  color: #121014 !important;
 }
 
 html[data-theme="plum"] .hero-amr-badge span {
-  color: #381932 !important;
+  color: #121014 !important;
 }
 
 html[data-theme="milk"] .hero-amr-badge,
@@ -400,7 +400,7 @@ html[data-theme="milk"] .hero-amr-badge span,
 }
 
 /* ========================================================================= */
-/* LUXURY NOCTURNAL PLUM & WIREFRAME ARCHITECTURE (Dark Mode Overrides)      */
+/* LUXURY NOCTURNAL MONOLITH ARCHITECTURE (Dark Mode Overrides)              */
 /* ========================================================================= */
 html[data-theme="plum"] body {
   background-color: var(--bg-canvas);
@@ -417,7 +417,7 @@ html[data-theme="plum"] ::-webkit-scrollbar-track {
 }
 
 html[data-theme="plum"] ::-webkit-scrollbar-thumb {
-  background: rgba(255, 243, 230, 0.25);
+  background: rgba(255, 243, 230, 0.20);
 }
 
 /* Level 0: Primary Canvas Inversions */
@@ -426,15 +426,15 @@ html[data-theme="plum"] .bg-\[\#FFF3E6\] {
 }
 
 html[data-theme="plum"] .bg-\[\#FFF3E6\]\/95 {
-  background-color: rgba(43, 17, 38, 0.95) !important;
+  background-color: rgba(18, 16, 20, 0.95) !important;
 }
 
 html[data-theme="plum"] .bg-\[\#FFF3E6\]\/90 {
-  background-color: rgba(43, 17, 38, 0.90) !important;
+  background-color: rgba(18, 16, 20, 0.90) !important;
 }
 
 html[data-theme="plum"] .bg-\[\#FFF3E6\]\/60 {
-  background-color: rgba(71, 33, 64, 0.60) !important;
+  background-color: rgba(26, 24, 28, 0.60) !important;
 }
 
 /* Level 1: Surface Elevation & Cards */
@@ -443,23 +443,23 @@ html[data-theme="plum"] .bg-\[\#381932\] {
 }
 
 html[data-theme="plum"] .bg-\[\#381932\]\/5 {
-  background-color: rgba(255, 243, 230, 0.05) !important;
+  background-color: rgba(255, 243, 230, 0.04) !important;
 }
 
 html[data-theme="plum"] .bg-\[\#381932\]\/10 {
-  background-color: rgba(255, 243, 230, 0.09) !important;
+  background-color: rgba(255, 243, 230, 0.07) !important;
 }
 
 html[data-theme="plum"] .bg-\[\#381932\]\/15 {
-  background-color: rgba(255, 243, 230, 0.13) !important;
+  background-color: rgba(255, 243, 230, 0.10) !important;
 }
 
 html[data-theme="plum"] .bg-\[\#381932\]\/20 {
-  background-color: rgba(255, 243, 230, 0.18) !important;
+  background-color: rgba(255, 243, 230, 0.14) !important;
 }
 
 html[data-theme="plum"] .bg-\[\#381932\]\/85 {
-  background-color: rgba(56, 25, 50, 0.85) !important;
+  background-color: rgba(26, 24, 28, 0.85) !important;
 }
 
 /* Level 2: Elevated Interactive Elements on Hover */
