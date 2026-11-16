@@ -15,6 +15,11 @@
   --watermark-fill: rgba(56, 25, 50, 0.055);
   --watermark-stroke: transparent;
 
+  /* Editorial AMR Tilt Badge Variables (Light Mode: Solid Lime, Plum Border & Text) */
+  --amr-badge-bg: #D4FF33;
+  --amr-badge-border: #381932;
+  --amr-badge-ink: #381932;
+
   /* Backward Compatible Aliases */
   --bg-primary: var(--bg-canvas);
   --surface-primary: var(--bg-canvas);
@@ -45,6 +50,11 @@
   /* In Dark Mode, giant background words become architectural wireframe outlines! */
   --watermark-fill: rgba(255, 243, 230, 0.015);
   --watermark-stroke: rgba(255, 243, 230, 0.085);
+
+  /* Editorial AMR Tilt Badge Variables (Dark Mode: Solid Plum, Lime Border & Text) */
+  --amr-badge-bg: #381932;
+  --amr-badge-border: #D4FF33;
+  --amr-badge-ink: #D4FF33;
 
   /* Backward Compatible Aliases */
   --bg-primary: var(--bg-canvas);
@@ -328,6 +338,19 @@ html[data-theme="plum"] .glitch-wrapper[data-glitching="true"] .glitch-slice-ora
   -webkit-text-fill-color: rgba(212, 255, 51, 0.15);
   -webkit-text-stroke: 1.5px #D4FF33;
   text-shadow: 0 0 20px rgba(212, 255, 51, 0.4);
+}
+
+/* ========================================================================= */
+/* EDITORIAL AMR BADGE (Strict Polarity Specifications)                     */
+/* ========================================================================= */
+.hero-amr-badge {
+  background-color: var(--amr-badge-bg);
+  border: 2px solid var(--amr-badge-border);
+  color: var(--amr-badge-ink);
+  box-shadow: 4px 4px 0px #FF4D1C;
+  transition: background-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              color 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* ========================================================================= */

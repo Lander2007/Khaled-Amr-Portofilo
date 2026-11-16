@@ -179,9 +179,9 @@ export function HeroGlitchLockup() {
       className="relative select-none"
     >
       {/* MAIN KHALED LOCKUP */}
-      <div className="relative inline-block">
+      <div className="relative inline-block overflow-visible">
         {/* 1. Always-Solid Base Layer */}
-        <h1 className="font-display text-[clamp(4.2rem,13.5vw,14rem)] font-black leading-[0.84] tracking-tighter uppercase text-[var(--ink-primary)]">
+        <h1 className="font-display text-[clamp(4.2rem,13.5vw,14rem)] font-black leading-[0.88] tracking-tighter uppercase text-[var(--ink-primary)] select-none">
           KHALED
         </h1>
 
@@ -189,7 +189,7 @@ export function HeroGlitchLockup() {
         <div
           ref={limeGhostRef}
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 font-display text-[clamp(4.2rem,13.5vw,14rem)] font-black leading-[0.84] tracking-tighter uppercase text-[#D4FF33] mix-blend-difference opacity-0 z-10"
+          className="pointer-events-none absolute inset-0 font-display text-[clamp(4.2rem,13.5vw,14rem)] font-black leading-[0.88] tracking-tighter uppercase text-[#D4FF33] mix-blend-difference opacity-0 z-10"
         >
           KHALED
         </div>
@@ -198,7 +198,7 @@ export function HeroGlitchLockup() {
         <div
           ref={orangeGhostRef}
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 font-display text-[clamp(4.2rem,13.5vw,14rem)] font-black leading-[0.84] tracking-tighter uppercase text-[#FF4D1C] opacity-0 z-10"
+          className="pointer-events-none absolute inset-0 font-display text-[clamp(4.2rem,13.5vw,14rem)] font-black leading-[0.88] tracking-tighter uppercase text-[#FF4D1C] opacity-0 z-10"
         >
           KHALED
         </div>
@@ -216,7 +216,7 @@ export function HeroGlitchLockup() {
                 sliceRefs.current[idx] = el;
               }}
               style={{ clipPath: clip }}
-              className="absolute inset-0 font-display text-[clamp(4.2rem,13.5vw,14rem)] font-black leading-[0.84] tracking-tighter uppercase text-[var(--ink-primary)] bg-[var(--bg-canvas)]"
+              className="absolute inset-0 font-display text-[clamp(4.2rem,13.5vw,14rem)] font-black leading-[0.88] tracking-tighter uppercase text-[var(--ink-primary)]"
             >
               KHALED
             </div>
@@ -230,9 +230,9 @@ export function HeroGlitchLockup() {
           ref={amrBadgeRef}
           onClick={handleBadgeClick}
           style={{ transform: "rotate(-2deg)" }}
-          className="inline-block px-6 py-2 md:px-8 md:py-3 bg-[#381932] dark:bg-[#D4FF33] border border-[#D4FF33]/40 shadow-[4px_4px_0px_#FF4D1C] transition-colors duration-500 cursor-pointer active:scale-95"
+          className="hero-amr-badge inline-block px-6 py-2 md:px-8 md:py-3 cursor-pointer active:scale-95 select-none"
         >
-          <span className="font-display text-[clamp(2.4rem,6.5vw,6.2rem)] font-black leading-none tracking-tight uppercase text-[#D4FF33] dark:text-[#381932]">
+          <span className="font-display text-[clamp(2.4rem,6.5vw,6.2rem)] font-black leading-none tracking-tight uppercase text-current">
             {amrText}
           </span>
         </div>
