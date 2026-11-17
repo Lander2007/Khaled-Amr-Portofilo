@@ -52,17 +52,19 @@ export default function Scene04BehindTheInterface() {
   ];
 
   return (
-    <section id="about" className="relative w-full bg-[var(--bg-canvas)] text-[var(--ink-primary)] border-b border-[var(--border-hairline)] overflow-hidden">
-      {/* Background Architectural Grid Lines */}
-      <div className="absolute inset-0 pointer-events-none bg-grid-plum opacity-10 z-0" />
+    <>
+      {/* ============================================================== */}
+      {/* 01. ABOUT KHALED AMR — THE HUMAN IDENTITY & EDITORIAL INTRO   */}
+      {/* ============================================================== */}
+      <section
+        id="about"
+        className="relative w-full bg-[var(--bg-canvas)] text-[var(--ink-primary)] border-b border-[var(--border-hairline)] overflow-hidden"
+      >
+        {/* Background Architectural Grid Lines */}
+        <div className="absolute inset-0 pointer-events-none bg-grid-milk opacity-20 z-0" />
 
-      <CursorSpotlight className="relative z-10 py-24 sm:py-32 px-6 sm:px-12 md:px-16">
-        <div className="max-w-7xl mx-auto space-y-20 sm:space-y-28">
-          
-          {/* ============================================================== */}
-          {/* PART 1: ABOUT KHALED AMR — THE HUMAN IDENTITY                  */}
-          {/* ============================================================== */}
-          <div className="space-y-12 border-b border-[var(--border-hairline)] pb-16">
+        <CursorSpotlight className="relative z-10 py-20 sm:py-28 px-6 sm:px-12 md:px-16">
+          <div className="max-w-7xl mx-auto space-y-12">
             <div className="flex items-center gap-3 font-mono text-xs tracking-widest text-[var(--ink-muted)] uppercase">
               <span className="w-2.5 h-2.5 bg-[#D4FF33] inline-block shadow-[0_0_8px_rgba(212,255,51,0.5)]" />
               <span className="text-[var(--ink-primary)] font-bold">ABOUT ME</span>
@@ -128,11 +130,21 @@ export default function Scene04BehindTheInterface() {
               </div>
             </div>
           </div>
+        </CursorSpotlight>
+      </section>
 
-          {/* ============================================================== */}
-          {/* PART 2: TECHNICAL SKILLS — EDITORIAL TYPOGRAPHIC MATRIX       */}
-          {/* ============================================================== */}
-          <div id="skills" className="space-y-12">
+      {/* ============================================================== */}
+      {/* 02. TECHNICAL SKILLS & CAPABILITIES MATRIX                     */}
+      {/* ============================================================== */}
+      <section
+        id="skills"
+        className="relative w-full bg-[var(--bg-canvas)] text-[var(--ink-primary)] border-b border-[var(--border-hairline)] overflow-hidden"
+      >
+        {/* Background Architectural Grid Lines */}
+        <div className="absolute inset-0 pointer-events-none bg-grid-plum opacity-15 z-0" />
+
+        <CursorSpotlight className="relative z-10 py-20 sm:py-28 px-6 sm:px-12 md:px-16">
+          <div className="max-w-7xl mx-auto space-y-12">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-[var(--border-hairline)] pb-8">
               <div className="space-y-3">
                 <div className="flex items-center gap-3 font-mono text-xs tracking-widest text-[var(--ink-muted)] uppercase">
@@ -247,8 +259,8 @@ return () => ctx.revert(); // Zero dangling listeners or memory leaks`}</code>
             </div>
 
           </div>
-        </div>
-      </CursorSpotlight>
-    </section>
+        </CursorSpotlight>
+      </section>
+    </>
   );
 }

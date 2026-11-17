@@ -35,6 +35,28 @@
   --orange: #FF4D1C;
 }
 
+/* ========================================================================= */
+/* RHYTHMIC POLARITY ALTERNATION: SOLID DEEP PLUM SECTIONS IN LIGHT MODE     */
+/* ========================================================================= */
+
+html[data-theme="milk"] #work,
+:root:not([data-theme="plum"]) #work,
+html[data-theme="milk"] #skills,
+:root:not([data-theme="plum"]) #skills,
+html[data-theme="milk"] #contact,
+:root:not([data-theme="plum"]) #contact {
+  --bg-canvas: #381932; /* Rich Deep Plum canvas */
+  --bg-surface: #472140; /* Elevated Royal Plum surface for cards/panels */
+  --bg-elevated: #54274C; /* Tactile Royal Plum for hover/inner chips */
+  --ink-primary: #FFF3E6; /* Crisp Warm Milk primary typography */
+  --ink-secondary: rgba(255, 243, 230, 0.78); /* Warm Milk secondary text */
+  --ink-muted: rgba(255, 243, 230, 0.55); /* Muted Warm Milk captions */
+  --grid-line: rgba(255, 243, 230, 0.07); /* Subtle hairline architectural grid */
+  --border-hairline: rgba(255, 243, 230, 0.18); /* Crisp borders on Plum */
+  background-color: #381932 !important;
+  color: #FFF3E6 !important;
+}
+
 [data-theme="plum"] {
   /* Strict Nocturnal Swiss Minimalist Palette — Pure Deep Obsidian Black */
   --bg-canvas: #0B0A0E;
@@ -393,8 +415,8 @@ html[data-theme="plum"] .hero-amr-badge span {
 
 html[data-theme="milk"] .hero-amr-badge,
 :root .hero-amr-badge {
-  background-color: #2B1626 !important;
-  border: 2px solid #2B1626 !important;
+  background-color: #381932 !important;
+  border: 2px solid #381932 !important;
   color: #D4FF33 !important;
 }
 
