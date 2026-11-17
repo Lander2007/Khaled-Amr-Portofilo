@@ -604,7 +604,8 @@ html.vt-switching *::after {
 
 /* Prevent duplicate view-transition-name error when multiple toggles exist (e.g. mobile drawer) */
 .pointer-events-none .tt,
-[aria-modal="true"].opacity-0 .tt {
+[aria-modal="true"].opacity-0 .tt,
+[role="dialog"] .tt {
   view-transition-name: none !important;
 }
 

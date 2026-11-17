@@ -452,19 +452,25 @@ export default function Navbar() {
             </button>
           </nav>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-current hover:opacity-75 focus:outline-none cursor-pointer transition-colors focus-visible:ring-2 focus-visible:ring-current rounded-xs"
-            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-            aria-expanded={mobileMenuOpen}
-          >
-            {mobileMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
+          {/* Mobile Controls: Theme Polarity Toggle + Sandwich Menu */}
+          <div className="flex md:hidden items-center gap-2 sm:gap-3">
+            <div className="flex items-center overflow-visible">
+              <ThemeToggle isDark={isDark} onToggle={handleThemeToggle} size={36} />
+            </div>
+
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 text-current hover:opacity-75 focus:outline-none cursor-pointer transition-colors focus-visible:ring-2 focus-visible:ring-current rounded-xs"
+              aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </button>
+          </div>
         </div>
       </header>
 
