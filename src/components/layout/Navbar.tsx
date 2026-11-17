@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { flushSync } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, Menu, X } from "lucide-react";
@@ -100,9 +99,7 @@ export default function Navbar() {
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const transition = (document as any).startViewTransition(() => {
-        flushSync(() => {
-          applyTheme();
-        });
+        applyTheme();
       });
 
       transition.ready
@@ -116,8 +113,8 @@ export default function Navbar() {
               ],
             },
             {
-              duration: 700,
-              easing: "ease-in-out",
+              duration: 450,
+              easing: "cubic-bezier(0.22, 1, 0.36, 1)",
               pseudoElement: "::view-transition-new(root)",
             }
           );

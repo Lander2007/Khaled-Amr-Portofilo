@@ -576,19 +576,36 @@ html[data-theme="plum"] .border-\[\#FFF3E6\]\/35 {
 }
 
 /* ========================================================================= */
-/* MAGIC UI ANIMATED THEME TOGGLER TRANSITION (VIEW TRANSITIONS API)         */
+/* HARDWARE-ACCELERATED GPU VIEW TRANSITIONS (ZERO UNIVERSAL RECALC)         */
 /* ========================================================================= */
+
+/* Only disable root transitions during snapshot capture — NEVER use '*' universal selector! */
+html.vt-switching,
+html.vt-switching body,
+html.vt-switching section,
+html.vt-switching nav,
+html.vt-switching header,
+html.vt-switching footer {
+  transition: none !important;
+}
+
+::view-transition-group(root) {
+  animation-duration: 0.45s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
 
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
+  will-change: clip-path;
 }
 
-/* Disable CSS color transitions while View Transition is active so snapshots are 100% crisp */
-html.vt-switching *,
-html.vt-switching *::before,
-html.vt-switching *::after {
-  transition: none !important;
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9998;
 }
 

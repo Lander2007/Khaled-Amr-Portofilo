@@ -235,13 +235,7 @@ export default function ThemeToggle({
         const c1 = Math.round(lerp(k.A.c[1], k.B.c[1], E));
         const c2 = Math.round(lerp(k.A.c[2], k.B.c[2], E));
 
-        if (E < 0.55 && k.aA > 0.7) {
-          ctx.shadowColor =
-            variant === "brand" ? "rgba(212, 255, 51, 0.75)" : "rgba(255, 242, 215, 0.9)";
-          ctx.shadowBlur = pc * d * 2.2 * (1 - E * 1.8);
-        } else {
-          ctx.shadowBlur = 0;
-        }
+        ctx.shadowBlur = 0;
 
         ctx.fillStyle = `rgba(${c0},${c1},${c2},${al.toFixed(3)})`;
         ctx.fillRect(ox + (x + 0.5) * pc - z / 2, oy + (y + 0.5) * pc - z / 2, z, z);
@@ -490,9 +484,9 @@ const CSS = `
 .tt[data-variant="brand"] .hf{background:radial-gradient(closest-side,rgba(255,140,95,.75),rgba(212,255,51,.3) 58%,transparent);opacity:var(--f)}
 
 /* Brand Rim Glow Filters */
-.tt[data-variant="brand"] .awd{filter:drop-shadow(0 0 3px rgba(240,255,170,.95)) drop-shadow(0 0 9px rgba(212,255,51,.92)) drop-shadow(0 0 16px rgba(175,230,20,.62));opacity:calc(1 - var(--p))}
-.tt[data-variant="brand"] .awl{filter:drop-shadow(0 0 3px rgba(215,110,195,.95)) drop-shadow(0 0 9px rgba(128,38,112,.92)) drop-shadow(0 0 18px rgba(56,25,50,.7));opacity:var(--p)}
-.tt[data-variant="brand"] .awf{filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 11px rgba(212,255,51,.9)) drop-shadow(0 0 20px rgba(148,45,128,.75));opacity:var(--f)}
+.tt[data-variant="brand"] .awd{filter:drop-shadow(0 0 6px rgba(212,255,51,.85));opacity:calc(1 - var(--p))}
+.tt[data-variant="brand"] .awl{filter:drop-shadow(0 0 6px rgba(138,42,120,.85));opacity:var(--p)}
+.tt[data-variant="brand"] .awf{filter:drop-shadow(0 0 6px rgba(212,255,51,.85));opacity:var(--f)}
 
 /* Brand Rim Conic Colors */
 .tt[data-variant="brand"] .ad{--c1:rgba(212,255,51,.92);--c2:#f7ffdb}
@@ -507,9 +501,9 @@ const CSS = `
 .tt[data-variant="classic"] .hd{background:radial-gradient(closest-side,rgba(115,135,255,.65),rgba(90,110,255,.22) 55%,transparent);opacity:calc(1 - var(--p))}
 .tt[data-variant="classic"] .hl{background:radial-gradient(closest-side,rgba(255,168,38,.72),rgba(255,150,20,.25) 55%,transparent);opacity:var(--p)}
 .tt[data-variant="classic"] .hf{background:radial-gradient(closest-side,rgba(255,215,195,.82),rgba(255,180,155,.3) 58%,transparent);opacity:var(--f)}
-.tt[data-variant="classic"] .awd{filter:drop-shadow(0 0 3px rgba(200,215,255,.95)) drop-shadow(0 0 9px rgba(110,130,255,.95)) drop-shadow(0 0 16px rgba(95,115,255,.65));opacity:calc(1 - var(--p))}
-.tt[data-variant="classic"] .awl{filter:drop-shadow(0 0 3px rgba(255,230,130,.95)) drop-shadow(0 0 9px rgba(255,160,30,.92)) drop-shadow(0 0 18px rgba(255,140,15,.6));opacity:var(--p)}
-.tt[data-variant="classic"] .awf{filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 11px rgba(255,205,185,.95)) drop-shadow(0 0 20px rgba(255,175,145,.75));opacity:var(--f)}
+.tt[data-variant="classic"] .awd{filter:drop-shadow(0 0 6px rgba(110,130,255,.85));opacity:calc(1 - var(--p))}
+.tt[data-variant="classic"] .awl{filter:drop-shadow(0 0 6px rgba(255,160,30,.85));opacity:var(--p)}
+.tt[data-variant="classic"] .awf{filter:drop-shadow(0 0 6px rgba(255,205,185,.85));opacity:var(--f)}
 .tt[data-variant="classic"] .ad{--c1:rgba(165,185,255,.85);--c2:#ffffff}
 .tt[data-variant="classic"] .al{--c1:rgba(255,185,55,.9);--c2:#fff7d6}
 .tt[data-variant="classic"] .af{--c1:rgba(255,205,185,.95);--c2:#ffffff}
