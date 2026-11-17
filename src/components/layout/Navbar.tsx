@@ -51,16 +51,99 @@ export default function Navbar() {
     setIsDark(initialDark);
   }, []);
 
-  const handleThemeToggle = useCallback((nextDark: boolean) => {
-    setIsDark(nextDark);
-    const theme = nextDark ? "plum" : "milk";
-    if (typeof document !== "undefined") {
-      document.documentElement.setAttribute("data-theme", theme);
-    }
-    try {
-      localStorage.setItem("portfolio-polarity-theme", theme);
-    } catch (_) {}
-  }, []);
+  const handleThemeToggle = useCallback(
+    (nextDark: boolean, coords?: { x: number; y: number }) => {
+      const theme = nextDark ? "plum" : "milk";
+      const applyTheme = () => {
+        setIsDark(nextDark);
+        if (typeof document !== "undefined") {
+          document.documentElement.setAttribute("data-theme", theme);
+        }
+        try {
+          localStorage.setItem("portfolio-polarity-theme", theme);
+        } catch (_) {}
+      };
+
+      if (
+        typeof document === "undefined" ||
+        !("startViewTransition" in document) ||
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ) {
+        applyTheme();
+        return;
+      }
+
+      // Determine center coordinates of the toggle thumb
+      let x = coords?.x;
+      let y = coords?.y;
+
+      if (x === undefined || y === undefined) {
+        const allPills = Array.from(document.querySelectorAll<HTMLElement>(".tt"));
+        const visiblePill = allPills.find((el) => el.offsetParent !== null) || allPills[0];
+        if (visiblePill) {
+          const thumb = visiblePill.querySelector<HTMLElement>(".th") || visiblePill;
+          const rect = thumb.getBoundingClientRect();
+          x = rect.left + rect.width / 2;
+          y = rect.top + rect.height / 2;
+        } else {
+          x = window.innerWidth / 2;
+          y = window.innerHeight / 2;
+        }
+      }
+
+      const right = window.innerWidth - x;
+      const bottom = window.innerHeight - y;
+      const maxRadius = Math.hypot(Math.max(x, right), Math.max(y, bottom));
+
+      // Isolate active pill to prevent duplicate view-transition-name
+      const allPills = document.querySelectorAll<HTMLElement>(".tt");
+      allPills.forEach((p) => {
+        p.style.viewTransitionName = "none";
+      });
+      const activePill =
+        (coords ? document.elementFromPoint(coords.x, coords.y)?.closest<HTMLElement>(".tt") : null) ||
+        Array.from(allPills).find((el) => el.offsetParent !== null) ||
+        allPills[0];
+
+      if (activePill) {
+        activePill.style.viewTransitionName = "theme-toggle-pill";
+      }
+
+      document.documentElement.classList.add("vt-switching");
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const transition = (document as any).startViewTransition(() => {
+        applyTheme();
+      });
+
+      transition.ready
+        .then(() => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (document.documentElement as any).animate(
+            {
+              clipPath: [
+                `circle(0px at ${x}px ${y}px)`,
+                `circle(${maxRadius}px at ${x}px ${y}px)`,
+              ],
+            },
+            {
+              duration: 420,
+              easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+              pseudoElement: "::view-transition-new(root)",
+            }
+          );
+        })
+        .catch(() => {});
+
+      transition.finished.finally(() => {
+        document.documentElement.classList.remove("vt-switching");
+        allPills.forEach((p) => {
+          p.style.viewTransitionName = "";
+        });
+      });
+    },
+    []
+  );
 
   const scrolledRef = useRef(false);
   const navRef = useRef<HTMLElement>(null);

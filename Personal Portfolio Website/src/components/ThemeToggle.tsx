@@ -149,7 +149,7 @@ export default function ThemeToggle({
   respectReducedMotion = false,
 }: {
   isDark: boolean;
-  onToggle: (nextIsDark: boolean) => void;
+  onToggle: (nextIsDark: boolean, coords?: { x: number; y: number }) => void;
   size?: number;
   variant?: "brand" | "classic";
   respectReducedMotion?: boolean;
@@ -341,7 +341,16 @@ export default function ThemeToggle({
       go(t);
       if (t !== cur.current) {
         cur.current = t;
-        cb.current(t === 0);
+        let coords: { x: number; y: number } | undefined;
+        try {
+          const thumbEl = (r.querySelector(".th") as HTMLElement) || r;
+          const rect = thumbEl.getBoundingClientRect();
+          coords = {
+            x: rect.left + rect.width / 2,
+            y: rect.top + rect.height / 2,
+          };
+        } catch (_) {}
+        cb.current(t === 0, coords);
       }
     };
 
