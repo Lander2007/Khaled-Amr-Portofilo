@@ -462,12 +462,18 @@ export default function ThemeToggle({
 const CSS = `
 @property --d{syntax:"<angle>";inherits:true;initial-value:0deg}
 @keyframes tt-d{from{--d:-14deg}to{--d:14deg}}
-.tt{appearance:none;border:0;padding:0;margin:0;background:none;position:relative;display:block;flex:none;width:calc(var(--h)*1.91);height:var(--h);cursor:grab;touch-action:pan-y;user-select:none;-webkit-tap-highlight-color:transparent;overflow:visible;isolation:isolate}
+.tt{
+  --r-track: 6px; /* Sharp architectural track corners (set to 0px for 90° brutalist corners) */
+  --r-thumb: 4px; /* Sharp inner thumb & rim light corners (set to 0px for 90° brutalist corners) */
+  appearance:none;border:0;padding:0;margin:0;background:none;position:relative;display:block;flex:none;width:calc(var(--h)*1.91);height:var(--h);cursor:grab;touch-action:pan-y;user-select:none;-webkit-tap-highlight-color:transparent;overflow:visible;isolation:isolate;
+  view-transition-name:theme-toggle-pill;
+}
 .tt[data-drag]{cursor:grabbing}
-.tt:focus-visible{outline:2px solid #D4FF33;outline-offset:5px;border-radius:calc(var(--h)*.38)}
+.tt:focus-visible{outline:2px solid #D4FF33;outline-offset:5px;border-radius:var(--r-track)}
 .tt i,.tt span{display:block;transition:none!important}
 .td,.tl,.gd,.gl{position:absolute;inset:0}
-.td,.tl{border-radius:calc(var(--h)*.38)}
+.td,.tl{border-radius:var(--r-track)}
+.gd,.gl{border-radius:inherit}
 
 /* ================= BRAND VARIANT (PLUM LIGHT + ELECTRIC LIME DARK) ================= */
 .tt[data-variant="brand"] .td{background:linear-gradient(180deg,#08080b,#121116);box-shadow:inset 0 3px 8px rgba(0,0,0,.95),inset 0 0 0 1px rgba(255,243,230,.07),0 1px 0 rgba(255,243,230,.06),0 0 24px rgba(212,255,51,.14);opacity:calc(1 - var(--p))}
@@ -510,9 +516,9 @@ const CSS = `
 .tt[data-variant="classic"] .af{--c1:rgba(255,205,185,.95);--c2:#ffffff}
 
 /* ================= SHARED GEOMETRY ================= */
-.th{position:absolute;left:calc(var(--h)*.07);top:calc(var(--h)*.07);width:calc(var(--h)*.9);height:calc(var(--h)*.86);border-radius:calc(var(--h)*.27);transform:translate3d(calc(var(--o)*var(--h)*.83),0,0);will-change:transform}
+.th{position:absolute;left:calc(var(--h)*.07);top:calc(var(--h)*.07);width:calc(var(--h)*.9);height:calc(var(--h)*.86);border-radius:var(--r-thumb);transform:translate3d(calc(var(--o)*var(--h)*.83),0,0);will-change:transform}
 .cv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
 .ha{position:absolute;z-index:-1;left:50%;top:50%;width:175%;height:175%;border-radius:50%;pointer-events:none;filter:blur(12px);transform:translate3d(calc(-50% + var(--hx)),calc(-50% + var(--hy)),0)}
 .aw{position:absolute;inset:-2px;pointer-events:none;z-index:3}
-.arc{position:absolute;inset:0;border-radius:calc(var(--h)*.27 + 2px);padding:1.75px;background:conic-gradient(from calc(var(--a)*1deg + var(--d) - 62deg),transparent 0deg,var(--c1) 28deg,var(--c2) 62deg,var(--c1) 96deg,transparent 124deg,transparent 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;animation:tt-d 3.2s ease-in-out infinite alternate}
+.arc{position:absolute;inset:0;border-radius:calc(var(--r-thumb) + 2px);padding:1.75px;background:conic-gradient(from calc(var(--a)*1deg + var(--d) - 62deg),transparent 0deg,var(--c1) 28deg,var(--c2) 62deg,var(--c1) 96deg,transparent 124deg,transparent 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;animation:tt-d 3.2s ease-in-out infinite alternate}
 `;
