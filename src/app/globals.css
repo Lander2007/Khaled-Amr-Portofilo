@@ -2,22 +2,22 @@
 
 :root,
 [data-theme="milk"] {
-  --bg-canvas: #FAF6F0;
-  --bg-surface: #FFFFFF;
-  --bg-elevated: #F3ECE1;
-  --ink-primary: #2B1626;
-  --ink-secondary: rgba(43, 22, 38, 0.72);
-  --ink-muted: rgba(43, 22, 38, 0.55);
-  --grid-line: rgba(43, 22, 38, 0.045);
-  --border-hairline: rgba(56, 25, 50, 0.12);
+  --bg-canvas: #FFF3E6; /* Signature Warm Milk canvas — NEVER pure white */
+  --bg-surface: #F6E7D7; /* Warm Milk card/section surface — NO #FFFFFF */
+  --bg-elevated: #EDD9C4; /* Deeper tactile Warm Milk for elevated panels/hover */
+  --ink-primary: #381932; /* Signature Deep Plum primary typography & structural ink */
+  --ink-secondary: rgba(56, 25, 50, 0.78); /* Rich Plum secondary text */
+  --ink-muted: rgba(56, 25, 50, 0.50); /* Muted Plum metadata & captions */
+  --grid-line: rgba(56, 25, 50, 0.085); /* Subtle Deep Plum architectural grid lines */
+  --border-hairline: rgba(56, 25, 50, 0.18); /* Crisp Deep Plum borders */
   --accent-lime: #D4FF33;
   --accent-orange: #FF4D1C;
-  --watermark-fill: rgba(43, 22, 38, 0.035);
+  --watermark-fill: rgba(56, 25, 50, 0.065); /* Warm Plum-tinted background wordwalls */
   --watermark-stroke: transparent;
 
   /* Editorial AMR Tilt Badge Variables (Light Mode: Solid Deep Plum bg, Crisp Acid Lime text) */
-  --amr-badge-bg: #2B1626;
-  --amr-badge-border: #2B1626;
+  --amr-badge-bg: #381932;
+  --amr-badge-border: #381932;
   --amr-badge-ink: #D4FF33;
 
   /* Backward Compatible Aliases */
@@ -29,8 +29,8 @@
   --text-primary: var(--ink-primary);
   --text-muted: var(--ink-muted);
   --border-subtle: var(--border-hairline);
-  --plum: #2B1626;
-  --milk: #FAF6F0;
+  --plum: #381932;
+  --milk: #FFF3E6;
   --lime: #D4FF33;
   --orange: #FF4D1C;
 }
@@ -72,15 +72,15 @@
 }
 
 @theme {
-  --color-plum: #2B1626;
+  --color-plum: #381932;
   --color-plum-canvas: #0B0A0E;
   --color-plum-surface: #141318;
   --color-plum-elevated: #1E1C24;
 
-  --color-milk: #FAF6F0;
-  --color-milk-pure: #FFFFFF;
-  --color-milk-muted: #F0EAE1;
-  --color-milk-surface: #FFFFFF;
+  --color-milk: #FFF3E6;
+  --color-milk-pure: #FFF3E6;
+  --color-milk-muted: #F6E7D7;
+  --color-milk-surface: #F6E7D7;
 
   --color-lime: #D4FF33;
   --color-electric-lime: #D4FF33;
