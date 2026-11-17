@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { flushSync } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, Menu, X } from "lucide-react";
@@ -95,25 +96,13 @@ export default function Navbar() {
       const bottom = window.innerHeight - y;
       const maxRadius = Math.hypot(Math.max(x, right), Math.max(y, bottom));
 
-      // Isolate active pill to prevent duplicate view-transition-name
-      const allPills = document.querySelectorAll<HTMLElement>(".tt");
-      allPills.forEach((p) => {
-        p.style.viewTransitionName = "none";
-      });
-      const activePill =
-        (coords ? document.elementFromPoint(coords.x, coords.y)?.closest<HTMLElement>(".tt") : null) ||
-        Array.from(allPills).find((el) => el.offsetParent !== null) ||
-        allPills[0];
-
-      if (activePill) {
-        activePill.style.viewTransitionName = "theme-toggle-pill";
-      }
-
       document.documentElement.classList.add("vt-switching");
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const transition = (document as any).startViewTransition(() => {
-        applyTheme();
+        flushSync(() => {
+          applyTheme();
+        });
       });
 
       transition.ready
@@ -127,8 +116,8 @@ export default function Navbar() {
               ],
             },
             {
-              duration: 420,
-              easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+              duration: 700,
+              easing: "ease-in-out",
               pseudoElement: "::view-transition-new(root)",
             }
           );
@@ -137,9 +126,6 @@ export default function Navbar() {
 
       transition.finished.finally(() => {
         document.documentElement.classList.remove("vt-switching");
-        allPills.forEach((p) => {
-          p.style.viewTransitionName = "";
-        });
       });
     },
     []

@@ -554,58 +554,19 @@ html[data-theme="plum"] .border-\[\#FFF3E6\]\/35 {
 }
 
 /* ========================================================================= */
-/* ULTRA-FAST GPU RADIAL SHOCKWAVE THEME TRANSITION (VIEW TRANSITIONS API)   */
+/* MAGIC UI ANIMATED THEME TOGGLER TRANSITION (VIEW TRANSITIONS API)         */
 /* ========================================================================= */
-
-/* Disable standard CSS transitions while View Transition captures the new state snapshot */
-html.vt-switching *,
-html.vt-switching *::before,
-html.vt-switching *::after {
-  transition: none !important;
-}
-
-/* Full-screen GPU clip-path layers */
-::view-transition-group(root) {
-  animation-duration: 0.42s;
-  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-}
 
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
-  display: block;
 }
 
-::view-transition-old(root) {
-  z-index: 1;
-}
-
-::view-transition-new(root) {
-  z-index: 9998;
-}
-
-/* Keep the ThemeToggle button isolated on top so its 120fps canvas particles never freeze! */
-.tt {
-  view-transition-name: theme-toggle-pill;
-}
-
-::view-transition-group(theme-toggle-pill) {
-  z-index: 9999;
-}
-
-::view-transition-old(theme-toggle-pill) {
-  display: none;
-}
-
-::view-transition-new(theme-toggle-pill) {
-  animation: none;
-}
-
-/* Prevent duplicate view-transition-name error when multiple toggles exist (e.g. mobile drawer) */
-.pointer-events-none .tt,
-[aria-modal="true"].opacity-0 .tt,
-[role="dialog"] .tt {
-  view-transition-name: none !important;
+/* Disable CSS color transitions while View Transition is active so snapshots are 100% crisp */
+html.vt-switching *,
+html.vt-switching *::before,
+html.vt-switching *::after {
+  transition: none !important;
 }
 

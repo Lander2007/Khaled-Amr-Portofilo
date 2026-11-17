@@ -466,7 +466,6 @@ const CSS = `
   --r-track: 6px; /* Sharp architectural track corners (set to 0px for 90° brutalist corners) */
   --r-thumb: 4px; /* Sharp inner thumb & rim light corners (set to 0px for 90° brutalist corners) */
   appearance:none;border:0;padding:0;margin:0;background:none;position:relative;display:block;flex:none;width:calc(var(--h)*1.91);height:var(--h);cursor:grab;touch-action:pan-y;user-select:none;-webkit-tap-highlight-color:transparent;overflow:visible;isolation:isolate;
-  view-transition-name:theme-toggle-pill;
 }
 .tt[data-drag]{cursor:grabbing}
 .tt:focus-visible{outline:2px solid #D4FF33;outline-offset:5px;border-radius:var(--r-track)}
