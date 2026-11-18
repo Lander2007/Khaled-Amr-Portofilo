@@ -21,6 +21,9 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+// Snappy scroll distance per project chapter (55vh of travel per slice)
+const STEP_VH = 55;
+
 export default function Scene03SelectedWork() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -41,6 +44,7 @@ export default function Scene03SelectedWork() {
   const spec2Ref = useRef<HTMLDivElement>(null);
   const spec3Ref = useRef<HTMLDivElement>(null);
 
+  const scanTweenRef = useRef<gsap.core.Tween | null>(null);
   const prefersReducedMotion = usePrefersReducedMotion();
 
   // Category definitions with live counts
@@ -86,6 +90,41 @@ export default function Scene03SelectedWork() {
     ];
   }, []);
 
+  // Total wrapper height: 100vh for the sticky viewport + (N - 1) * 55vh travel
+  const totalHeightVh = useMemo(() => {
+    return 100 + Math.max(0, filteredProjects.length - 1) * STEP_VH;
+  }, [filteredProjects.length]);
+
+  // Direct GPU DOM update helper for laser scanner and clip-path
+  const updateScanDOM = useCallback((s: number) => {
+    if (scannerLineRef.current) {
+      scannerLineRef.current.style.left = `${(s * 100).toFixed(2)}%`;
+      scannerLineRef.current.style.opacity = s < 0.98 ? "1" : "0";
+    }
+
+    if (scannerHeadTextRef.current) {
+      scannerHeadTextRef.current.textContent = `▼ ${(s * 100).toFixed(0)}%`;
+    }
+
+    if (revealLayerRef.current) {
+      const insetRight = ((1 - s) * 100).toFixed(2);
+      revealLayerRef.current.style.clipPath = `inset(0 ${insetRight}% 0 0)`;
+    }
+
+    if (spec1Ref.current) {
+      spec1Ref.current.style.borderLeftColor = s >= 0.2 ? "#D4FF33" : "transparent";
+      spec1Ref.current.style.opacity = s >= 0.2 ? "1" : "0.5";
+    }
+    if (spec2Ref.current) {
+      spec2Ref.current.style.borderLeftColor = s >= 0.5 ? "#D4FF33" : "transparent";
+      spec2Ref.current.style.opacity = s >= 0.5 ? "1" : "0.5";
+    }
+    if (spec3Ref.current) {
+      spec3Ref.current.style.borderLeftColor = s >= 0.8 ? "#D4FF33" : "transparent";
+      spec3Ref.current.style.opacity = s >= 0.8 ? "1" : "0.5";
+    }
+  }, []);
+
   // Jump smoothly to a project slice synchronized with window scroll position inside scrollTrackRef
   const handleJumpToProject = useCallback(
     (targetIndex: number) => {
@@ -97,10 +136,10 @@ export default function Scene03SelectedWork() {
 
       const trackRect = scrollTrackRef.current.getBoundingClientRect();
       const trackTop = trackRect.top + window.scrollY;
-      const stepHeight = window.innerHeight; // 100vh per project slice
+      const stepPixels = (window.innerHeight * STEP_VH) / 100;
 
-      // Scroll smoothly to 40% into the project slice (where laser scan reveal is fully unlocked)
-      const targetY = trackTop + clampedIndex * stepHeight + stepHeight * 0.4;
+      // Exact target scroll Y for project clampedIndex
+      const targetY = trackTop + clampedIndex * stepPixels;
 
       window.scrollTo({
         top: targetY,
@@ -127,75 +166,92 @@ export default function Scene03SelectedWork() {
 
   // Stepper handlers for quick chapter navigation
   const handlePrev = useCallback(() => {
-    const prevIdx = (activeIndex - 1 + filteredProjects.length) % filteredProjects.length;
-    handleJumpToProject(prevIdx);
-  }, [activeIndex, filteredProjects.length, handleJumpToProject]);
+    if (activeIndex > 0) {
+      handleJumpToProject(activeIndex - 1);
+    } else if (scrollTrackRef.current) {
+      // At chapter 0, scrolling back up smoothly navigates to Block A highlights
+      const trackRect = scrollTrackRef.current.getBoundingClientRect();
+      const trackTop = trackRect.top + window.scrollY;
+      window.scrollTo({
+        top: Math.max(0, trackTop - window.innerHeight * 0.7),
+        behavior: "smooth",
+      });
+    }
+  }, [activeIndex, handleJumpToProject]);
 
   const handleNext = useCallback(() => {
-    const nextIdx = (activeIndex + 1) % filteredProjects.length;
-    handleJumpToProject(nextIdx);
+    if (activeIndex < filteredProjects.length - 1) {
+      handleJumpToProject(activeIndex + 1);
+    } else if (scrollTrackRef.current) {
+      // At final chapter (15), NEXT scrolls past the stage directly into Scene 04
+      const trackRect = scrollTrackRef.current.getBoundingClientRect();
+      const trackBottom = trackRect.bottom + window.scrollY;
+      window.scrollTo({
+        top: trackBottom + 20,
+        behavior: "smooth",
+      });
+    }
   }, [activeIndex, filteredProjects.length, handleJumpToProject]);
 
-  // Unified ScrollTrigger scrubbing tied directly to scrollTrackRef
+  // As a project becomes active (by scroll or click), smoothly animate the laser scanner
+  // from 0% to 100% over 0.7s so the full-color interface and specs are NEVER stuck at 0%
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      updateScanDOM(1);
+      return;
+    }
+
+    if (scanTweenRef.current) {
+      scanTweenRef.current.kill();
+    }
+
+    const obj = { s: 0 };
+    updateScanDOM(0);
+
+    scanTweenRef.current = gsap.to(obj, {
+      s: 1,
+      duration: 0.7,
+      ease: "power2.out",
+      onUpdate: () => {
+        updateScanDOM(obj.s);
+      },
+      onComplete: () => {
+        updateScanDOM(1);
+      },
+    });
+
+    return () => {
+      if (scanTweenRef.current) {
+        scanTweenRef.current.kill();
+      }
+    };
+  }, [activeIndex, prefersReducedMotion, updateScanDOM]);
+
+  // Unified ScrollTrigger scrubbing tied directly to scrollTrackRef (Zero pin-spacers)
   useEffect(() => {
     if (prefersReducedMotion || !scrollTrackRef.current) return;
 
     const track = scrollTrackRef.current;
     const N = filteredProjects.length;
+    if (N <= 1) return;
 
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
         trigger: track,
         start: "top top",
         end: "bottom bottom",
-        scrub: 0.2,
+        scrub: 0.1,
         onUpdate: (self) => {
           const progress = self.progress; // 0.0 -> 1.0 through scrollTrackRef
-          if (N <= 0) return;
+          const raw = progress * (N - 1);
+          const pIdx = Math.min(Math.max(0, Math.round(raw)), N - 1);
 
-          const raw = progress * N;
-          const pIdx = Math.min(Math.floor(raw), N - 1);
-          const localP = raw - Math.floor(raw); // Normalized slice progress [0, 1]
-
-          // Laser scan reveals full color in first 40% of slice, stays 100% full-color for remaining 60%
-          const s = Math.min(1, Math.max(0, localP / 0.4));
-
-          // 1. Direct GPU position for Laser Scanner Bar
-          if (scannerLineRef.current) {
-            scannerLineRef.current.style.left = `${(s * 100).toFixed(2)}%`;
-            scannerLineRef.current.style.opacity = s < 0.98 ? "1" : "0";
-          }
-
-          if (scannerHeadTextRef.current) {
-            scannerHeadTextRef.current.textContent = `▼ ${(s * 100).toFixed(0)}%`;
-          }
-
-          // 2. Direct GPU clip-path reveal for Full-Color UI
-          if (revealLayerRef.current) {
-            const insetRight = ((1 - s) * 100).toFixed(2);
-            revealLayerRef.current.style.clipPath = `inset(0 ${insetRight}% 0 0)`;
-          }
-
-          // 3. Sequential border illumination on 3 Specs below the image
-          if (spec1Ref.current) {
-            spec1Ref.current.style.borderLeftColor = s >= 0.2 ? "#D4FF33" : "transparent";
-            spec1Ref.current.style.opacity = s >= 0.2 ? "1" : "0.6";
-          }
-          if (spec2Ref.current) {
-            spec2Ref.current.style.borderLeftColor = s >= 0.5 ? "#D4FF33" : "transparent";
-            spec2Ref.current.style.opacity = s >= 0.5 ? "1" : "0.6";
-          }
-          if (spec3Ref.current) {
-            spec3Ref.current.style.borderLeftColor = s >= 0.8 ? "#D4FF33" : "transparent";
-            spec3Ref.current.style.opacity = s >= 0.8 ? "1" : "0.6";
-          }
-
-          // 4. Update HUD Telemetry
+          // Update HUD Telemetry
           if (telemetryPercentRef.current) {
             telemetryPercentRef.current.textContent = `${Math.round(progress * 100)}%`;
           }
 
-          // 5. Cross-project index sync (Fires strictly when changing project slice)
+          // Cross-project index sync (Fires strictly when changing project slice)
           if (pIdx !== activeIndexRef.current) {
             activeIndexRef.current = pIdx;
             setActiveIndex(pIdx);
@@ -363,12 +419,12 @@ export default function Scene03SelectedWork() {
         ref={scrollTrackRef}
         className="relative w-full"
         style={{
-          // Height strictly matches filteredProjects count (100vh per project slice)
-          height: `${filteredProjects.length * 100}vh`,
+          // Snappy total height: 100vh + (N - 1) * 55vh (zero dead scroll distance)
+          height: `${totalHeightVh}vh`,
         }}
       >
-        {/* Native CSS Sticky 100vh Stage Container (Zero Pin-Spacer Collisions) */}
-        <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between bg-[var(--bg-canvas)] border-y border-[var(--border-hairline)] px-4 sm:px-6 lg:px-8 py-3 sm:py-4 z-20">
+        {/* Native CSS Sticky 100vh Stage Container (Top padded pt-20 to clear fixed Navbar) */}
+        <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between bg-[var(--bg-canvas)] border-y border-[var(--border-hairline)] px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 md:pt-28 pb-3 sm:pb-4 z-20">
           {/* Background Architectural Watermark */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden z-0 opacity-[0.04]">
             <span className="font-display font-extrabold text-[clamp(6rem,18vw,22rem)] uppercase tracking-tighter whitespace-nowrap text-[var(--ink-primary)]">
@@ -377,7 +433,7 @@ export default function Scene03SelectedWork() {
           </div>
 
           {/* ------------------------------------------------------------ */}
-          {/* 1. TOP INTEGRATED HUD BAR                                    */}
+          {/* 1. TOP INTEGRATED HUD BAR (Sits cleanly below fixed Navbar)  */}
           {/* ------------------------------------------------------------ */}
           <div className="relative z-30 w-full flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border-hairline)] pb-2.5 shrink-0">
             {/* Left: Category Filter Pills */}
@@ -430,15 +486,15 @@ export default function Scene03SelectedWork() {
           {/* ------------------------------------------------------------ */}
           {/* 2. MIDDLE 12-COLUMN STAGE                                    */}
           {/* ------------------------------------------------------------ */}
-          <div className="relative z-20 w-full flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center py-2 sm:py-3 min-h-0">
+          <div className="relative z-20 w-full flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center py-2 min-h-0">
             {/* ========================================================== */}
             {/* LEFT NARRATIVE COLUMN (Cols 1-5)                           */}
             {/* ========================================================== */}
-            <div className="lg:col-span-5 flex flex-col justify-between h-full max-h-[62vh] space-y-3 sm:space-y-4 z-10 overflow-y-auto scrollbar-none pr-1">
-              <div className="space-y-2.5 sm:space-y-3">
+            <div className="lg:col-span-5 flex flex-col justify-between h-full max-h-[56vh] space-y-3 z-10 overflow-y-auto scrollbar-none pr-1">
+              <div className="space-y-2">
                 {/* Index Counter & Year */}
                 <div className="flex items-baseline justify-between gap-4">
-                  <span className="font-mono text-5xl sm:text-6xl lg:text-7xl font-black text-[var(--ink-primary)] tracking-tighter leading-none select-none">
+                  <span className="font-mono text-5xl sm:text-6xl font-black text-[var(--ink-primary)] tracking-tighter leading-none select-none">
                     {activeProject.num}
                   </span>
                   <span className="font-mono text-[11px] text-[var(--ink-muted)] uppercase tracking-widest">
@@ -453,7 +509,7 @@ export default function Scene03SelectedWork() {
                 </div>
 
                 {/* Project Title and Subtitle */}
-                <div className="space-y-1">
+                <div className="space-y-0.5">
                   <h3 className="font-display text-2xl sm:text-3xl font-extrabold uppercase tracking-tight text-[var(--ink-primary)] leading-tight">
                     {activeProject.title}
                   </h3>
@@ -469,7 +525,7 @@ export default function Scene03SelectedWork() {
               </div>
 
               {/* Bottom Anchored: Engineering Stack & CTAs */}
-              <div className="space-y-3 pt-3 border-t border-[var(--border-hairline)] mt-auto">
+              <div className="space-y-2.5 pt-2.5 border-t border-[var(--border-hairline)] mt-auto">
                 {/* Tech Stack Pills */}
                 <div className="flex flex-wrap gap-1.5">
                   <span className="font-mono text-[10px] text-[var(--ink-muted)] uppercase mr-1 self-center">
@@ -490,7 +546,7 @@ export default function Scene03SelectedWork() {
                   <MagneticButton strength={0.2} maxOffset={4}>
                     <Link
                       href={`/work/${activeProject.slug}`}
-                      className="group relative px-4 py-2.5 bg-[var(--ink-primary)] text-[var(--bg-canvas)] border border-transparent hover:bg-[#D4FF33] hover:text-[#0B0A0E] hover:border-[#D4FF33] font-bold uppercase tracking-wider flex items-center transition-all duration-200"
+                      className="group relative px-4 py-2 bg-[var(--ink-primary)] text-[var(--bg-canvas)] border border-transparent hover:bg-[#D4FF33] hover:text-[#0B0A0E] hover:border-[#D4FF33] font-bold uppercase tracking-wider flex items-center transition-all duration-200"
                     >
                       <span className="relative z-10 flex items-center gap-1.5">
                         <span>VIEW CASE STUDY</span>
@@ -505,7 +561,7 @@ export default function Scene03SelectedWork() {
                         href={activeProject.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group relative px-3.5 py-2.5 border border-[var(--ink-primary)]/35 text-[var(--ink-primary)] bg-transparent hover:bg-[var(--ink-primary)] hover:text-[var(--bg-canvas)] hover:border-[var(--ink-primary)] font-bold uppercase tracking-wider flex items-center transition-all duration-200"
+                        className="group relative px-3 py-2 border border-[var(--ink-primary)]/35 text-[var(--ink-primary)] bg-transparent hover:bg-[var(--ink-primary)] hover:text-[var(--bg-canvas)] hover:border-[var(--ink-primary)] font-bold uppercase tracking-wider flex items-center transition-all duration-200"
                       >
                         <span className="relative z-10 flex items-center gap-1.5">
                           <span>LIVE PLATFORM</span>
@@ -520,7 +576,7 @@ export default function Scene03SelectedWork() {
                       href={activeProject.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group relative px-2.5 py-2.5 border border-[var(--border-hairline)] text-[var(--ink-muted)] hover:text-[var(--ink-primary)] hover:border-[var(--ink-primary)] font-mono text-[11px] uppercase tracking-wider flex items-center transition-all duration-200"
+                      className="group relative px-2.5 py-2 border border-[var(--border-hairline)] text-[var(--ink-muted)] hover:text-[var(--ink-primary)] hover:border-[var(--ink-primary)] font-mono text-[11px] uppercase tracking-wider flex items-center transition-all duration-200"
                     >
                       <span>CODE ↗</span>
                     </a>
@@ -534,7 +590,7 @@ export default function Scene03SelectedWork() {
             {/* ========================================================== */}
             <div className="lg:col-span-7 flex flex-col justify-center">
               {/* 16:10 Architectural Viewport Frame (Clean, Unobstructed Image) */}
-              <div className="relative w-full aspect-[16/10] max-h-[50vh] bg-[var(--bg-surface)] border border-[var(--border-hairline)] overflow-hidden shadow-2xl">
+              <div className="relative w-full aspect-[16/10] max-h-[46vh] bg-[var(--bg-surface)] border border-[var(--border-hairline)] overflow-hidden shadow-2xl">
                 {/* Layer 1: Bright Architectural Cyan/Plum Blueprint Schematic */}
                 <div className="absolute inset-0 z-0 overflow-hidden bg-[var(--bg-surface)]">
                   <Image
@@ -616,21 +672,21 @@ export default function Scene03SelectedWork() {
               </div>
 
               {/* 3-Column Architectural Specs Strip (Cleanly Below the Frame) */}
-              <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 mt-3 sm:mt-4">
+              <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-2.5 mt-2.5 sm:mt-3">
                 {activeProject.verifiableMetrics.map((metric, idx) => {
                   const refMap = [spec1Ref, spec2Ref, spec3Ref];
                   return (
                     <div
                       key={idx}
                       ref={refMap[idx]}
-                      className="p-2.5 sm:p-3 border border-[var(--border-hairline)] border-l-2 border-l-transparent bg-[var(--bg-surface)] transition-all duration-200"
-                      style={{ opacity: 0.7 }}
+                      className="p-2 sm:p-2.5 border border-[var(--border-hairline)] border-l-2 border-l-transparent bg-[var(--bg-surface)] transition-all duration-200"
+                      style={{ opacity: 0.5 }}
                     >
-                      <div className="flex items-center gap-1.5 font-mono text-[9px] text-[#D4FF33] font-bold uppercase tracking-wider mb-1">
+                      <div className="flex items-center gap-1.5 font-mono text-[9px] text-[#D4FF33] font-bold uppercase tracking-wider mb-0.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#D4FF33]" />
                         <span>SPEC // 0{idx + 1}</span>
                       </div>
-                      <p className="font-mono text-[11px] sm:text-xs text-[var(--ink-primary)] font-medium leading-tight line-clamp-2">
+                      <p className="font-mono text-[10.5px] sm:text-[11px] text-[var(--ink-primary)] font-medium leading-tight line-clamp-2">
                         {metric}
                       </p>
                     </div>
@@ -647,7 +703,7 @@ export default function Scene03SelectedWork() {
             {/* Step Previous Button */}
             <button
               onClick={handlePrev}
-              aria-label="Previous project chapter"
+              aria-label={activeIndex === 0 ? "Scroll to top of observatory" : "Previous project chapter"}
               className="p-1.5 sm:p-2 border border-[var(--border-hairline)] text-[var(--ink-secondary)] hover:text-[var(--ink-primary)] hover:border-[var(--ink-primary)] hover:bg-[var(--bg-elevated)] transition-colors cursor-pointer shrink-0 font-mono text-xs flex items-center gap-1"
             >
               <ChevronLeft className="w-4 h-4" />
@@ -700,14 +756,24 @@ export default function Scene03SelectedWork() {
               })}
             </div>
 
-            {/* Step Next Button */}
+            {/* Step Next / Next Section Button */}
             <button
               onClick={handleNext}
-              aria-label="Next project chapter"
-              className="p-1.5 sm:p-2 border border-[var(--border-hairline)] text-[var(--ink-secondary)] hover:text-[var(--ink-primary)] hover:border-[var(--ink-primary)] hover:bg-[var(--bg-elevated)] transition-colors cursor-pointer shrink-0 font-mono text-xs flex items-center gap-1"
+              aria-label={
+                activeIndex === filteredProjects.length - 1
+                  ? "Scroll to next section"
+                  : "Next project chapter"
+              }
+              className="p-1.5 sm:p-2 border border-[var(--border-hairline)] text-[var(--ink-secondary)] hover:text-[var(--ink-primary)] hover:border-[var(--ink-primary)] hover:bg-[var(--bg-elevated)] transition-colors cursor-pointer shrink-0 font-mono text-xs flex items-center gap-1.5"
             >
-              <span className="hidden sm:inline text-[10px] font-bold">NEXT</span>
-              <ChevronRight className="w-4 h-4" />
+              <span className="text-[10px] font-bold">
+                {activeIndex === filteredProjects.length - 1 ? "NEXT SECTION" : "NEXT"}
+              </span>
+              <ChevronRight
+                className={`w-4 h-4 transition-transform duration-200 ${
+                  activeIndex === filteredProjects.length - 1 ? "rotate-90 text-[#D4FF33]" : ""
+                }`}
+              />
             </button>
           </div>
         </div>
