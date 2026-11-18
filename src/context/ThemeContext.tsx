@@ -17,7 +17,6 @@ const STORAGE_KEY = "portfolio-polarity-theme";
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<ThemePolarity>("milk");
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     let initialTheme: ThemePolarity = "milk";
@@ -32,7 +31,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     setThemeState(initialTheme);
     document.documentElement.setAttribute("data-theme", initialTheme);
-    setMounted(true);
   }, []);
 
   const setTheme = (newTheme: ThemePolarity) => {

@@ -345,7 +345,7 @@ export function HeroGlitchLockup() {
         aria-live="polite"
         aria-label={`// ${displayText}`}
       >
-        <span className="text-[var(--ink-muted)] mr-2 shrink-0 select-none">//</span>
+        <span className="text-[var(--ink-muted)] mr-2 shrink-0 select-none">{"//"}</span>
         <span className="font-semibold text-[var(--ink-primary)] whitespace-nowrap overflow-hidden text-ellipsis">
           {isScrambling ? scrambleText : displayText}
         </span>

@@ -156,22 +156,26 @@ export default function ThemeToggle({
 }) {
   const rootRef = useRef<HTMLButtonElement>(null);
   const cvRef = useRef<HTMLCanvasElement>(null);
-  const cur = useRef(isDark ? 0 : 1);
+  const initialCur = isDark ? 0 : 1;
+  const cur = useRef(initialCur);
   const cb = useRef(onToggle);
-  cb.current = onToggle;
+
+  useEffect(() => {
+    cb.current = onToggle;
+  }, [onToggle]);
 
   const api = useRef<{ go: (t: number) => void }>({ go: () => {} });
   const DARK_ANGLE = 192;
   const LIGHT_ANGLE = 42;
   const A0 = Number.isNaN(mem.a) ? (isDark ? DARK_ANGLE : LIGHT_ANGLE) : mem.a;
-  const P0 = Number.isNaN(mem.p) ? cur.current : mem.p;
+  const P0 = Number.isNaN(mem.p) ? initialCur : mem.p;
 
   const st = useRef({
     p: P0,
     v: 0,
     mp: Number.isNaN(mem.mp) ? P0 : mem.mp,
     mv: 0,
-    t: cur.current,
+    t: initialCur,
     a: A0,
     av: 0,
     at: A0,
@@ -343,7 +347,7 @@ export default function ThemeToggle({
             x: rect.left + rect.width / 2,
             y: rect.top + rect.height / 2,
           };
-        } catch (_) {}
+        } catch {}
         cb.current(t === 0, coords);
       }
     };
@@ -413,10 +417,10 @@ export default function ThemeToggle({
   }, [isDark]);
 
   const [init0] = useState(() => ({
-    "--p": clampNorm(st.current.p),
-    "--o": clampNorm(st.current.p, -0.045, 1.045),
+    "--p": clampNorm(P0),
+    "--o": clampNorm(P0, -0.045, 1.045),
     "--f": 0,
-    "--a": st.current.a,
+    "--a": A0,
     "--hx": "0px",
     "--hy": "0px",
   }));

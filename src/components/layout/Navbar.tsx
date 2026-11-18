@@ -61,7 +61,7 @@ export default function Navbar() {
         }
         try {
           localStorage.setItem("portfolio-polarity-theme", theme);
-        } catch (_) {}
+        } catch {}
       };
 
       if (
